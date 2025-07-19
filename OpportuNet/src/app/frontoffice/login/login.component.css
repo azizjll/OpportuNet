@@ -91,6 +91,21 @@ body {
     outline: none;
 }
 
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 1rem 3rem;
+    font-size: 1rem;
+    background-color: #efefef;
+    border-radius: .5rem;
+    border: 0.125rem solid #ffffff;
+    outline: none;
+    appearance: none; /* Enlève les styles natifs du select */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
 .input-group input:focus {
     border: 0.125rem solid #4EA685;
 }

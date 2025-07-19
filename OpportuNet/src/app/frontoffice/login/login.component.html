@@ -26,6 +26,19 @@
               <i class='bx bxs-lock-alt'></i>
               <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirm password">
             </div>
+
+            
+
+
+            <div class="input-group">
+              <i class='bx bxs-lock-alt'></i>
+              <select [(ngModel)]="role" name="role">
+                <option value="CANDIDAT">Candidat</option>
+                <option value="ENCADRANT">Encadrant</option>
+                <option value="ORGANISATION">ORGANISATEUR</option>
+              </select>
+            </div>
+
             <button (click)="signup()">Sign up</button>
             <p>
               <span>

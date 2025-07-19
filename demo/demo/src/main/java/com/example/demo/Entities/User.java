@@ -23,6 +23,16 @@ public class User {
     private Boolean isVerified = false;
     private Boolean isAccepted = false;
 
+    private String verificationToken;
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Experience> experiences;
 

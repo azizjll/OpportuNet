@@ -5,6 +5,15 @@ public class RegisterRequest {
     public String prenom;
     public String email;
     public String motDePasse;
+    public Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public String getNom() {
         return nom;
