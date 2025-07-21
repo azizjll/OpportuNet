@@ -7,12 +7,14 @@ import { LoginComponent } from './frontoffice/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './frontoffice/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProfileComponent } from './frontoffice/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
