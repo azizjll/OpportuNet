@@ -1,5 +1,6 @@
 package com.example.demo.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,12 +12,13 @@ public class ParcoursAcademique {
     private Long id;
 
     private String ecole;
-    private String diplôme;
+    private String diplome;
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Long getId() {
@@ -35,12 +37,12 @@ public class ParcoursAcademique {
         this.ecole = ecole;
     }
 
-    public String getDiplôme() {
-        return diplôme;
+    public String getDiplome() {
+        return diplome;
     }
 
-    public void setDiplôme(String diplôme) {
-        this.diplôme = diplôme;
+    public void setDiplome(String diplome) {
+        this.diplome = diplome;
     }
 
     public LocalDate getDateDebut() {

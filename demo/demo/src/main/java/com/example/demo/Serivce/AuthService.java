@@ -24,6 +24,13 @@ public class AuthService {
     private EmailService emailService;
 
     public AuthResponse register(RegisterRequest request) {
+
+        // Vérifier si l'email existe déjà
+        if (userRepo.findByEmail(request.email).isPresent()) {
+            throw new RuntimeException("Un compte avec cet email existe déjà.");
+        }
+
+
         User user = new User();
         user.setNom(request.nom);
         user.setPrenom(request.prenom);
