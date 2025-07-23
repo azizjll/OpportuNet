@@ -31,12 +31,15 @@
 	</properties>
 	<dependencies>
 
+
+
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<version>8.3.0</version> <!-- Vérifie que la version est compatible avec ton Java -->
 			<scope>runtime</scope>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
