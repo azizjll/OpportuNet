@@ -1,5 +1,6 @@
 package com.example.demo.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ public class Experience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String société;
+    private String societe;
     private String titrePoste;
     private String mission;
     private LocalDate dateDebut;
@@ -18,6 +19,7 @@ public class Experience {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Long getId() {
@@ -28,12 +30,12 @@ public class Experience {
         this.id = id;
     }
 
-    public String getSociété() {
-        return société;
+    public String getSociete() {
+        return societe;
     }
 
-    public void setSociété(String société) {
-        this.société = société;
+    public void setSociete(String societe) {
+        this.societe = societe;
     }
 
     public String getTitrePoste() {
