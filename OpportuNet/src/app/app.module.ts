@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './frontoffice/login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './frontoffice/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './frontoffice/profile/profile.component';
@@ -20,7 +20,8 @@ import { ProfileComponent } from './frontoffice/profile/profile.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+  
   ],
   providers: [],
   bootstrap: [AppComponent]
