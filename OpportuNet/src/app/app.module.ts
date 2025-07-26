@@ -8,6 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './frontoffice/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './frontoffice/profile/profile.component';
+import { HeaderComponent } from './frontoffice/header/header.component';
+import { FooterComponent } from './frontoffice/footer/footer.component';
+import { SidebarComponent } from './backoffice/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +18,7 @@ import { ProfileComponent } from './frontoffice/profile/profile.component';
     LoginComponent,
     HomeComponent,
     ProfileComponent
+    
   ],
   imports: [
     BrowserModule,

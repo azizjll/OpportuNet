@@ -26,29 +26,46 @@
         <div class="card-header">Account Details</div>
         <div class="card-body">
           <form>
-            <div class="mb-3">
-              <label class="small mb-1" for="inputUsername">Nom d'utilisateur</label>
-<input class="form-control" id="inputUsername" type="text" [value]="(userProfile?.nom || '') + ' ' + (userProfile?.prenom || '')" readonly>
-            </div>
+  <!-- Nom d'utilisateur complet -->
+  <div class="mb-3">
+    <label class="small mb-1" for="inputUsername">Nom d'utilisateur</label>
+    <input class="form-control" id="inputUsername" type="text"
+      [value]="(userProfile?.nom || '') + ' ' + (userProfile?.prenom || '')" readonly>
+  </div>
 
-            <div class="row gx-3 mb-3">
-              <div class="col-md-6">
-                <label class="small mb-1" for="inputFirstName">Prénom</label>
-                <input class="form-control" id="inputFirstName" type="text" [value]="userProfile?.prenom" readonly>
-              </div>
-              <div class="col-md-6">
-                <label class="small mb-1" for="inputLastName">Nom</label>
-                <input class="form-control" id="inputLastName" type="text" [value]="userProfile?.nom" readonly>
-              </div>
-            </div>
+  <!-- Nom et prénom -->
+  <div class="row gx-3 mb-3">
+    <!-- Prénom -->
+    <div class="col-md-6">
+      <label class="small mb-1" for="inputFirstName">Prénom</label>
+      <input *ngIf="editingProfile" [(ngModel)]="prenomModifiable" name="prenom" class="form-control" id="inputFirstName">
+      <input *ngIf="!editingProfile" [value]="userProfile?.prenom" class="form-control" id="inputFirstName" readonly>
+    </div>
 
-            <div class="mb-3">
-              <label class="small mb-1" for="inputEmailAddress">Adresse Email</label>
-              <input class="form-control" id="inputEmailAddress" type="email" [value]="userProfile?.email" readonly>
-            </div>
+    <!-- Nom -->
+    <div class="col-md-6">
+      <label class="small mb-1" for="inputLastName">Nom</label>
+      <input *ngIf="editingProfile" [(ngModel)]="nomModifiable" name="nom" class="form-control" id="inputLastName">
+      <input *ngIf="!editingProfile" [value]="userProfile?.nom" class="form-control" id="inputLastName" readonly>
+    </div>
+  </div>
 
-            <button class="btn btn-primary" type="button" disabled>Sauvegarder</button>
-          </form>
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="small mb-1" for="inputEmailAddress">Adresse Email</label>
+<input *ngIf="editingProfile" [(ngModel)]="emailModifiable" name="email" class="form-control" id="inputEmailAddress">
+      <input *ngIf="!editingProfile" [value]="userProfile?.email" class="form-control" id="inputLastName" readonly>
+     </div>
+
+  <!-- Boutons -->
+  <div class="d-flex gap-2">
+    <button *ngIf="editingProfile" class="btn btn-primary" type="button" (click)="onSaveProfile()">Sauvegarder</button>
+    <button class="btn btn-secondary btn-sm" type="button" (click)="editingProfile ? editingProfile = false : onEditProfile()">
+      {{ editingProfile ? 'Annuler' : 'Modifier' }}
+    </button>
+  </div>
+</form>
+
         </div>
       </div>
 
@@ -59,11 +76,22 @@
             <ul *ngIf="hasExperiences">
 
             <li *ngFor="let exp of userProfile?.experiences">
-              <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}<br>
-              {{ exp.mission }}<br>
-              Du {{ exp.dateDebut }} au {{ exp.dateFin }}
-              <hr>
-            </li>
+  <div *ngIf="editingExpId !== exp.id">
+    <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}
+    <button class="btn btn-outline-primary btn-sm" (click)="onEditExperience(exp)">Modifier</button>
+  </div>
+
+  <div *ngIf="editingExpId === exp.id && tempExperience">
+    <input class="form-control mb-2" type="text" placeholder="Société" [(ngModel)]="tempExperience.societe">
+    <input class="form-control mb-2" type="text" placeholder="Poste" [(ngModel)]="tempExperience.titrePoste">
+    <input class="form-control mb-2" type="text" placeholder="Mission" [(ngModel)]="tempExperience.mission">
+    <input class="form-control mb-2" type="date" [(ngModel)]="tempExperience.dateDebut">
+    <input class="form-control mb-2" type="date" [(ngModel)]="tempExperience.dateFin">
+    <button class="btn btn-outline-primary btn-sm" (click)="onUpdateExperience()">Sauvegarder</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="onCancelEditExperience()">Annuler</button>
+  </div>
+</li>
+
           </ul>
 
           <!-- Ajout expérience -->
@@ -86,32 +114,45 @@
 
       <!-- PARCOURS -->
       <div class="card mb-4">
-        <div class="card-header">Parcours Académiques</div>
-        <div class="card-body">
-<ul *ngIf="hasParcours">
-            <li *ngFor="let p of userProfile?.parcoursAcademiques">
-              <strong>{{ p.ecole }}</strong> – {{ p.diplome }}<br>
-              Du {{ p.dateDebut }} au {{ p.dateFin }}
-              <hr>
-            </li>
-          </ul>
+  <div class="card-header">Parcours Académiques</div>
+  <div class="card-body">
+    <ul *ngIf="hasParcours">
+      <li *ngFor="let p of userProfile?.parcoursAcademiques">
+        <div *ngIf="editingParcoursId !== p.id">
+          <strong>{{ p.ecole }}</strong> – {{ p.diplome }}<br>
+          Du {{ p.dateDebut | date }} au {{ p.dateFin | date }}
+          <button class="btn btn-outline-primary btn-sm" (click)="onEditParcours(p)">Modifier</button>
+          <hr>
+        </div>
 
-          <!-- Ajout parcours -->
-          <form (ngSubmit)="onAddParcours()">
-            <div class="row gx-3 mb-3">
-              <div class="col-md-6">
-                <input class="form-control mb-2" type="text" placeholder="École" [(ngModel)]="newParcours.ecole" name="ecole" required>
-                <input class="form-control mb-2" type="text" placeholder="Diplôme" [(ngModel)]="newParcours.diplome" name="diplome" required>
-              </div>
-              <div class="col-md-6">
-                <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateDebut" name="dateDebut" required>
-                <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateFin" name="dateFin" required>
-              </div>
-            </div>
-            <button class="btn btn-outline-primary btn-sm" type="submit">Ajouter un parcours</button>
-          </form>
+        <div *ngIf="editingParcoursId === p.id && tempParcours">
+          <input class="form-control mb-2" type="text" placeholder="École" [(ngModel)]="tempParcours.ecole">
+          <input class="form-control mb-2" type="text" placeholder="Diplôme" [(ngModel)]="tempParcours.diplome">
+          <input class="form-control mb-2" type="date" [(ngModel)]="tempParcours.dateDebut">
+          <input class="form-control mb-2" type="date" [(ngModel)]="tempParcours.dateFin">
+          <button class="btn btn-outline-primary btn-sm" (click)="onUpdateParcours()">Sauvegarder</button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="onCancelEditParcours()">Annuler</button>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Ajout parcours -->
+    <form (ngSubmit)="onAddParcours()">
+      <div class="row gx-3 mb-3">
+        <div class="col-md-6">
+          <input class="form-control mb-2" type="text" placeholder="École" [(ngModel)]="newParcours.ecole" name="ecole" required>
+          <input class="form-control mb-2" type="text" placeholder="Diplôme" [(ngModel)]="newParcours.diplome" name="diplome" required>
+        </div>
+        <div class="col-md-6">
+          <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateDebut" name="dateDebut" required>
+          <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateFin" name="dateFin" required>
         </div>
       </div>
+      <button class="btn btn-outline-primary btn-sm" type="submit">Ajouter un parcours</button>
+    </form>
+  </div>
+</div>
+
     </div>
   </div>
 </div>
