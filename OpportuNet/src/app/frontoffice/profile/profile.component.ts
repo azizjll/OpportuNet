@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Experience, ParcoursAcademique, ProfileService, UserProfile } from 'src/app/service/profile.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
