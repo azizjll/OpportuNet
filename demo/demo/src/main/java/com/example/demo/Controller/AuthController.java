@@ -8,6 +8,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.Serivce.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -47,6 +48,13 @@ public class AuthController {
         userRepo.save(user);
 
         return ResponseEntity.ok("Compte vérifié avec succès. En attente d'acceptation.");
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        // Invalider le contexte de sécurité (géré par SecurityConfig, ici pour confirmation)
+        SecurityContextHolder.clearContext();
+        // Optionnel : Si vous gérez une liste de tokens révoqués, ajoutez la logique ici
+        return ResponseEntity.ok("Déconnexion réussie");
     }
 
 
