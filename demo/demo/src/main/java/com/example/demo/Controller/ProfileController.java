@@ -102,6 +102,27 @@ public class ProfileController {
         return parcoursService.addParcours(user.getId(), parcours);
     }
 
+    @PutMapping("/me")
+    public User updateUserProfile(@RequestHeader("Authorization") String authHeader,
+                                  @RequestBody User updatedUser) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtService.extractEmail(token);
+        return userService.updateUserProfile(email, updatedUser);
+    }
+
+    @PutMapping("/experience/{id}")
+    public Experience updateExperience(@PathVariable Long id,
+                                       @RequestBody Experience updatedExperience) {
+        return experienceService.updateExperience(id, updatedExperience);
+    }
+
+    @PutMapping("/parcours/{id}")
+    public ParcoursAcademique updateParcours(@PathVariable Long id,
+                                             @RequestBody ParcoursAcademique updatedParcours) {
+        return parcoursService.updateParcours(id, updatedParcours);
+    }
+
+
 
 
 

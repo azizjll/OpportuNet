@@ -13,9 +13,9 @@
       <div class="card mb-4 mb-xl-0">
         <div class="card-header">Profile Picture</div>
         <div class="card-body text-center">
-          <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+          <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Profile Picture">
           <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-          <button class="btn btn-primary" type="button">Upload new image</button>
+          <button class="btn btn-primary" type="button" disabled>Upload new image</button>
         </div>
       </div>
     </div>
@@ -25,29 +25,48 @@
       <div class="card mb-4">
         <div class="card-header">Account Details</div>
         <div class="card-body">
-          <form>
+          <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
             <div class="mb-3">
-              <label class="small mb-1" for="inputUsername">Nom d'utilisateur</label>
-<input class="form-control" id="inputUsername" type="text" [value]="(userProfile?.nom || '') + ' ' + (userProfile?.prenom || '')" readonly>
+              <label class="small mb-1" for="username">Nom d'utilisateur</label>
+              <input class="form-control" id="username" type="text"
+                [value]="(userProfile?.nom || '') + ' ' + (userProfile?.prenom || '')" readonly>
             </div>
 
             <div class="row gx-3 mb-3">
               <div class="col-md-6">
-                <label class="small mb-1" for="inputFirstName">Prénom</label>
-                <input class="form-control" id="inputFirstName" type="text" [value]="userProfile?.prenom" readonly>
+                <label class="small mb-1">Prénom</label>
+                <input class="form-control" formControlName="prenom" [readonly]="!editingProfile">
+                <div class="text-danger" *ngIf="f(profileForm, 'prenom')?.touched && f(profileForm, 'prenom')?.invalid">
+                  <small *ngIf="f(profileForm, 'prenom')?.hasError('required')">Le prénom est obligatoire.</small>
+                  <small *ngIf="f(profileForm, 'prenom')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
               </div>
               <div class="col-md-6">
-                <label class="small mb-1" for="inputLastName">Nom</label>
-                <input class="form-control" id="inputLastName" type="text" [value]="userProfile?.nom" readonly>
+                <label class="small mb-1">Nom</label>
+                <input class="form-control" formControlName="nom" [readonly]="!editingProfile">
+                <div class="text-danger" *ngIf="f(profileForm, 'nom')?.touched && f(profileForm, 'nom')?.invalid">
+                  <small *ngIf="f(profileForm, 'nom')?.hasError('required')">Le nom est obligatoire.</small>
+                  <small *ngIf="f(profileForm, 'nom')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
               </div>
             </div>
 
             <div class="mb-3">
-              <label class="small mb-1" for="inputEmailAddress">Adresse Email</label>
-              <input class="form-control" id="inputEmailAddress" type="email" [value]="userProfile?.email" readonly>
+              <label class="small mb-1">Email</label>
+              <input class="form-control" formControlName="email" [readonly]="!editingProfile">
+              <div class="text-danger" *ngIf="f(profileForm, 'email')?.touched && f(profileForm, 'email')?.invalid">
+                <small *ngIf="f(profileForm, 'email')?.hasError('required')">Veuillez saisir une adresse e-mail valide .</small>
+                <small *ngIf="f(profileForm, 'email')?.hasError('email')">Email invalide.</small>
+              </div>
             </div>
 
-            <button class="btn btn-primary" type="button" disabled>Sauvegarder</button>
+            <div class="d-flex gap-2">
+              <button *ngIf="editingProfile" class="btn btn-primary" type="submit" [disabled]="profileForm.invalid">Sauvegarder</button>
+              <button class="btn btn-secondary btn-sm" type="button"
+                (click)="editingProfile ? onCancelEditProfile() : onEditProfile()">
+                {{ editingProfile ? 'Annuler' : 'Modifier' }}
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -56,30 +75,80 @@
       <div class="card mb-4">
         <div class="card-header">Expériences</div>
         <div class="card-body">
-            <ul *ngIf="hasExperiences">
-
+          <ul *ngIf="hasExperiences">
             <li *ngFor="let exp of userProfile?.experiences">
-              <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}<br>
-              {{ exp.mission }}<br>
-              Du {{ exp.dateDebut }} au {{ exp.dateFin }}
-              <hr>
+              <div *ngIf="editingExpId !== exp.id">
+                <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}
+                <button class="btn btn-outline-primary btn-sm" (click)="onEditExperience(exp)">Modifier</button>
+              </div>
+
+              <form *ngIf="editingExpId === exp.id" [formGroup]="editExpForm" (ngSubmit)="onUpdateExperience()">
+                <input class="form-control mb-2" formControlName="societe" placeholder="Société">
+                <div class="text-danger" *ngIf="f(editExpForm, 'societe')?.touched && f(editExpForm, 'societe')?.invalid">
+                  <small *ngIf="f(editExpForm, 'societe')?.hasError('required')">Le nom de la société est requis.</small>
+                  <small *ngIf="f(editExpForm, 'societe')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="titrePoste" placeholder="Poste">
+                <div class="text-danger" *ngIf="f(editExpForm, 'titrePoste')?.touched && f(editExpForm, 'titrePoste')?.invalid">
+                  <small *ngIf="f(editExpForm, 'titrePoste')?.hasError('required')">Poste requis.</small>
+                  <small *ngIf="f(editExpForm, 'titrePoste')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="mission" placeholder="Mission">
+                <div class="text-danger" *ngIf="f(editExpForm, 'mission')?.touched && f(editExpForm, 'mission')?.invalid">
+                  <small *ngIf="f(editExpForm, 'mission')?.hasError('required')">La description de la mission est obligatoire</small>
+                  <small *ngIf="f(editExpForm, 'mission')?.hasError('minlength')">Minimum 5 caractères.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateDebut">
+                <div class="text-danger" *ngIf="f(editExpForm, 'dateDebut')?.touched && f(editExpForm, 'dateDebut')?.invalid">
+                  <small *ngIf="f(editExpForm, 'dateDebut')?.hasError('required')">Veuillez entrer une date de début valide.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateFin">
+                <div class="text-danger" *ngIf="f(editExpForm, 'dateFin')?.touched && f(editExpForm, 'dateFin')?.invalid">
+                  <small *ngIf="f(editExpForm, 'dateFin')?.hasError('required')">Veuillez entrer une date de fin valide</small>
+                </div>
+                <div class="text-danger" *ngIf="editExpForm.errors?.['dateRange'] && editExpForm.touched">
+                  Date de début doit être avant la date de fin.
+                </div>
+                <button type="submit" class="btn btn-outline-primary btn-sm" [disabled]="editExpForm.invalid">Sauvegarder</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onCancelEditExperience()">Annuler</button>
+              </form>
             </li>
           </ul>
 
-          <!-- Ajout expérience -->
-          <form (ngSubmit)="onAddExperience()">
+          <form [formGroup]="newExpForm" (ngSubmit)="onAddExperience()">
             <div class="row gx-3 mb-3">
               <div class="col-md-6">
-                <input class="form-control mb-2" type="text" placeholder="Société" [(ngModel)]="newExperience.societe" name="societe" required>
-                <input class="form-control mb-2" type="text" placeholder="Poste" [(ngModel)]="newExperience.titrePoste" name="titrePoste" required>
-                <input class="form-control mb-2" type="text" placeholder="Mission" [(ngModel)]="newExperience.mission" name="mission" required>
+                <input class="form-control mb-2" formControlName="societe" placeholder="Société">
+                <div class="text-danger" *ngIf="f(newExpForm, 'societe')?.touched && f(newExpForm, 'societe')?.invalid">
+                  <small *ngIf="f(newExpForm, 'societe')?.hasError('required')">Le nom de la société est requis.</small>
+                  <small *ngIf="f(newExpForm, 'societe')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="titrePoste" placeholder="Poste">
+                <div class="text-danger" *ngIf="f(newExpForm, 'titrePoste')?.touched && f(newExpForm, 'titrePoste')?.invalid">
+                  <small *ngIf="f(newExpForm, 'titrePoste')?.hasError('required')">Poste requis.</small>
+                  <small *ngIf="f(newExpForm, 'titrePoste')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="mission" placeholder="Mission">
+                <div class="text-danger" *ngIf="f(newExpForm, 'mission')?.touched && f(newExpForm, 'mission')?.invalid">
+                  <small *ngIf="f(newExpForm, 'mission')?.hasError('required')">La description de la mission est obligatoire.</small>
+                  <small *ngIf="f(newExpForm, 'mission')?.hasError('minlength')">Minimum 5 caractères.</small>
+                </div>
               </div>
               <div class="col-md-6">
-                <input class="form-control mb-2" type="date" [(ngModel)]="newExperience.dateDebut" name="dateDebut" required>
-                <input class="form-control mb-2" type="date" [(ngModel)]="newExperience.dateFin" name="dateFin" required>
+                <input class="form-control mb-2" type="date" formControlName="dateDebut">
+                <div class="text-danger" *ngIf="f(newExpForm, 'dateDebut')?.touched && f(newExpForm, 'dateDebut')?.invalid">
+                  <small *ngIf="f(newExpForm, 'dateDebut')?.hasError('required')">Veuillez entrer une date de début valide.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateFin">
+                <div class="text-danger" *ngIf="f(newExpForm, 'dateFin')?.touched && f(newExpForm, 'dateFin')?.invalid">
+                  <small *ngIf="f(newExpForm, 'dateFin')?.hasError('required')">Veuillez entrer une date de fin valide.</small>
+                </div>
               </div>
             </div>
-            <button class="btn btn-outline-primary btn-sm" type="submit">Ajouter une expérience</button>
+            <div class="text-danger" *ngIf="newExpForm.errors?.['dateRange'] && newExpForm.touched">
+              Date de début doit être avant la date de fin.
+            </div>
+            <button class="btn btn-outline-primary btn-sm" type="submit" [disabled]="newExpForm.invalid">Ajouter une expérience</button>
           </form>
         </div>
       </div>
@@ -88,27 +157,72 @@
       <div class="card mb-4">
         <div class="card-header">Parcours Académiques</div>
         <div class="card-body">
-<ul *ngIf="hasParcours">
+          <ul *ngIf="hasParcours">
             <li *ngFor="let p of userProfile?.parcoursAcademiques">
-              <strong>{{ p.ecole }}</strong> – {{ p.diplome }}<br>
-              Du {{ p.dateDebut }} au {{ p.dateFin }}
-              <hr>
+              <div *ngIf="editingParcoursId !== p.id">
+                <strong>{{ p.ecole }}</strong> – {{ p.diplome }}<br>
+                Du {{ p.dateDebut | date: 'dd/MM/yyyy' }} au {{ p.dateFin | date: 'dd/MM/yyyy' }}
+                <button class="btn btn-outline-primary btn-sm" (click)="onEditParcours(p)">Modifier</button>
+                <hr>
+              </div>
+
+              <form *ngIf="editingParcoursId === p.id" [formGroup]="editParcoursForm" (ngSubmit)="onUpdateParcours()">
+                <input class="form-control mb-2" formControlName="ecole" placeholder="École">
+                <div class="text-danger" *ngIf="f(editParcoursForm, 'ecole')?.touched && f(editParcoursForm, 'ecole')?.invalid">
+                  <small *ngIf="f(editParcoursForm, 'ecole')?.hasError('required')">École requise.</small>
+                  <small *ngIf="f(editParcoursForm, 'ecole')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="diplome" placeholder="Diplôme">
+                <div class="text-danger" *ngIf="f(editParcoursForm, 'diplome')?.touched && f(editParcoursForm, 'diplome')?.invalid">
+                  <small *ngIf="f(editParcoursForm, 'diplome')?.hasError('required')">Diplôme requis.</small>
+                  <small *ngIf="f(editParcoursForm, 'diplome')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateDebut">
+                <div class="text-danger" *ngIf="f(editParcoursForm, 'dateDebut')?.touched && f(editParcoursForm, 'dateDebut')?.invalid">
+                  <small *ngIf="f(editParcoursForm, 'dateDebut')?.hasError('required')">Date de début requise.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateFin">
+                <div class="text-danger" *ngIf="f(editParcoursForm, 'dateFin')?.touched && f(editParcoursForm, 'dateFin')?.invalid">
+                  <small *ngIf="f(editParcoursForm, 'dateFin')?.hasError('required')">Date de fin requise.</small>
+                </div>
+                <div class="text-danger" *ngIf="editParcoursForm.errors?.['dateRange'] && editParcoursForm.touched">
+                  Date de début doit être avant la date de fin.
+                </div>
+                <button class="btn btn-outline-primary btn-sm" type="submit" [disabled]="editParcoursForm.invalid">Sauvegarder</button>
+                <button class="btn btn-outline-secondary btn-sm" type="button" (click)="onCancelEditParcours()">Annuler</button>
+              </form>
             </li>
           </ul>
 
-          <!-- Ajout parcours -->
-          <form (ngSubmit)="onAddParcours()">
+          <form [formGroup]="newParcoursForm" (ngSubmit)="onAddParcours()">
             <div class="row gx-3 mb-3">
               <div class="col-md-6">
-                <input class="form-control mb-2" type="text" placeholder="École" [(ngModel)]="newParcours.ecole" name="ecole" required>
-                <input class="form-control mb-2" type="text" placeholder="Diplôme" [(ngModel)]="newParcours.diplome" name="diplome" required>
+                <input class="form-control mb-2" formControlName="ecole" placeholder="École">
+                <div class="text-danger" *ngIf="f(newParcoursForm, 'ecole')?.touched && f(newParcoursForm, 'ecole')?.invalid">
+                  <small *ngIf="f(newParcoursForm, 'ecole')?.hasError('required')">École requise.</small>
+                  <small *ngIf="f(newParcoursForm, 'ecole')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
+                <input class="form-control mb-2" formControlName="diplome" placeholder="Diplôme">
+                <div class="text-danger" *ngIf="f(newParcoursForm, 'diplome')?.touched && f(newParcoursForm, 'diplome')?.invalid">
+                  <small *ngIf="f(newParcoursForm, 'diplome')?.hasError('required')">Diplôme requis.</small>
+                  <small *ngIf="f(newParcoursForm, 'diplome')?.hasError('minlength')">Minimum 2 caractères.</small>
+                </div>
               </div>
               <div class="col-md-6">
-                <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateDebut" name="dateDebut" required>
-                <input class="form-control mb-2" type="date" [(ngModel)]="newParcours.dateFin" name="dateFin" required>
+                <input class="form-control mb-2" type="date" formControlName="dateDebut">
+                <div class="text-danger" *ngIf="f(newParcoursForm, 'dateDebut')?.touched && f(newParcoursForm, 'dateDebut')?.invalid">
+                  <small *ngIf="f(newParcoursForm, 'dateDebut')?.hasError('required')">Date de début requise.</small>
+                </div>
+                <input class="form-control mb-2" type="date" formControlName="dateFin">
+                <div class="text-danger" *ngIf="f(newParcoursForm, 'dateFin')?.touched && f(newParcoursForm, 'dateFin')?.invalid">
+                  <small *ngIf="f(newParcoursForm, 'dateFin')?.hasError('required')">Date de fin requise.</small>
+                </div>
               </div>
             </div>
-            <button class="btn btn-outline-primary btn-sm" type="submit">Ajouter un parcours</button>
+            <div class="text-danger" *ngIf="newParcoursForm.errors?.['dateRange'] && newParcoursForm.touched">
+              Date de début doit être avant la date de fin.
+            </div>
+            <button class="btn btn-outline-primary btn-sm" type="submit" [disabled]="newParcoursForm.invalid">Ajouter un parcours</button>
           </form>
         </div>
       </div>

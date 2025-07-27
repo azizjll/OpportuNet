@@ -21,7 +21,7 @@ export interface ParcoursAcademique {
 
 export interface UserProfile {
   id: number;
-  nom: string;
+  nom: string ;
   prenom: string;
   email: string;
   role: string;
@@ -59,6 +59,25 @@ getUserProfile(): Observable<UserProfile> {
   const headers = { Authorization: `Bearer ${token}` };
   return this.http.get<UserProfile>(`${this.apiUrl}/me`, { headers });
 }
+
+updateUserProfile(user: Partial<UserProfile>): Observable<UserProfile> {
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.put<UserProfile>(`${this.apiUrl}/me`, user, { headers });
+}
+
+updateExperience(experienceId: number, experience: Experience): Observable<Experience> {
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.put<Experience>(`${this.apiUrl}/experience/${experienceId}`, experience, { headers });
+}
+
+updateParcours(parcoursId: number, parcours: ParcoursAcademique): Observable<ParcoursAcademique> {
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.put<ParcoursAcademique>(`${this.apiUrl}/parcours/${parcoursId}`, parcours, { headers });
+}
+
 
 
   /*getUserProfile(userId: number): Observable<UserProfile> {

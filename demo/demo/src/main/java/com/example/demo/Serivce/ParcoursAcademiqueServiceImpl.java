@@ -31,4 +31,17 @@ public class ParcoursAcademiqueServiceImpl implements ParcoursAcademiqueService 
     public List<ParcoursAcademique> getParcoursByUser(Long userId) {
         return parcoursRepository.findByUserId(userId);
     }
+
+    public ParcoursAcademique updateParcours(Long parcoursId, ParcoursAcademique updatedParcours) {
+        ParcoursAcademique parcours = parcoursRepository.findById(parcoursId)
+                .orElseThrow(() -> new RuntimeException("Parcours not found"));
+        parcours.setEcole(updatedParcours.getEcole());
+        parcours.setDiplome(updatedParcours.getDiplome());
+        parcours.setDateDebut(updatedParcours.getDateDebut());
+        parcours.setDateFin(updatedParcours.getDateFin());
+        return parcoursRepository.save(parcours);
+    }
+
+
+
 }

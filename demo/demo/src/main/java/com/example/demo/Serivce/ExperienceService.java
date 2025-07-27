@@ -8,4 +8,5 @@ import java.util.List;
 public interface ExperienceService {
     Experience addExperience(Long userId, Experience experience);
     List<Experience> getExperiencesByUser(Long userId);
+    Experience updateExperience(Long experienceId, Experience updatedExperience);
 }
