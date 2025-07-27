@@ -28,6 +28,7 @@ import { OrganisationComponent } from './backoffice/organisation/organisation.co
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule, 
     HttpClientModule,
   
   ],
