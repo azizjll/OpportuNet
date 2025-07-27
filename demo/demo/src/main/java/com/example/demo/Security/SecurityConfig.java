@@ -1,3 +1,4 @@
+// src/main/java/com/example/demo/Security/SecurityConfig.java
 package com.example.demo.Security;
 
 import com.example.demo.ServiceAvancé.JwtFilter;
@@ -6,29 +7,43 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Autowired
     private JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/api/profile/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/**").permitAll()
                         .requestMatchers("/api/offres/**").hasRole("ORGANISATION")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout") // URL de déconnexion
+                        .permitAll() // Autoriser tout le monde à accéder à cette URL
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            // Invalider le contexte de sécurité
+                            SecurityContextHolder.clearContext();
+                            // Optionnel : Révoquer le token JWT si vous gérez une liste de tokens révoqués
+                        })
+                        .invalidateHttpSession(true) // Invalider la session HTTP si utilisée
+                );
+
+        return http.build();
     }
 
     @Bean
@@ -48,5 +63,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
