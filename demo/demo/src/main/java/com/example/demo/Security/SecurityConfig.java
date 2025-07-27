@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**","/api/profile/**").permitAll()
                         .requestMatchers("/api/offres/**").hasRole("ORGANISATION")
+                        .requestMatchers("/api/candidatures/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
