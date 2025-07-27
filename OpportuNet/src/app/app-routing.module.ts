@@ -5,6 +5,9 @@ import { HomeComponent } from './frontoffice/home/home.component';
 import { ProfileComponent } from './frontoffice/profile/profile.component';
 import { FrontofficeLayoutComponent } from './layouts/frontoffice-layout/frontoffice-layout.component';
 import { BackofficeLayoutComponent } from './layouts/backoffice-layout/backoffice-layout.component';
+import { SidebarComponent } from './backoffice/sidebar/sidebar.component';
+import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
+import { OrganisationComponent } from './backoffice/organisation/organisation.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,7 +24,9 @@ const routes: Routes = [
     path: 'admin',
     component: BackofficeLayoutComponent,
     children: [
-      //{ path: 'dashboard', component: DashboardComponent }
+      { path: 'dashboard', component: DashboardComponent },
+      {path: 'organisation', component: OrganisationComponent},
+
     ]
   }
 

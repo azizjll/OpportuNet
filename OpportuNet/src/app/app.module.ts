@@ -11,13 +11,17 @@ import { ProfileComponent } from './frontoffice/profile/profile.component';
 import { HeaderComponent } from './frontoffice/header/header.component';
 import { FooterComponent } from './frontoffice/footer/footer.component';
 import { SidebarComponent } from './backoffice/sidebar/sidebar.component';
+import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
+import { OrganisationComponent } from './backoffice/organisation/organisation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    DashboardComponent,
+    OrganisationComponent
     
   ],
   imports: [
