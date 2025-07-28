@@ -13,6 +13,8 @@ import { FooterComponent } from './frontoffice/footer/footer.component';
 import { SidebarComponent } from './backoffice/sidebar/sidebar.component';
 import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
 import { OrganisationComponent } from './backoffice/organisation/organisation.component';
+import { PostulerPopupComponent } from './frontoffice/postuler-popup/postuler-popup.component';
+import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { OrganisationComponent } from './backoffice/organisation/organisation.co
     HomeComponent,
     ProfileComponent,
     DashboardComponent,
-    OrganisationComponent
+    OrganisationComponent,
+    PostulerPopupComponent,
+    MecandidatureComponent
     
   ],
   imports: [

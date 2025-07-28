@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CandidatureService } from 'src/app/service/candidature.service';
 import { OffreStage, OrganisationService } from 'src/app/service/organisation.service';
 
 @Component({
@@ -17,11 +18,26 @@ export class OrganisationComponent {
     etat: 'EN_ATTENTE'
   };
 
+
   mesOffres: OffreStage[] = [];
-  constructor(private organisationService: OrganisationService) {}
+  candidatures: any[] = [];
+  constructor(private organisationService: OrganisationService,private candidatureService: CandidatureService) {}
 
   ngOnInit(): void {
     this.loadMyOffres();
+    this.loadCandidatures();
+  }
+
+    loadCandidatures() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token manquant');
+      return;
+    }
+     this.candidatureService.getCandidaturesDeMesOffres(token).subscribe({
+      next: (data) => this.candidatures = data,
+      error: (err) => console.error('Erreur chargement candidatures', err)
+    });
   }
 
    loadMyOffres() {

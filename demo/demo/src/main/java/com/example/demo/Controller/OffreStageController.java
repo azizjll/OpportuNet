@@ -51,6 +51,7 @@ public class OffreStageController {
     }
 
     // ✅ Tous les utilisateurs peuvent consulter toutes les offres
+    @PreAuthorize("hasRole('CANDIDAT')")
     @GetMapping
     public List<OffreStage> getAllOffres() {
         return offreStageService.getAllOffres();

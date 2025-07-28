@@ -61,11 +61,22 @@
                                 </div>
                                 <h4 class="mb-3">{{ offre.titre }}</h4>
                                 <p>{{ offre.description }}</p>
-                                <span class="badge bg-info text-white">{{ offre.etat }}</span>
+                               <div class="d-flex justify-content-between">
+  <span class="badge bg-info text-white">{{ offre.etat }}</span>
+  <button class="badge bg-info text-white" (click)="ouvrirPopup(offre)">Postuler</button>
+</div>
+
                             </div>
+
                             </div>
                         </div>
                         </div>
+
+                        <app-postuler-popup
+                        *ngIf="showPopup"
+                        [offre]="selectedOffre"
+                        (close)="fermerPopup()">
+                        </app-postuler-popup>
                        
                        
                         

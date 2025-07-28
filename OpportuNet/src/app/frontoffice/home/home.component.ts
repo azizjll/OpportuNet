@@ -23,5 +23,28 @@ ngOnInit(): void {
     console.error('Token manquant, impossible de charger les offres');
   }
 }
+
+  selectedOffre: any = null;
+  showPopup: boolean = false;
+
+ouvrirPopup(offre: any) {
+    this.selectedOffre = offre;
+    this.showPopup = true;
+  }
+
+  fermerPopup() {
+    this.showPopup = false;
+    this.selectedOffre = null;
+  }
+
+
+ /*ouvrirPopup(offre: any): void {
+    console.log('Offre sélectionnée :', offre);
+    // Tu peux ici ouvrir un modal, rediriger, ou traiter les données
+    alert(`Vous avez cliqué sur : ${offre.titre}`);
+  }*/
+
+
+
 }
 

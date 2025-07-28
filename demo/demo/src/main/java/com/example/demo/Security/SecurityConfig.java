@@ -28,8 +28,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/profile/**").permitAll()
-                        .requestMatchers("/api/offres/**").hasRole("ORGANISATION")
-                        .requestMatchers("/api/candidatures/**").authenticated()
+                        /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
+                        .requestMatchers("/api/candidatures/**","/api/offres/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

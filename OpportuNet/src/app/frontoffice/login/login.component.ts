@@ -58,7 +58,7 @@ export class LoginComponent {
       // Stocker le token si besoin
       localStorage.setItem('token', res.token);
       // Redirection vers /home
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
     },
     error: (err) => {
       console.error('Erreur lors de la connexion', err);

@@ -536,4 +536,51 @@
                     </div>
                 </section>
                 <!-- // Basic multiple Column Form section end -->
+
+                  <section class="section">
+                    <div class="row" id="table-bordered">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Bordered table</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <p class="card-text">Add <code>.table-bordered</code> for borders on all sides
+                                            of the table
+                                            and
+                                            cells. For
+                                            Inverse Dark Table, add <code>.table-dark</code> along with
+                                            <code>.table-bordered</code>.
+                                        </p>
+                                    </div>
+                                    <!-- table bordered -->
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom Candidat</th>
+                                                    <th>Email</th>
+                                                    <th>Titre Offre</th>
+                                                    <th>Lettre Motivation</th>
+                                                    <th>Statut</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let c of candidatures">
+                                                    <td>{{ c.user.prenom }} {{ c.user.nom }}</td>
+                                                    <td>{{ c.user.email }}</td>
+                                                    <td>{{ c.offre.titre }}</td>
+                                                    <td>{{ c.lettreMotivation }}</td>
+                                                    <td><span class="badge bg-warning">{{ c.statut }}</span></td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
