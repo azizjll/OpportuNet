@@ -8,33 +8,44 @@
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="candidatureForm">
-          <div class="mb-3">
+        <form [formGroup]="candidatureForm" (ngSubmit)="postuler()">
+          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('cv')?.touched && candidatureForm.get('cv')?.invalid}">
             <label>CV</label>
-            <input formControlName="cv" class="form-control" placeholder="cv_aziz.pdf" />
+            <input type="file" formControlName="cv" class="form-control" accept=".pdf,.doc,.docx" />
+            <div *ngIf="candidatureForm.get('cv')?.touched && candidatureForm.get('cv')?.invalid" class="text-danger">
+              <span *ngIf="candidatureForm.get('cv')?.errors?.['required']">Le CV est requis.</span>
+              <span *ngIf="candidatureForm.get('cv')?.errors?.['fileRequired']">Veuillez uploader un fichier.</span>
+              <span *ngIf="candidatureForm.get('cv')?.errors?.['fileType']">Seuls les fichiers PDF, DOC ou DOCX sont acceptés.</span>
+              <span *ngIf="candidatureForm.get('cv')?.errors?.['maxSize']">La taille du fichier doit être inférieure à 5Mo.</span>
+            </div>
           </div>
-          <div class="mb-3">
+          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('lettreMotivation')?.touched && candidatureForm.get('lettreMotivation')?.invalid}">
             <label>Lettre de motivation</label>
-            <textarea formControlName="lettreMotivation" class="form-control"></textarea>
+            <textarea formControlName="lettreMotivation" class="form-control" rows="4"></textarea>
+            <div *ngIf="candidatureForm.get('lettreMotivation')?.touched && candidatureForm.get('lettreMotivation')?.invalid" class="text-danger">
+              <span *ngIf="candidatureForm.get('lettreMotivation')?.errors?.['required']">La lettre de motivation est requise.</span>
+              <span *ngIf="candidatureForm.get('lettreMotivation')?.errors?.['minlength']">La lettre doit contenir au moins 50 caractères.</span>
+            </div>
           </div>
-          <div class="mb-3">
+          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('remarque')?.touched && candidatureForm.get('remarque')?.invalid}">
             <label>Remarque</label>
             <input formControlName="remarque" class="form-control" />
+            <div *ngIf="candidatureForm.get('remarque')?.touched && candidatureForm.get('remarque')?.invalid" class="text-danger">
+              <span *ngIf="candidatureForm.get('remarque')?.errors?.['maxlength']">La remarque ne doit pas dépasser 200 caractères.</span>
+            </div>
+          </div>
+          <div *ngIf="etapeSuivante && questions.length">
+            <h6>Répondez aux questions :</h6>
+            <ul>
+              <li *ngFor="let question of questions">{{ question.texte }}</li>
+            </ul>
           </div>
         </form>
-
-        <div *ngIf="etapeSuivante && questions.length">
-          <h6>Répondez aux questions :</h6>
-          <ul>
-            <li *ngFor="let question of questions">{{ question.texte }}</li>
-          </ul>
-        </div>
-
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-primary" (click)="postuler()">Envoyer</button>
-        <button class="btn btn-secondary" (click)="close.emit()">Annuler</button>
+        <button type="submit" class="btn btn-primary" [disabled]="candidatureForm.invalid">Envoyer</button>
+        <button type="button" class="btn btn-secondary" (click)="close.emit()">Annuler</button>
       </div>
 
     </div>

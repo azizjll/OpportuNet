@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CandidatureService } from 'src/app/service/candidature.service';
 import { QuestionService } from 'src/app/service/question.service';
 
@@ -22,11 +22,31 @@ export class PostulerPopupComponent {
     private questionService: QuestionService
   ) {
     this.candidatureForm = this.fb.group({
-      cv: [''],
-      lettreMotivation: [''],
-      remarque: [''],
+      cv: [null, [Validators.required, this.fileValidator()]],
+      lettreMotivation: ['', [Validators.required, Validators.minLength(50)]],
+      remarque: ['', [Validators.maxLength(200)]],
       statut: ['EN_ATTENTE']
     });
+  }
+
+  // Custom validator for file input
+  fileValidator() {
+    return (control: any) => {
+      const file = control.value;
+      if (!file) {
+        return { fileRequired: true };
+      }
+      if (file instanceof File) {
+        const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!validTypes.includes(file.type)) {
+          return { fileType: true };
+        }
+        if (file.size > 5 * 1024 * 1024) { // 5MB in bytes
+          return { maxSize: true };
+        }
+      }
+      return null;
+    };
   }
 
   postuler() {
@@ -42,17 +62,25 @@ export class PostulerPopupComponent {
       return;
     }
 
-    this.candidatureService.postuler(this.offre.id, this.candidatureForm.value, token)
-      .subscribe({
-        next: (candidature: any) => {
-          this.candidatureId = candidature.id;
-          this.etapeSuivante = true;
-          this.chargerQuestions(this.offre.id);
-        },
-        error: (err) => {
-          alert("Erreur lors de l'envoi : " + err.error);
-        }
-      });
+    if (this.candidatureForm.valid) {
+      const formData = new FormData();
+      formData.append('cv', this.candidatureForm.get('cv')?.value);
+      formData.append('lettreMotivation', this.candidatureForm.get('lettreMotivation')?.value);
+      formData.append('remarque', this.candidatureForm.get('remarque')?.value);
+      formData.append('statut', this.candidatureForm.get('statut')?.value);
+
+      this.candidatureService.postuler(this.offre.id, formData, token)
+        .subscribe({
+          next: (candidature: any) => {
+            this.candidatureId = candidature.id;
+            this.etapeSuivante = true;
+            this.chargerQuestions(this.offre.id);
+          },
+          error: (err) => {
+            alert("Erreur lors de l'envoi : " + err.error);
+          }
+        });
+    }
   }
 
   chargerQuestions(offreId: number) {
