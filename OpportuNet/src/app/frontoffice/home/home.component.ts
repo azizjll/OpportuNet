@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/service/authservice.service';
 import { OffreStage, OrganisationService } from 'src/app/service/organisation.service';
 
 @Component({
@@ -10,27 +12,30 @@ export class HomeComponent implements OnInit {
 
   offres: OffreStage[] = [];
 
-  constructor(private organisationService: OrganisationService) {}
+  constructor(private organisationService: OrganisationService ,private authService: AuthserviceService,
+  private router: Router) {}
 
 ngOnInit(): void {
-  const token = localStorage.getItem('token');
-  if (token) {
-    this.organisationService.getAllOffres(token).subscribe({
-      next: (res) => this.offres = res,
-      error: (err) => console.error('Erreur chargement offres', err)
-    });
-  } else {
-    console.error('Token manquant, impossible de charger les offres');
-  }
+  this.organisationService.getAllOffres().subscribe({
+    next: (res) => this.offres = res,
+    error: (err) => console.error('Erreur chargement offres', err)
+  });
 }
+
+
 
   selectedOffre: any = null;
   showPopup: boolean = false;
 
 ouvrirPopup(offre: any) {
+  if (this.authService.isAuthenticated()) {
     this.selectedOffre = offre;
     this.showPopup = true;
+  } else {
+    this.router.navigate(['/login']);
   }
+}
+
 
   fermerPopup() {
     this.showPopup = false;

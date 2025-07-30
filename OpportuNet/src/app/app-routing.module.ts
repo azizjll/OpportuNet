@@ -9,22 +9,24 @@ import { SidebarComponent } from './backoffice/sidebar/sidebar.component';
 import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
 import { OrganisationComponent } from './backoffice/organisation/organisation.component';
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  {path:'home',component:HomeComponent},
-  {path:'profile',component:ProfileComponent},
-  {path: 'mes', component: MecandidatureComponent},
+  
     {
-    path: '',
+    path: '', 
     component: FrontofficeLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
+        {path:'profile',component:ProfileComponent},
+        
+
 
     ]
   },
   {
-    path: 'admin',
+    path: 'admin', canActivate: [AuthGuard],
     component: BackofficeLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },

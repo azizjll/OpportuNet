@@ -5,8 +5,10 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.ServiceAvancé.EmailService;
 import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
@@ -53,22 +55,23 @@ public class AuthService {
     }
 
     public AuthResponse authenticate(LoginRequest request) {
-        User user = userRepo.findByEmail(request.email)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        User user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email invalide ou inexistant"));
 
         if (!user.getVerified()) {
-            throw new RuntimeException("Veuillez vérifier votre email.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Veuillez vérifier votre email.");
         }
 
         if (!user.getAccepted()) {
-            throw new RuntimeException("Votre compte n'est pas encore accepté par un administrateur.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Votre compte n'est pas encore accepté par un administrateur.");
         }
 
-        if (!passwordEncoder.matches(request.motDePasse, user.getMotDePasse())) {
-            throw new RuntimeException("Mot de passe invalide");
+        if (!passwordEncoder.matches(request.getMotDePasse(), user.getMotDePasse())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Mot de passe invalide");
         }
 
         String token = jwtService.generateToken(user);
         return new AuthResponse(token);
     }
+
 }

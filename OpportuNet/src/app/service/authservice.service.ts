@@ -35,4 +35,9 @@ export class AuthserviceService {
       })
     );
   }
+
+   isAuthenticated(): boolean {
+    // Par exemple : vérifier un token
+    return !!localStorage.getItem('token');
+  }
 }

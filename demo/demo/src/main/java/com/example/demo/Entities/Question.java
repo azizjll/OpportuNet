@@ -2,6 +2,7 @@ package com.example.demo.Entities;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,10 +18,12 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "offre_id")
+    @JsonIgnore
     private OffreStage offre;
 
     @ManyToOne
     @JoinColumn(name = "candidature_id")
+    @JsonIgnore
     private Candidature candidature; // la réponse est associée à une candidature
 
     // Getters and Setters

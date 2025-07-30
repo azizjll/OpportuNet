@@ -10,6 +10,7 @@ import { OffreStage, OrganisationService } from 'src/app/service/organisation.se
 export class OrganisationComponent {
 
   offre: OffreStage = {
+  
     titre: '',
     description: '',
     type: 'STAGE',
@@ -22,6 +23,9 @@ export class OrganisationComponent {
   mesOffres: OffreStage[] = [];
   candidatures: any[] = [];
   constructor(private organisationService: OrganisationService,private candidatureService: CandidatureService) {}
+
+  modalVisible = false;
+selectedOffreId: number | null = null;
 
   ngOnInit(): void {
     this.loadMyOffres();
@@ -51,20 +55,36 @@ export class OrganisationComponent {
   }
 
   onSubmit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert("Token manquant. Vous devez être connecté.");
-      return;
-    }
-
-    this.organisationService.createOffre(this.offre, token).subscribe({
-      next: res => {
-        alert("Offre créée avec succès !");
-        this.loadMyOffres(); // ⬅️ recharger les offres après création
-      },
-      error: err => {
-        console.error("Erreur lors de la création :", err);
-      }
-    });
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert("Token manquant. Vous devez être connecté.");
+    return;
   }
+
+  console.log("Token utilisé :", token);
+const offreSansId = { ...this.offre };
+delete offreSansId.id;
+console.log("Offre envoyée (sans id) :", offreSansId);
+  this.organisationService.createOffre(this.offre, token).subscribe({
+    next: res => {
+      console.log("Réponse création offre :", res);
+      alert("Offre créée avec succès !");
+      this.loadMyOffres(); // Recharger les offres après création
+    },
+    error: err => {
+      console.error("Erreur lors de la création :", err);
+    }
+  });
+}
+
+
+  openAjoutQuestions(offreId: number) {
+  this.selectedOffreId = offreId;
+  this.modalVisible = true;
+}
+
+fermerModal() {
+  this.modalVisible = false;
+  this.selectedOffreId = null;
+}
 }

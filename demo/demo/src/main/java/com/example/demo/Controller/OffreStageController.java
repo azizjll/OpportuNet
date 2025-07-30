@@ -6,6 +6,7 @@ import com.example.demo.Serivce.OffreStageService;
 import com.example.demo.Serivce.UserService;
 import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,15 +30,18 @@ public class OffreStageController {
     // ✅ Créer une offre avec authentification
     @PreAuthorize("hasRole('ORGANISATION')")
     @PostMapping
-    public OffreStage createOffre(@RequestHeader("Authorization") String authHeader,
-                                  @RequestBody OffreStage offre) {
+    public ResponseEntity<OffreStage> createOffre(@RequestHeader("Authorization") String authHeader,
+                                                  @RequestBody OffreStage offre) {
         String token = authHeader.replace("Bearer ", "");
         String email = jwtService.extractEmail(token);
         User user = userService.getUserByEmail(email);
 
         offre.setCreateur(user);
-        return offreStageService.createOffre(offre);
+        OffreStage savedOffre = offreStageService.createOffre(offre);
+
+        return ResponseEntity.status(201).body(savedOffre); // ✅ retourne bien l’objet avec l'id
     }
+
 
     // ✅ Liste des offres créées par l'utilisateur connecté
     @PreAuthorize("hasRole('ORGANISATION')")
@@ -51,7 +55,7 @@ public class OffreStageController {
     }
 
     // ✅ Tous les utilisateurs peuvent consulter toutes les offres
-    @PreAuthorize("hasRole('CANDIDAT')")
+
     @GetMapping
     public List<OffreStage> getAllOffres() {
         return offreStageService.getAllOffres();

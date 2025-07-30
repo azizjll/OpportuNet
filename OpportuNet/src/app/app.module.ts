@@ -15,6 +15,7 @@ import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
 import { OrganisationComponent } from './backoffice/organisation/organisation.component';
 import { PostulerPopupComponent } from './frontoffice/postuler-popup/postuler-popup.component';
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
+import { AjoutQuestionModalComponent } from './backoffice/ajout-question-modal/ajout-question-modal.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidatur
     DashboardComponent,
     OrganisationComponent,
     PostulerPopupComponent,
-    MecandidatureComponent
+    MecandidatureComponent,
+    AjoutQuestionModalComponent
     
   ],
   imports: [

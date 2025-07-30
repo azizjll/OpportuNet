@@ -524,6 +524,12 @@
                                                     <td>{{ offre.dateFin }}</td>
                                                     <td>
                                                     <span class="badge bg-info">{{ offre.etat }}</span>
+                                                        <button 
+                                                        *ngIf="offre.id !== undefined" 
+                                                        class="btn btn-sm btn-outline-primary mt-1" 
+                                                        (click)="openAjoutQuestions(offre.id!)">
+                                                        Ajouter Questions
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 
@@ -535,6 +541,13 @@
                         </div>
                     </div>
                 </section>
+<app-ajout-question-modal
+  *ngIf="modalVisible"
+  [offreId]="selectedOffreId!"
+  (close)="fermerModal()"
+  (saved)="loadMyOffres()">
+</app-ajout-question-modal>
+
                 <!-- // Basic multiple Column Form section end -->
 
                   <section class="section">

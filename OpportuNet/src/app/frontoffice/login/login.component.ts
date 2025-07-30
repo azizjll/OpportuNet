@@ -45,7 +45,7 @@ export class LoginComponent {
     });
   }
 
-  signin() {
+ signin() {
   const loginData = {
     email: this.signinEmail,
     motDePasse: this.signinPassword
@@ -55,17 +55,25 @@ export class LoginComponent {
     next: (res) => {
       console.log('Connexion réussie', res);
       alert('Connexion réussie');
-      // Stocker le token si besoin
       localStorage.setItem('token', res.token);
-      // Redirection vers /home
       this.router.navigate(['/']);
     },
     error: (err) => {
       console.error('Erreur lors de la connexion', err);
-      alert('Erreur de connexion');
+
+      // Gestion des erreurs HTTP précises
+      if (err.status === 401) {
+        alert(err.error.message || 'Email ou mot de passe invalide');
+      } else if (err.status === 403) {
+        alert(err.error.message || 'Accès refusé : vérification ou approbation requise.');
+      } else {
+        alert('Erreur inattendue, veuillez réessayer plus tard.');
+      }
     }
   });
 }
+
+
 
 
   toggle() {

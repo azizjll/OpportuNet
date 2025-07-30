@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface OffreStage {
+   id?: number; 
   titre: string;
   description: string;
   type: string;
@@ -34,13 +35,10 @@ export class OrganisationService {
   return this.http.get<OffreStage[]>(`${this.baseUrl}/mesOffres`, { headers });
 }
 
-getAllOffres(token: string): Observable<OffreStage[]> {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-
-  return this.http.get<OffreStage[]>(this.baseUrl, { headers });
+getAllOffres(): Observable<OffreStage[]> {
+  return this.http.get<OffreStage[]>(this.baseUrl);
 }
+
 
 
 }
