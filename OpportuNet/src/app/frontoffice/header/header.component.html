@@ -5,7 +5,7 @@
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
                     <small class="me-3 text-light"><i class="fa fa-map-marker-alt me-2"></i>123 lac2 tunis </small>
                     <small class="me-3 text-light"><i class="fa fa-phone-alt me-2"></i>+216 23502008</small>
-                    <small class="text-light"><i class="fa fa-envelope-open me-2"></i>OpportuNet@gmail.com</small>
+                    <small class="text-light"><i class="fa fa-envelope-open me-2"></i>OpportuNet.com</small>
                 </div>
 
 
@@ -45,8 +45,8 @@
                    
                     <a href="profile" class="nav-item nav-link">Profile</a>
                 </div>
-                <!--<butaton type="button" class="btn text-primary ms-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>-->
-                <a class="btn btn-primary py-2 px-4 ms-3" (click)="logout()">Déconnexion</a>
+                  <button *ngIf="!isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="navigateToLogin()">Connexion</button>
+                 <button *ngIf="isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="logout()">Déconnexion</button>                
             </div>
         </nav>
 
