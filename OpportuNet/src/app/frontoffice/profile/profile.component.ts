@@ -45,7 +45,8 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       prenom: ['', [Validators.required, Validators.minLength(2)]],
       nom: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      photo: [null, [this.fileValidator()]] // Champ pour l'image
     });
 
     this.newExpForm = this.fb.group({
@@ -86,6 +87,49 @@ export class ProfileComponent implements OnInit {
       return { dateRange: true };
     }
     return null;
+  }
+
+  // Custom validator for file input
+  fileValidator() {
+    return (control: any) => {
+      const file = control.value;
+      if (!file) return null; // Pas d'erreur si aucun fichier n'est sélectionné
+      if (file instanceof File) {
+        const validTypes = ['image/jpeg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+          return { fileType: true };
+        }
+        if (file.size > 5 * 1024 * 1024) { // 5MB in bytes
+          return { maxSize: true };
+        }
+      }
+      return null;
+    };
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.profileForm.get('photo')?.setValue(file);
+    }
+  }
+
+  onUploadImage() {
+    if (this.profileForm.get('photo')?.valid && this.profileForm.get('photo')?.value) {
+      const formData = new FormData();
+      formData.append('photo', this.profileForm.get('photo')?.value);
+
+      this.profileService.updateUserPhoto(formData).subscribe({
+        next: (response) => {
+          if (this.userProfile) {
+            this.userProfile.photoUrl = response.photoUrl; // Mettre à jour l'URL de la photo
+          }
+          this.profileForm.get('photo')?.reset(); // Réinitialiser le champ fichier
+          alert('Image de profil mise à jour avec succès');
+        },
+        error: (err) => console.error('Erreur lors de la mise à jour de l\'image', err)
+      });
+    }
   }
 
   // ----- Profil -----
