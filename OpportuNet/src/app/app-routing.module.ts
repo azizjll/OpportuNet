@@ -19,13 +19,14 @@ const routes: Routes = [
     component: FrontofficeLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
-        {path:'profile',component:ProfileComponent},
+        {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]}
         
 
 
     ]
   },
   {
+
     path: 'admin', canActivate: [AuthGuard],
     component: BackofficeLayoutComponent,
     children: [
