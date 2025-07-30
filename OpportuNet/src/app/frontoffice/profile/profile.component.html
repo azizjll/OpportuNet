@@ -1,9 +1,9 @@
 <div class="container-xl px-4 mt-4">
   <nav class="nav nav-borders">
     <a class="nav-link active ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
-        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page" target="__blank">Billing</a>
-        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>
-        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Notifications</a>
+    <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page" target="__blank">Billing</a>
+    <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>
+    <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page" target="__blank">Notifications</a>
   </nav>
   <hr class="mt-0 mb-4">
 
@@ -13,9 +13,17 @@
       <div class="card mb-4 mb-xl-0">
         <div class="card-header">Profile Picture</div>
         <div class="card-body text-center">
-          <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Profile Picture">
+          <img class="img-account-profile rounded-circle mb-2" [src]="userProfile?.photoUrl || 'http://bootdey.com/img/Content/avatar/avatar1.png'" alt="Profile Picture">
           <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-          <button class="btn btn-primary" type="button" disabled>Upload new image</button>
+          <div class="mb-3" [ngClass]="{'has-error': profileForm.get('photo')?.touched && profileForm.get('photo')?.invalid}">
+            <input type="file" formControlName="photo" class="form-control" accept=".jpg,.jpeg,.png" (change)="onFileChange($event)">
+            <div *ngIf="profileForm.get('photo')?.touched && profileForm.get('photo')?.invalid" class="text-danger">
+              <small *ngIf="profileForm.get('photo')?.errors?.['required']">Veuillez uploader une image.</small>
+              <small *ngIf="profileForm.get('photo')?.errors?.['fileType']">Seuls les fichiers JPG ou PNG sont acceptés.</small>
+              <small *ngIf="profileForm.get('photo')?.errors?.['maxSize']">La taille du fichier doit être inférieure à 5Mo.</small>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="button" [disabled]="profileForm.get('photo')?.invalid || !profileForm.get('photo')?.value" (click)="onUploadImage()">Upload new image</button>
         </div>
       </div>
     </div>
@@ -55,7 +63,7 @@
               <label class="small mb-1">Email</label>
               <input class="form-control" formControlName="email" [readonly]="!editingProfile">
               <div class="text-danger" *ngIf="f(profileForm, 'email')?.touched && f(profileForm, 'email')?.invalid">
-                <small *ngIf="f(profileForm, 'email')?.hasError('required')">Veuillez saisir une adresse e-mail valide .</small>
+                <small *ngIf="f(profileForm, 'email')?.hasError('required')">Veuillez saisir une adresse e-mail valide.</small>
                 <small *ngIf="f(profileForm, 'email')?.hasError('email')">Email invalide.</small>
               </div>
             </div>
@@ -95,7 +103,7 @@
                 </div>
                 <input class="form-control mb-2" formControlName="mission" placeholder="Mission">
                 <div class="text-danger" *ngIf="f(editExpForm, 'mission')?.touched && f(editExpForm, 'mission')?.invalid">
-                  <small *ngIf="f(editExpForm, 'mission')?.hasError('required')">La description de la mission est obligatoire</small>
+                  <small *ngIf="f(editExpForm, 'mission')?.hasError('required')">La description de la mission est obligatoire.</small>
                   <small *ngIf="f(editExpForm, 'mission')?.hasError('minlength')">Minimum 5 caractères.</small>
                 </div>
                 <input class="form-control mb-2" type="date" formControlName="dateDebut">
@@ -104,7 +112,7 @@
                 </div>
                 <input class="form-control mb-2" type="date" formControlName="dateFin">
                 <div class="text-danger" *ngIf="f(editExpForm, 'dateFin')?.touched && f(editExpForm, 'dateFin')?.invalid">
-                  <small *ngIf="f(editExpForm, 'dateFin')?.hasError('required')">Veuillez entrer une date de fin valide</small>
+                  <small *ngIf="f(editExpForm, 'dateFin')?.hasError('required')">Veuillez entrer une date de fin valide.</small>
                 </div>
                 <div class="text-danger" *ngIf="editExpForm.errors?.['dateRange'] && editExpForm.touched">
                   Date de début doit être avant la date de fin.
