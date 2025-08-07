@@ -7,46 +7,41 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="close.emit()"></button>
       </div>
 
-      <div class="modal-body">
-        <form [formGroup]="candidatureForm" (ngSubmit)="postuler()">
-          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('cv')?.touched && candidatureForm.get('cv')?.invalid}">
-            <label>CV</label>
-            <input type="file" formControlName="cv" class="form-control" accept=".pdf,.doc,.docx" />
-            <div *ngIf="candidatureForm.get('cv')?.touched && candidatureForm.get('cv')?.invalid" class="text-danger">
-              <span *ngIf="candidatureForm.get('cv')?.errors?.['required']">Le CV est requis.</span>
-              <span *ngIf="candidatureForm.get('cv')?.errors?.['fileRequired']">Veuillez uploader un fichier.</span>
-              <span *ngIf="candidatureForm.get('cv')?.errors?.['fileType']">Seuls les fichiers PDF, DOC ou DOCX sont acceptés.</span>
-              <span *ngIf="candidatureForm.get('cv')?.errors?.['maxSize']">La taille du fichier doit être inférieure à 5Mo.</span>
-            </div>
-          </div>
-          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('lettreMotivation')?.touched && candidatureForm.get('lettreMotivation')?.invalid}">
-            <label>Lettre de motivation</label>
-            <textarea formControlName="lettreMotivation" class="form-control" rows="4"></textarea>
-            <div *ngIf="candidatureForm.get('lettreMotivation')?.touched && candidatureForm.get('lettreMotivation')?.invalid" class="text-danger">
-              <span *ngIf="candidatureForm.get('lettreMotivation')?.errors?.['required']">La lettre de motivation est requise.</span>
-              <span *ngIf="candidatureForm.get('lettreMotivation')?.errors?.['minlength']">La lettre doit contenir au moins 50 caractères.</span>
-            </div>
-          </div>
-          <div class="mb-3" [ngClass]="{'has-error': candidatureForm.get('remarque')?.touched && candidatureForm.get('remarque')?.invalid}">
-            <label>Remarque</label>
-            <input formControlName="remarque" class="form-control" />
-            <div *ngIf="candidatureForm.get('remarque')?.touched && candidatureForm.get('remarque')?.invalid" class="text-danger">
-              <span *ngIf="candidatureForm.get('remarque')?.errors?.['maxlength']">La remarque ne doit pas dépasser 200 caractères.</span>
-            </div>
-          </div>
-          <div *ngIf="etapeSuivante && questions.length">
-            <h6>Répondez aux questions :</h6>
-            <ul>
-              <li *ngFor="let question of questions">{{ question.texte }}</li>
-            </ul>
-          </div>
-        </form>
-      </div>
+     <div class="modal-body">
+  <!-- Étape 1 : Formulaire de candidature -->
+  <form *ngIf="!etapeSuivante" [formGroup]="candidatureForm">
+    <div class="form-group">
+      <label for="cv">CV :</label>
+      <input type="file" id="cv" (change)="onFileChange($event)" class="form-control" required>
+    </div>
 
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" [disabled]="candidatureForm.invalid">Envoyer</button>
-        <button type="button" class="btn btn-secondary" (click)="close.emit()">Annuler</button>
+    <div class="form-group">
+      <label for="lettreMotivation">Lettre de motivation :</label>
+      <textarea id="lettreMotivation" formControlName="lettreMotivation" class="form-control" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="remarque">Remarque :</label>
+      <textarea id="remarque" formControlName="remarque" class="form-control"></textarea>
+    </div>
+  </form>
+
+  <!-- Étape 2 : Questions -->
+    <div *ngIf="etapeSuivante">
+      <h5>Questions</h5>
+      <div *ngFor="let question of questions" class="form-group">
+        <label>{{ question.contenu }}</label> <!-- 👈 ici -->
+        <textarea [(ngModel)]="question.reponse" class="form-control" required></textarea>
       </div>
+    </div>
+</div>
+
+<!-- Footer avec bouton unique -->
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="soumettreTout()">Suivant</button>
+  <button type="button" class="btn btn-secondary" (click)="close.emit()">Annuler</button>
+</div>
+
 
     </div>
   </div>

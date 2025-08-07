@@ -19,7 +19,8 @@ const routes: Routes = [
     component: FrontofficeLayoutComponent,
     children: [
       { path: '', component: HomeComponent },
-        {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]}
+      {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
+      {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]}
         
 
 

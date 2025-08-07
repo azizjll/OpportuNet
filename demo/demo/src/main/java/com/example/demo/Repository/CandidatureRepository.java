@@ -15,4 +15,5 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long> 
     boolean existsByUserAndOffre(User user, OffreStage offre);
     List<Candidature> findByOffre_Createur(User createur);
 
+    boolean existsByOffreIdAndUserId(Long offreId, Long userId);
 }

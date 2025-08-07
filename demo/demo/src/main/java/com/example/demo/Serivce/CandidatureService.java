@@ -45,5 +45,10 @@ public class CandidatureService {
         return candidatureRepository.findById(id);
     }
 
+    public boolean aDejaPostule(Long offreId, Long utilisateurId) {
+        return candidatureRepository.existsByOffreIdAndUserId(offreId, utilisateurId);
+    }
+
+
 
 }

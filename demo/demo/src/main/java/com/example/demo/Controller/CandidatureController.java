@@ -2,23 +2,30 @@ package com.example.demo.Controller;
 
 
 
-import com.example.demo.Entities.Candidature;
-import com.example.demo.Entities.OffreStage;
-import com.example.demo.Entities.Role;
-import com.example.demo.Entities.User;
+import com.example.demo.Entities.*;
+import com.example.demo.Repository.CandidatureRepository;
+import com.example.demo.Repository.OffreStageRepository;
+import com.example.demo.Repository.UserRepository;
 import com.example.demo.Serivce.CandidatureService;
 import com.example.demo.Serivce.OffreStageService;
 import com.example.demo.Serivce.UserService;
 import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/candidatures")
@@ -38,59 +45,80 @@ public class CandidatureController {
     private OffreStageService offreStageService;
 
     private static final Logger logger = LoggerFactory.getLogger(CandidatureController.class);
+    @Autowired
+    private CandidatureRepository candidatureRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private OffreStageRepository offreStageRepository;
 
 
     // ✅ Postuler à une offre
     @PreAuthorize("hasRole('CANDIDAT')")
-    @PostMapping("/{offreId}")
-    public ResponseEntity<?> postuler(@RequestHeader("Authorization") String authHeader,
-                                      @PathVariable Long offreId,
-                                      @RequestBody Candidature candidature) {
+    @PostMapping(value = "/{offreId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> postuler(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long offreId,
+            @RequestParam("cv") MultipartFile cv,
+            @RequestParam("lettreMotivation") String lettreMotivation,
+            @RequestParam(value = "remarque", required = false) String remarque,
+            @RequestParam("statut") String statutStr) {
+
         try {
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                logger.warn("Token manquant ou mal formaté");
-                return ResponseEntity.status(401).body("Token JWT manquant ou invalide.");
+            String uploadsDirPath = System.getProperty("user.dir") + "/uploads";
+            File uploadDir = new File(uploadsDirPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
             }
+
+            String nomFichier = System.currentTimeMillis() + "_" + cv.getOriginalFilename();
+            String cheminComplet = uploadsDirPath + "/" + nomFichier;
+            cv.transferTo(new File(cheminComplet));
 
             String token = authHeader.replace("Bearer ", "");
-            logger.info("Received token: {}", token);
-
             String email = jwtService.extractEmail(token);
-            logger.info("Extracted email from token: {}", email);
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-            User candidat = userService.getUserByEmail(email);
-            if (candidat == null) {
-                logger.warn("Aucun utilisateur trouvé avec l'email: {}", email);
-                return ResponseEntity.status(404).body("Utilisateur non trouvé.");
+            OffreStage offre = offreStageRepository.findById(offreId)
+                    .orElseThrow(() -> new RuntimeException("Offre non trouvée"));
+
+            if (candidatureRepository.existsByUserAndOffre(user, offre)) {
+                return ResponseEntity.status(400).body(Map.of("message", "Vous avez déjà postulé à cette offre."));
             }
 
-            OffreStage offre = offreStageService.getOffreById(offreId)
-                    .orElse(null);
 
-            if (offre == null) {
-                logger.warn("Offre avec ID {} non trouvée", offreId);
-                return ResponseEntity.status(404).body("Offre non trouvée.");
-            }
-
-            // 💥 Vérification de doublon
-            if (candidatureService.existeDeja(candidat, offre)) {
-                logger.warn("Candidat {} a déjà postulé à l'offre {}", candidat.getEmail(), offre.getTitre());
-                return ResponseEntity.status(400).body("Vous avez déjà postulé à cette offre.");
-            }
-
-            candidature.setUser(candidat);
+            Candidature candidature = new Candidature();
+            candidature.setCv(cheminComplet);
+            candidature.setLettreMotivation(lettreMotivation);
+            candidature.setRemarque(remarque);
+            candidature.setStatut(StatutCandidature.valueOf(statutStr));
             candidature.setOffre(offre);
+            candidature.setUser(user);
 
-            Candidature saved = candidatureService.postuler(candidature);
-            logger.info("Candidature enregistrée avec ID {}", saved.getId());
+            candidatureRepository.save(candidature);
 
-            return ResponseEntity.ok(saved);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Candidature envoyée avec succès");
+            response.put("id", candidature.getId());
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            logger.error("Erreur lors de la candidature : {}", e.getMessage(), e);
-            return ResponseEntity.status(500).body("Erreur interne du serveur : " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
     }
+
+
+    @GetMapping("/existe/{offreId}")
+    public ResponseEntity<Boolean> checkCandidatureExiste(@PathVariable Long offreId, @AuthenticationPrincipal User user) {
+        boolean existe = candidatureService.aDejaPostule(offreId, user.getId());
+        return ResponseEntity.ok(existe);
+    }
+
+
+
 
 
 
@@ -121,6 +149,25 @@ public class CandidatureController {
                 .orElseThrow(() -> new RuntimeException("Offre non trouvée"));
         return candidatureService.getCandidaturesByOffre(offre);
     }
+
+    @PutMapping("/{id}/statut")
+    public ResponseEntity<?> changerStatut(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        Optional<Candidature> optional = candidatureRepository.findById(id);
+        if (optional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Candidature candidature = optional.get();
+        try {
+            StatutCandidature nouveauStatut = StatutCandidature.valueOf(request.get("statut"));
+            candidature.setStatut(nouveauStatut);
+            candidatureRepository.save(candidature);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Statut invalide");
+        }
+    }
+
 
 
 

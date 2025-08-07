@@ -580,13 +580,45 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let c of candidatures">
-                                                    <td>{{ c.user.prenom }} {{ c.user.nom }}</td>
-                                                    <td>{{ c.user.email }}</td>
-                                                    <td>{{ c.offre.titre }}</td>
-                                                    <td>{{ c.lettreMotivation }}</td>
-                                                    <td><span class="badge bg-warning">{{ c.statut }}</span></td>
-                                                </tr>
+                                                <ng-container *ngFor="let c of candidatures">
+                                                             <!-- Ligne principale -->
+                                                                <tr>
+                                                                    <td>{{ c.user.prenom }} {{ c.user.nom }}</td>
+                                                                    <td>{{ c.user.email }}</td>
+                                                                    <td>{{ c.offre.titre }}</td>
+                                                                    <td>{{ c.lettreMotivation }}</td>
+                                                                    <td>
+                                                                        <select class="form-select form-select-sm" [ngModel]="c.statut" (ngModelChange)="changerStatut(c.id, $event)">
+                                                                            <option value="EN_ATTENTE">EN_ATTENTE</option>
+                                                                            <option value="PRESELECTION">PRESELECTION</option>
+                                                                            <option value="ACCEPTEE">ACCEPTEE</option>
+                                                                            <option value="REFUSEE">REFUSEE</option>
+                                                                        </select>
+                                                                    </td>
+
+                                                                    <td>
+                                                                    <button class="btn btn-sm btn-primary" (click)="loadQuestionsEtReponses(c)">
+                                                                        {{ questionsVisible[c.id] ? 'Masquer Réponses' : 'Voir Réponses' }}
+                                                                    </button>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <!-- Ligne des réponses (affichée uniquement si questionsVisible est true) -->
+                                                                <tr *ngIf="questionsVisible[c.id]">
+                                                                    <td colspan="6">
+                                                                    <ul class="list-unstyled mb-0">
+                                                                        <li *ngFor="let q of reponsesMap[c.id] || []" class="mb-2">
+                                                                        <strong>Q :</strong> {{ q.contenu }}<br />
+                                                                        <strong>R :</strong>
+                                                                        <span *ngIf="q.reponse && q.reponse.trim() !== ''">{{ q.reponse }}</span>
+                                                                        <span *ngIf="!q.reponse || q.reponse.trim() === ''">Non répondu</span>
+                                                                        </li>
+                                                                    </ul>
+                                                                    </td>
+                                                                </tr>
+                                                </ng-container>
+
+
                                                 
                                             </tbody>
                                         </table>

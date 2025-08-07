@@ -129,8 +129,9 @@
             <span class="badge"
                     [ngClass]="{
                     'bg-light text-dark': c.statut === 'EN_ATTENTE',
-                    'bg-success': c.statut === 'ACCEPTE',
-                    'bg-danger': c.statut === 'REFUSE'
+                    'bg-warning text-dark': c.statut === 'PRESELECTION',
+                    'bg-success': c.statut === 'ACCEPTEE',
+                    'bg-danger': c.statut === 'REFUSEE'
                     }">
                 {{ c.statut }}
             </span>

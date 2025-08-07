@@ -27,4 +27,29 @@ export class QuestionService {
   return this.http.get<Question[]>(`${this.baseUrl}/offres/${offreId}/questions`, { headers });
 }
 
+soumettreReponses(candidatureId: number, reponses: any[]) {
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+
+  return this.http.post(
+    `${this.baseUrl}/candidatures/${candidatureId}/reponses`,
+    reponses,
+    {
+      headers,
+      responseType: 'text'  // ✅ << Important ici
+    }
+  );
+}
+
+getQuestionsEtReponses(offreId: number, candidatureId: number, token: string) {
+  return this.http.get<any[]>(`${this.baseUrl}/offres/${offreId}/candidatures/${candidatureId}/reponses`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+
+
+
 }
