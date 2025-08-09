@@ -16,6 +16,7 @@ import { OrganisationComponent } from './backoffice/organisation/organisation.co
 import { PostulerPopupComponent } from './frontoffice/postuler-popup/postuler-popup.component';
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
 import { AjoutQuestionModalComponent } from './backoffice/ajout-question-modal/ajout-question-modal.component';
+import { FormationComponent } from './frontoffice/formation/formation.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { AjoutQuestionModalComponent } from './backoffice/ajout-question-modal/a
     OrganisationComponent,
     PostulerPopupComponent,
     MecandidatureComponent,
-    AjoutQuestionModalComponent
+    AjoutQuestionModalComponent,
+    FormationComponent
+    
     
   ],
   imports: [

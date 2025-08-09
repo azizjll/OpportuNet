@@ -1,0 +1,6 @@
+.enlarged-image {
+  width: 100%;      /* s'adapte à la largeur du conteneur */
+  max-height: 400px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}

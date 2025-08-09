@@ -10,6 +10,7 @@ import { DashboardComponent } from './backoffice/dashboard/dashboard.component';
 import { OrganisationComponent } from './backoffice/organisation/organisation.component';
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
 import { AuthGuard } from './auth.guard';
+import { FormationComponent } from './frontoffice/formation/formation.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
-      {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]}
+      {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]},
+      {path: 'formation', component: FormationComponent }
         
 
 
