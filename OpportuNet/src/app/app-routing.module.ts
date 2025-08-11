@@ -11,6 +11,7 @@ import { OrganisationComponent } from './backoffice/organisation/organisation.co
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
 import { AuthGuard } from './auth.guard';
 import { FormationComponent } from './frontoffice/formation/formation.component';
+import { AdminFormationsComponent } from './backoffice/admin-formations/admin-formations.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,7 +23,9 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
       {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]},
-      {path: 'formation', component: FormationComponent }
+      {path: 'formation', component: FormationComponent },
+
+
         
 
 
@@ -35,6 +38,8 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       {path: 'organisation', component: OrganisationComponent},
+      {path: 'Adminformation', component: AdminFormationsComponent}
+
 
     ]
   }

@@ -121,4 +121,75 @@ public class FormationController {
     public void deleteFormation(@PathVariable Long id) {
         formationService.deleteFormation(id);
     }
+
+    // ✅ Modification formation par ORGANISATION
+    @PreAuthorize("hasRole('ORGANISATION')")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateFormation(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("titre") String titre,
+            @RequestParam("description") String description,
+            @RequestParam("categorie") String categorieStr,
+            @RequestParam(value = "pdf", required = false) MultipartFile pdfFile,
+            @RequestParam(value = "video", required = false) MultipartFile videoFile,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) {
+        try {
+            // 🔍 Vérifier si formation existe
+            Optional<Formation> optFormation = formationService.getFormationById(id);
+            if (optFormation.isEmpty()) {
+                return ResponseEntity.status(404).body(Map.of("error", "Formation non trouvée"));
+            }
+            Formation formation = optFormation.get();
+
+            // 🗂️ Préparer dossiers
+            String uploadsDir = System.getProperty("user.dir") + "/uploads";
+            File pdfDir = new File(uploadsDir + "/pdfs");
+            File videoDir = new File(uploadsDir + "/videos");
+            File imageDir = new File(uploadsDir + "/images");
+
+            if (!pdfDir.exists()) pdfDir.mkdirs();
+            if (!videoDir.exists()) videoDir.mkdirs();
+            if (!imageDir.exists()) imageDir.mkdirs();
+
+            // ✏️ Mettre à jour les champs
+            formation.setTitre(titre);
+            formation.setDescription(description);
+            formation.setCategorie(Categorie.valueOf(categorieStr));
+
+            // 📄 Si fichiers fournis → remplacer
+            if (pdfFile != null && !pdfFile.isEmpty()) {
+                String pdfFilename = System.currentTimeMillis() + "_" + pdfFile.getOriginalFilename();
+                pdfFile.transferTo(new File(pdfDir, pdfFilename));
+                formation.setPdf("uploads/pdfs/" + pdfFilename);
+            }
+
+            if (videoFile != null && !videoFile.isEmpty()) {
+                String videoFilename = System.currentTimeMillis() + "_" + videoFile.getOriginalFilename();
+                videoFile.transferTo(new File(videoDir, videoFilename));
+                formation.setVideo("uploads/videos/" + videoFilename);
+            }
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageFilename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+                imageFile.transferTo(new File(imageDir, imageFilename));
+                formation.setImage("uploads/images/" + imageFilename);
+            }
+
+            // 💾 Sauvegarde
+            Formation updated = formationService.saveFormation(formation);
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Formation mise à jour avec succès",
+                    "formationId", updated.getId()
+            ));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+
 }

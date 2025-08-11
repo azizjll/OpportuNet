@@ -17,7 +17,9 @@ import { PostulerPopupComponent } from './frontoffice/postuler-popup/postuler-po
 import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidature.component';
 import { AjoutQuestionModalComponent } from './backoffice/ajout-question-modal/ajout-question-modal.component';
 import { FormationComponent } from './frontoffice/formation/formation.component';
-
+import { FormationsService } from './service/formations.service';
+ 
+import { AdminFormationsComponent } from './backoffice/admin-formations/admin-formations.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,11 @@ import { FormationComponent } from './frontoffice/formation/formation.component'
     PostulerPopupComponent,
     MecandidatureComponent,
     AjoutQuestionModalComponent,
-    FormationComponent
+    FormationComponent,
+    AdminFormationsComponent,
+
+
+
     
     
   ],

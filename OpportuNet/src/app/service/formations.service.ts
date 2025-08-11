@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 export interface Formation {
   id: number;
@@ -25,4 +26,29 @@ export class FormationsService {
   getAllFormations(): Observable<Formation[]> {
     return this.http.get<Formation[]>(this.apiUrl);
   }
+  createFormation(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.post(this.apiUrl, formData, { headers });
+  }
+
+  deleteFormation(id: number): Observable<any> {
+  const token = localStorage.getItem('token') || '';
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+  return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+}
+
+updateFormation(id: number, formData: FormData): Observable<any> {
+  const token = localStorage.getItem('token') || '';
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+  return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
+}
+
+
 }
