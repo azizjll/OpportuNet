@@ -39,6 +39,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ParcoursAcademique> parcoursAcademiques;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Formation> formations;
+
+
     public Long getId() {
         return id;
     }

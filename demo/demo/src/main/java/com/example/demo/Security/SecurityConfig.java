@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**").permitAll()
                         /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
                         .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**").authenticated()
                         .anyRequest().authenticated()
