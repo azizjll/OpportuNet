@@ -1,25 +1,105 @@
-<div class="payment-form">
-  <h2>Créer un paiement</h2>
-  <form (ngSubmit)="createPayment()">
-    <div>
-      <label>Montant :</label>
-      <input type="number" [(ngModel)]="amount" name="amount" required />
+<div class="container mt-5">
+  <div class="card shadow-lg rounded-4">
+    <div class="card-header bg-primary text-white text-center">
+      <h2 class="mb-0">💳 Créer un Paiement</h2>
     </div>
-    <div>
-      <label>Devise :</label>
-      <input type="text" [(ngModel)]="currency" name="currency" />
+    <div class="card-body">
+      <form #paymentForm="ngForm" (ngSubmit)="createPayment()" novalidate>
+        <!-- Montant -->
+        <div class="mb-3">
+          <label class="form-label">Montant :</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="amount"
+            name="amount"
+            required
+            min="1"
+            #amountCtrl="ngModel"
+            placeholder="Entrez le montant"
+          />
+          <!-- Message d’erreur -->
+          <div
+            *ngIf="amountCtrl.invalid && (amountCtrl.dirty || amountCtrl.touched)"
+            class="text-danger small mt-1"
+          >
+            <div *ngIf="amountCtrl.errors?.['required']">
+              ⚠️ Le montant est obligatoire.
+            </div>
+            <div *ngIf="amountCtrl.errors?.['min']">
+              ⚠️ Le montant doit être supérieur à 0.
+            </div>
+          </div>
+        </div>
+
+        <!-- Devise -->
+        <div class="mb-3">
+          <label class="form-label">Devise :</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="currency"
+            name="currency"
+            required
+            minlength="3"
+            maxlength="3"
+            pattern="^[A-Z]{3}$"
+            #currencyCtrl="ngModel"
+            placeholder="Ex: EUR, USD..."
+          />
+          <!-- Message d’erreur -->
+          <div
+            *ngIf="
+              currencyCtrl.invalid &&
+              (currencyCtrl.dirty || currencyCtrl.touched)
+            "
+            class="text-danger small mt-1"
+          >
+            <div *ngIf="currencyCtrl.errors?.['required']">
+              ⚠️ La devise est obligatoire.
+            </div>
+            <div *ngIf="currencyCtrl.errors?.['minlength'] || currencyCtrl.errors?.['maxlength']">
+              ⚠️ La devise doit contenir exactement 3 lettres (ex: EUR).
+            </div>
+            <div *ngIf="currencyCtrl.errors?.['pattern']">
+              ⚠️ La devise doit être en majuscules (ex: USD).
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton -->
+        <div class="d-grid">
+          <button
+            type="submit"
+            class="btn btn-success btn-lg"
+            [disabled]="paymentForm.invalid || loading"
+          >
+            {{ loading ? "⏳ Paiement en cours..." : "✅ Payer" }}
+          </button>
+        </div>
+      </form>
+
+      <!-- Messages -->
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="paymentResult" class="alert alert-info mt-3">
+        <h5 class="fw-bold">✅ Paiement créé :</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>ID :</b> {{ paymentResult.id }}</li>
+          <li class="list-group-item">
+            <b>Montant :</b> {{ paymentResult.amount }}
+            {{ paymentResult.currency }}
+          </li>
+          <li class="list-group-item">
+            <b>Statut :</b> {{ paymentResult.status }}
+          </li>
+          <li class="list-group-item">
+            <b>Stripe ID :</b> {{ paymentResult.stripePaymentId }}
+          </li>
+        </ul>
+      </div>
     </div>
-    <button type="submit" [disabled]="loading">Payer</button>
-  </form>
-
-  <div *ngIf="loading">Paiement en cours...</div>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-
-  <div *ngIf="paymentResult">
-    <h3>Paiement créé :</h3>
-    <p>ID : {{ paymentResult.id }}</p>
-    <p>Montant : {{ paymentResult.amount }} {{ paymentResult.currency }}</p>
-    <p>Statut : {{ paymentResult.status }}</p>
-    <p>Stripe ID : {{ paymentResult.stripePaymentId }}</p>
   </div>
 </div>

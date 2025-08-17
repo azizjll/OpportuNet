@@ -1,6 +1,6 @@
 <div class="dialog-content">
-  <h5 mat-dialog-title *ngIf="!data.uuid">Add Appointment</h5>
-  <h5 mat-dialog-title *ngIf="data.uuid">Edit Appointment</h5>
+  <h5 mat-dialog-title *ngIf="!data.uuid">Ajouter un entretien</h5>
+  <h5 mat-dialog-title *ngIf="data.uuid">Modifier un entretien</h5>
   <div [formGroup]="appointmentForm">
     <div mat-dialog-content>
       <mat-form-field class="form-field">

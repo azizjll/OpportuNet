@@ -1,17 +1,24 @@
 <div class="d-flex flex-column justify-content-center align-items-center mt-3" style="min-height: 100vh;">
-  <div class="col-lg-7 col-md-2">
-    
+  <div class="col-lg-7 col-md-12">
+   
+
     <h2 class="text-center">Ajouter une formation</h2>
 
     <form [formGroup]="formationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data" novalidate>
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" id="titre" formControlName="titre" class="form-control" required />
+        <div *ngIf="formationForm.get('titre')?.invalid && formationForm.get('titre')?.touched" class="text-danger">
+          Le titre est obligatoire (minimum 3 caractères).
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea id="description" formControlName="description" class="form-control" rows="3" required></textarea>
+        <div *ngIf="formationForm.get('description')?.invalid && formationForm.get('description')?.touched" class="text-danger">
+          La description est obligatoire (minimum 10 caractères).
+        </div>
       </div>
 
       <div class="mb-3">
@@ -21,36 +28,56 @@
           <option value="DEBUTANT">Débutant</option>
           <option value="AVANCE">Avancé</option>
         </select>
+        <div *ngIf="formationForm.get('categorie')?.invalid && formationForm.get('categorie')?.touched" class="text-danger">
+          La catégorie est obligatoire.
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="pdf" class="form-label">PDF</label>
         <input type="file" id="pdf" (change)="onFileChange($event, 'pdf')" accept=".pdf" class="form-control" required />
+        <div class="text-danger">{{ pdfError }}</div>
       </div>
 
       <div class="mb-3">
         <label for="video" class="form-label">Vidéo</label>
         <input type="file" id="video" (change)="onFileChange($event, 'video')" accept="video/*" class="form-control" required />
+        <div class="text-danger">{{ videoError }}</div>
       </div>
 
       <div class="mb-3">
         <label for="image" class="form-label">Image</label>
         <input type="file" id="image" (change)="onFileChange($event, 'image')" accept="image/*" class="form-control" required />
+        <div class="text-danger">{{ imageError }}</div>
       </div>
 
-    <button type="submit" [disabled]="formationForm.invalid" class="btn btn-primary">
-      {{ editMode ? 'Mettre à jour' : 'Ajouter la formation' }}
-    </button>
+      <button type="submit" [disabled]="formationForm.invalid" class="btn btn-primary">
+        {{ editMode ? 'Mettre à jour' : 'Ajouter la formation' }}
+      </button>
     </form>
 
     <hr class="my-4" />
 
     <h3 class="text-center">Liste des formations</h3>
 
+    <!-- Recherche avancée -->
+    <div class="row mb-3">
+      <div class="col-md-6 mb-2">
+        <input type="text" class="form-control" placeholder="Rechercher par titre"
+               [(ngModel)]="searchTitle" name="searchTitle">
+      </div>
+      <div class="col-md-4 mb-2">
+        <select class="form-select" [(ngModel)]="searchCategory" name="searchCategory">
+          <option value="">-- Toutes les catégories --</option>
+          <option value="DEBUTANT">Débutant</option>
+          <option value="AVANCE">Avancé</option>
+        </select>
+      </div>
+    </div>
+
     <table class="table table-bordered table-hover align-middle">
       <thead class="table-light">
         <tr>
-          <th>#ID</th>
           <th>Titre</th>
           <th>Description</th>
           <th>Catégorie</th>
@@ -61,25 +88,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let formation of formations">
-          <td>{{ formation.id }}</td>
+        <tr *ngFor="let formation of filteredFormations">
           <td>{{ formation.titre }}</td>
           <td>{{ formation.description }}</td>
           <td>{{ formation.categorie }}</td>
+          <td><img [src]="'http://localhost:8080/' + formation.image" alt="{{ formation.titre }}" style="max-height:50px;"></td>
+          <td><a [href]="'http://localhost:8080/' + formation.pdf" target="_blank" class="btn btn-sm btn-primary">Voir PDF</a></td>
+          <td><a [href]="'http://localhost:8080/' + formation.video" target="_blank" class="btn btn-sm btn-secondary">Voir Vidéo</a></td>
           <td>
-            <img [src]="'http://localhost:8080/' + formation.image" alt="{{ formation.titre }}" style="max-height: 50px;" />
-          </td>
-          <td>
-            <a [href]="'http://localhost:8080/' + formation.pdf" target="_blank" class="btn btn-sm btn-primary">Voir PDF</a>
-          </td>
-          <td>
-            <a [href]="'http://localhost:8080/' + formation.video" target="_blank" class="btn btn-sm btn-secondary">Voir Vidéo</a>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-warning me-2" (click)="onEditFormation(formation)">
-              Modifier
-            </button>
-            <button class="btn btn-sm btn-danger" (click)="onDeleteFormation(formation.id)">Supprimer</button>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-warning" (click)="onEditFormation(formation)">Modifier</button>
+              <button class="btn btn-sm btn-danger" (click)="onDeleteFormation(formation.id)">Supprimer</button>
+            </div>
           </td>
         </tr>
       </tbody>
