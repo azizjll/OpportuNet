@@ -14,6 +14,7 @@ import { FormationComponent } from './frontoffice/formation/formation.component'
 import { AdminFormationsComponent } from './backoffice/admin-formations/admin-formations.component';
 import { CalendarComponent } from './backoffice/calendar/calendar.component';
 import { PaymentComponent } from './frontoffice/payment/payment.component';
+import { AppointmentDialogComponent } from './backoffice/appointment-dialog/appointment-dialog.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -26,7 +27,6 @@ const routes: Routes = [
       {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
       {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]},
       {path: 'formation', component: FormationComponent },
-      {path: 'calendar', component: CalendarComponent, },
        {path: 'payment', component: PaymentComponent}
 
 
@@ -42,7 +42,9 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       {path: 'organisation', component: OrganisationComponent},
-      {path: 'Adminformation', component: AdminFormationsComponent}
+      {path: 'Adminformation', component: AdminFormationsComponent},
+      {path: 'calendar', component: CalendarComponent },
+       {path: 'opportunet', component: AppointmentDialogComponent }
 
 
     ]

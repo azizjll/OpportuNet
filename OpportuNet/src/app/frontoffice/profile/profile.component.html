@@ -1,20 +1,15 @@
 <div class="container-xl px-4 mt-4">
-  <nav class="nav nav-borders">
-    <a class="nav-link active ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
-    <a class="nav-link" href="mes" target="__blank">Billing</a>
-    <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>
-    <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page" target="__blank">Notifications</a>
-  </nav>
+
   <hr class="mt-0 mb-4">
 
   <div class="row">
     <!-- LEFT SIDE: Profile picture -->
     <div class="col-xl-4">
       <div class="card mb-4 mb-xl-0">
-        <div class="card-header">Profile Picture</div>
+        
         <div class="card-body text-center">
           <img class="img-account-profile rounded-circle mb-2" [src]="userProfile?.photoUrl || 'http://bootdey.com/img/Content/avatar/avatar1.png'" alt="Profile Picture">
-          <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+          <div class="small font-italic text-muted mb-4">veuillez saisi votre photo de profil</div>
           <div class="mb-3" [ngClass]="{'has-error': profileForm.get('photo')?.touched && profileForm.get('photo')?.invalid}">
             <input type="file" formControlName="photo" class="form-control" accept=".jpg,.jpeg,.png" (change)="onFileChange($event)">
             <div *ngIf="profileForm.get('photo')?.touched && profileForm.get('photo')?.invalid" class="text-danger">
