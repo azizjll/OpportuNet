@@ -12,6 +12,8 @@ import { MecandidatureComponent } from './frontoffice/mecandidature/mecandidatur
 import { AuthGuard } from './auth.guard';
 import { FormationComponent } from './frontoffice/formation/formation.component';
 import { AdminFormationsComponent } from './backoffice/admin-formations/admin-formations.component';
+import { CalendarComponent } from './backoffice/calendar/calendar.component';
+import { PaymentComponent } from './frontoffice/payment/payment.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,6 +26,8 @@ const routes: Routes = [
       {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
       {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]},
       {path: 'formation', component: FormationComponent },
+      {path: 'calendar', component: CalendarComponent, },
+       {path: 'payment', component: PaymentComponent}
 
 
         

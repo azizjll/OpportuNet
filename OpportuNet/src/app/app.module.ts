@@ -20,6 +20,19 @@ import { FormationComponent } from './frontoffice/formation/formation.component'
 import { FormationsService } from './service/formations.service';
  
 import { AdminFormationsComponent } from './backoffice/admin-formations/admin-formations.component';
+import { CalendarComponent } from './backoffice/calendar/calendar.component';
+import { AppointmentDialogComponent } from './backoffice/appointment-dialog/appointment-dialog.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';  // <-- corrigé
+
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // <-- ajouté
+import { MatIconModule } from '@angular/material/icon';
+import { MatNativeDateModule } from '@angular/material/core';
+import { PaymentComponent } from './frontoffice/payment/payment.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +46,8 @@ import { AdminFormationsComponent } from './backoffice/admin-formations/admin-fo
     AjoutQuestionModalComponent,
     FormationComponent,
     AdminFormationsComponent,
+    CalendarComponent,
+    PaymentComponent,
 
 
 
@@ -41,10 +56,19 @@ import { AdminFormationsComponent } from './backoffice/admin-formations/admin-fo
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,  // <-- obligatoire
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     HttpClientModule,
+    MatDialogModule,
+    DragDropModule,
+    MatButtonToggleModule,     // <-- module Angular Material correct
+    MatButtonModule,
+    MatIconModule,
+    AppointmentDialogComponent,
+    MatNativeDateModule
+     
   
   ],
   providers: [],

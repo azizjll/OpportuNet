@@ -1,0 +1,25 @@
+<div class="payment-form">
+  <h2>Créer un paiement</h2>
+  <form (ngSubmit)="createPayment()">
+    <div>
+      <label>Montant :</label>
+      <input type="number" [(ngModel)]="amount" name="amount" required />
+    </div>
+    <div>
+      <label>Devise :</label>
+      <input type="text" [(ngModel)]="currency" name="currency" />
+    </div>
+    <button type="submit" [disabled]="loading">Payer</button>
+  </form>
+
+  <div *ngIf="loading">Paiement en cours...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="paymentResult">
+    <h3>Paiement créé :</h3>
+    <p>ID : {{ paymentResult.id }}</p>
+    <p>Montant : {{ paymentResult.amount }} {{ paymentResult.currency }}</p>
+    <p>Statut : {{ paymentResult.status }}</p>
+    <p>Stripe ID : {{ paymentResult.stripePaymentId }}</p>
+  </div>
+</div>

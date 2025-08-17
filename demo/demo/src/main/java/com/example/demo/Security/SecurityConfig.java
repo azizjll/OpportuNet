@@ -27,9 +27,9 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**").permitAll()
                         /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
-                        .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**").authenticated()
+                        .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**","/api/packets/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

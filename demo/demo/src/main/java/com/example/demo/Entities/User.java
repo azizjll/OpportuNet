@@ -1,6 +1,8 @@
 package com.example.demo.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -41,7 +43,38 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Formation> formations;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RendezVous> rendezVous;
 
+    @ManyToOne
+    @JoinColumn(name = "packet_id")
+    @JsonBackReference
+    private Packet packet;
+
+
+    public Packet getPacket() {
+        return packet;
+    }
+
+    public void setPacket(Packet packet) {
+        this.packet = packet;
+    }
+
+    public List<Formation> getFormations() {
+        return formations;
+    }
+
+    public void setFormations(List<Formation> formations) {
+        this.formations = formations;
+    }
+
+    public List<RendezVous> getRendezVous() {
+        return rendezVous;
+    }
+
+    public void setRendezVous(List<RendezVous> rendezVous) {
+        this.rendezVous = rendezVous;
+    }
 
     public Long getId() {
         return id;
@@ -130,4 +163,6 @@ public class User {
     public void setParcoursAcademiques(List<ParcoursAcademique> parcoursAcademiques) {
         this.parcoursAcademiques = parcoursAcademiques;
     }
+
+
 }
