@@ -165,11 +165,12 @@
   }
 }
 .calendar-container {
-  width: 100%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
 
   .calendar-header {
     display: flex;
@@ -201,4 +202,11 @@
   svg {
     fill: black;
   }
+}
+
+.custom-dialog-container {
+  position: fixed !important;
+ 
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }

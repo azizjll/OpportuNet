@@ -41,9 +41,9 @@
                 <div class="navbar-nav ms-auto py-0">
                     <a href="index.html" class="nav-item nav-link">Aceuille</a>
                     <a href="/" class="nav-item nav-link">Offres</a>
-                    <a href="formation" class="nav-item nav-link">Formations</a>
+                    <a routerLink="formation" class="nav-item nav-link">Formations</a>
                    
-                    <a href="profile" class="nav-item nav-link">Profile</a>
+                    <a routerLink="profile" class="nav-item nav-link">Profile</a>
                 </div>
                   <button *ngIf="!isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="navigateToLogin()">Connexion</button>
                  <button *ngIf="isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="logout()">Déconnexion</button>                

@@ -41,6 +41,10 @@ export class CalendarComponent implements OnInit {
 
   public CalendarView = CalendarView;
 
+  
+  
+dialogRef: any;
+
   constructor(
     public dialog: MatDialog,
     private calendarService: CalendarService
@@ -133,8 +137,11 @@ deleteAppointmentAPI(id: number) {
    // Ouverture du dialog
   openDialog(appointment?: Appointment): void {
   const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-    width: '500px',
-    panelClass: 'dialog-container',
+   width: '400px',
+  height: 'auto',
+  disableClose: true,
+  position: {  left: '50%' },
+  panelClass: 'custom-dialog-container',
     data: appointment || {
       date: this.selectedDate || new Date(),
       title: '',
@@ -478,8 +485,11 @@ deleteAppointmentAPI(id: number) {
   editAppointment(appointment: Appointment, event: Event) {
     event.preventDefault();
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-      width: '500px',
-      panelClass: 'dialog-container',
+        width: '400px',
+         height: 'auto',
+    disableClose: true,
+    position: { top: '50%', left: '50%' }, // position inline
+    panelClass: 'custom-dialog-container', 
       data: appointment,
     });
 
