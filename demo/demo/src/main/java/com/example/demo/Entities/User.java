@@ -25,6 +25,16 @@ public class User {
     private Boolean isVerified = false;
     private Boolean isAccepted = false;
 
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     private String verificationToken;
 
     public String getVerificationToken() {
