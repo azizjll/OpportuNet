@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <h2>Liste des utilisateurs</h2>
+  <div class="mb-3">
+  <input type="text" class="form-control" placeholder="Rechercher un utilisateur..."
+         [(ngModel)]="searchText">
+</div>
+
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+<div *ngIf="message" class="alert alert-info">
+  {{ message }}
+</div>
+  <table class="table table-bordered" *ngIf="!loading && users.length > 0">
+    <thead>
+      <tr>
+       
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>État</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of filteredUsers">
+        
+        <td>{{user.nom}}</td>
+        <td>{{user.prenom}}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+       <td>  <span class="badge" [ngClass]="user.verified ? 'bg-success' : 'bg-danger'">
+    {{ user.verified ? 'Vérifié' : 'Non vérifié' }}
+  </span></td>
+        <td>{{ user.status }} <button class="btn btn-success btn-sm" (click)="acceptUser(user.id)">Accepter</button>
+          
+          <button class="btn btn-danger btn-sm" (click)="blockUser(user.id)">Refuser</button>
+            <button class="btn btn-warning btn-sm" (click)="deleteUser(user.id)">Supprimer</button></td>
+
+ 
+
+        
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && users.length === 0" class="alert alert-info">
+    Aucun utilisateur trouvé.
+  </div>
+</div>

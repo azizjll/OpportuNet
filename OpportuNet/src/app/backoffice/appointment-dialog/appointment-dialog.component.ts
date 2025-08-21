@@ -4,17 +4,19 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
+  ReactiveFormsModule,
+  FormsModule
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { CommonModule } from '@angular/common';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -24,15 +26,18 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    ReactiveFormsModule,
+    MatNativeDateModule,
+    MatDialogModule
   ],
 })
 export class AppointmentDialogComponent {
   appointmentForm: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<AppointmentDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
@@ -50,9 +55,9 @@ export class AppointmentDialogComponent {
     this.appointmentForm = this.formBuilder.group(
       {
         title: [this.data.title || '', Validators.required],
-        date: [this.data.date, Validators.required],
+        date: [this.data.date || '', Validators.required],
         startTime: [this.data.startTime || '', Validators.required],
-        endTime: [this.data.startTime || '', Validators.required],
+        endTime: [this.data.endTime || '', Validators.required],
       },
       { validators: this.timeRangeValidator }
     );
@@ -79,6 +84,7 @@ export class AppointmentDialogComponent {
     this.dialogRef.close({ remove: true, uuid: this.data.uuid });
   }
 
+  // Validator pour vérifier que endTime > startTime
   timeRangeValidator: ValidatorFn = (
     control: AbstractControl
   ): ValidationErrors | null => {
@@ -89,14 +95,12 @@ export class AppointmentDialogComponent {
       const [endHours, endMinutes] = endTime.split(':');
 
       const startDate = new Date();
-      startDate.setHours(startHours);
-      startDate.setMinutes(startMinutes);
+      startDate.setHours(+startHours, +startMinutes, 0);
 
       const endDate = new Date();
-      endDate.setHours(endHours);
-      endDate.setMinutes(endMinutes);
+      endDate.setHours(+endHours, +endMinutes, 0);
 
-      if (startDate > endDate) {
+      if (startDate >= endDate) {
         return { timeRangeInvalid: true };
       }
     }
