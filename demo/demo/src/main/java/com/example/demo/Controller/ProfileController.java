@@ -9,8 +9,12 @@ import com.example.demo.Serivce.ParcoursAcademiqueService;
 import com.example.demo.Serivce.UserService;
 import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @RestController
@@ -124,6 +128,41 @@ public class ProfileController {
 
 
 
+    @PostMapping("/upload-photo")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<String> uploadPhoto(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("photo") MultipartFile file) {
+
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            String email = jwtService.extractEmail(token);
+            User user = userService.getUserByEmail(email);
+
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("Fichier vide");
+            }
+
+            // Exemple : enregistrer dans un dossier local
+            String uploadDir = "uploads/";
+            File uploadPath = new File(uploadDir);
+            if (!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            }
+
+            String fileName = user.getId() + "_" + file.getOriginalFilename();
+            File dest = new File(uploadDir + fileName);
+            file.transferTo(dest);
+
+            // Sauvegarder le chemin dans la base
+            user.setImageUrl("/uploads/" + fileName);
+            userService.save(user);
+
+            return ResponseEntity.ok("Image uploadée avec succès !");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erreur lors de l'upload : " + e.getMessage());
+        }
+    }
 
 
 

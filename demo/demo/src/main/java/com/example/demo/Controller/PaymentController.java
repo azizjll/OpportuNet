@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.Controller;
 
 import com.example.demo.Entities.Payment;
 import com.example.demo.Entities.User;
@@ -31,19 +31,15 @@ public class PaymentController {
     public Payment createPaymentWithPacket(@RequestParam Long userId,
                                            @RequestParam Long packetId) throws StripeException {
 
-        // 1. Récupérer l'utilisateur
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
-        // 2. Récupérer le packet choisi
         Packet packet = packetRepository.findById(packetId)
                 .orElseThrow(() -> new RuntimeException("Packet non trouvé"));
 
-        // 3. Associer le packet à l'utilisateur (optionnel)
         user.setPacket(packet);
         userRepository.save(user);
 
-        // 4. Créer le paiement via le service
         return paymentService.createPayment(user, packet);
     }
 }

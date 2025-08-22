@@ -15,8 +15,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepo;
 
@@ -29,6 +32,7 @@ public class UserService {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
+   
 
     public User updateUserProfile(String email, User updatedUser) {
         User user = userRepo.findByEmail(email)
@@ -49,6 +53,9 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id); // ← bien utiliser l’instance
+    }
 
     public User verifyUser(Long userId) {
         User user = userRepo.findById(userId)
@@ -91,11 +98,15 @@ public class UserService {
         } catch (IOException e) {
             throw new RuntimeException("Erreur lors de l'upload de l'image", e);
         }
+
+
     }
 
+    @Autowired
+    private UserRepository userRepository;
 
-
-
-
-
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+   
 }
