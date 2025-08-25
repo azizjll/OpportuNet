@@ -75,5 +75,14 @@ public class UserController {
         // Tu peux ajouter ici une vérification avec JwtService si besoin
         return userService.updateUserImage(id, file);
     }
-
+    @DeleteMapping("/{id}")
+    public void deleteUser(@RequestHeader("Authorization") String authHeader,
+                           @PathVariable Long id) {
+        String token = authHeader.substring(7);
+        String role = jwtService.extractRole(token);
+        if (!"ADMIN".equals(role)) {
+            throw new RuntimeException("Access denied");
+        }
+        userService.deleteUser(id);
+    }
 }
