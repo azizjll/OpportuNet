@@ -1,0 +1,122 @@
+<div class="chat-container">
+  <!-- Sidebar avec les salles de chat -->
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <h3>{{ currentUserType === 'CANDIDATE' ? 'Mes conversations' : 'Conversations' }}</h3>
+      <small class="text-muted">{{ currentUserType === 'CANDIDATE' ? 'Discutez avec les organisations' : 'Discutez avec les candidats' }}</small>
+    </div>
+    
+    <div class="chat-rooms">
+      <div 
+        *ngFor="let room of chatRooms" 
+        class="chat-room-item"
+        [class.active]="selectedChatRoom?.chatRoomId === room.chatRoomId"
+        (click)="selectChatRoom(room)"
+      >
+        <div class="room-info">
+          <div class="room-name">
+            {{ getOfferTitle(room) }}
+          </div>
+          <div class="room-subtitle">
+            {{ currentUserType === 'CANDIDATE' ? 'Organisation' : 'Candidat' }}
+          </div>
+          <div class="last-message-time" *ngIf="room.lastMessageAt">
+            {{ formatTimestamp(room.lastMessageAt) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone principale du chat -->
+  <div class="chat-main">
+    <!-- Header du chat -->
+    <div class="chat-header" *ngIf="selectedChatRoom">
+      <div class="chat-title">
+        <h4>{{ getOfferTitle(selectedChatRoom) }}</h4>
+        <small class="text-muted">{{ currentUserType === 'CANDIDATE' ? 'Organisation' : 'Candidat' }}</small>
+        <button (click)="switchUserType()" class="switch-user-btn">
+          Changer en {{ currentUserType === 'CANDIDATE' ? 'Organisation' : 'Candidat' }}
+        </button>
+      </div>
+      <div class="chat-status">
+        <span class="status-indicator online"></span>
+        <span>En ligne</span>
+      </div>
+    </div>
+
+    <!-- Zone des messages -->
+    <div class="messages-container" #messageContainer>
+      <div 
+        *ngFor="let message of messages" 
+        class="message"
+        [class.own-message]="isOwnMessage(message)"
+        [class.read-message]="isMessageRead(message)"
+        [class.replied-message]="isMessageReplied(message)"
+      >
+        <div class="message-content">
+          <div class="message-text">{{ message.content }}</div>
+          <div class="message-time">{{ formatTimestamp(message.timestamp!) }}</div>
+          <div class="message-status" *ngIf="!isOwnMessage(message)">
+            <span *ngIf="isMessageRead(message)" class="status-read">✓ Lu</span>
+            <span *ngIf="isMessageReplied(message)" class="status-replied">✓ Répondu</span>
+          </div>
+        </div>
+        <div class="message-sender">
+          {{ message.senderName || message.senderId }}
+        </div>
+      </div>
+      
+      <!-- Indicateur de frappe -->
+      <div class="typing-indicator" *ngIf="typingUsers.length > 0">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text">{{ typingUsers.join(', ') }} {{ typingUsers.length === 1 ? 'écrit' : 'écrivent' }}...</span>
+      </div>
+    </div>
+
+    <!-- Zone de saisie -->
+    <div class="message-input-container">
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          [(ngModel)]="newMessage"
+          (input)="onTyping()"
+          (keyup.enter)="sendMessage()"
+          placeholder="Tapez votre message..."
+          class="message-input"
+        >
+        <button 
+          (click)="sendMessage()" 
+          class="send-button"
+          [disabled]="!newMessage.trim()"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22,2 15,22 11,13 2,9"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucune salle sélectionnée -->
+  <div class="no-chat-selected" *ngIf="!selectedChatRoom">
+    <div class="no-chat-content">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <h3>{{ currentUserType === 'CANDIDATE' ? 'Aucune conversation active' : 'Sélectionnez une conversation' }}</h3>
+      <p *ngIf="currentUserType === 'CANDIDATE'">
+        Vous n'avez pas encore de conversations actives. 
+        Les organisations vous contacteront ici après avoir postulé à leurs offres.
+      </p>
+      <p *ngIf="currentUserType === 'ORGANIZATION'">
+        Choisissez une conversation dans la liste pour commencer à discuter avec les candidats.
+      </p>
+    </div>
+  </div>
+</div>

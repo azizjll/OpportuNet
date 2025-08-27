@@ -2,12 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Experience, ParcoursAcademique, ProfileService, UserProfile } from 'src/app/service/profile.service';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {
   userProfile?: UserProfile;
+
+  previewImage: string | ArrayBuffer | null = null;
+selectedFile: File | null = null;
 
   profileForm!: FormGroup;
   newExpForm!: FormGroup;
@@ -19,7 +27,7 @@ export class ProfileComponent implements OnInit {
   editingExpId: number | null = null;
   editingParcoursId: number | null = null;
 
-  constructor(private profileService: ProfileService, private fb: FormBuilder) {}
+  constructor(private profileService: ProfileService, private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.buildForms();
@@ -107,30 +115,9 @@ export class ProfileComponent implements OnInit {
     };
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.profileForm.get('photo')?.setValue(file);
-    }
-  }
+ 
 
-  onUploadImage() {
-    if (this.profileForm.get('photo')?.valid && this.profileForm.get('photo')?.value) {
-      const formData = new FormData();
-      formData.append('photo', this.profileForm.get('photo')?.value);
-
-      this.profileService.updateUserPhoto(formData).subscribe({
-        next: (response) => {
-          if (this.userProfile) {
-            this.userProfile.photoUrl = response.photoUrl; // Mettre à jour l'URL de la photo
-          }
-          this.profileForm.get('photo')?.reset(); // Réinitialiser le champ fichier
-          alert('Image de profil mise à jour avec succès');
-        },
-        error: (err) => console.error('Erreur lors de la mise à jour de l\'image', err)
-      });
-    }
-  }
+  
 
   // ----- Profil -----
   onEditProfile(): void {
@@ -280,4 +267,71 @@ export class ProfileComponent implements OnInit {
     }
     return ctrl;
   };
+
+  onFileChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+
+    // Vérifier le type et la taille (optionnel)
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+      alert('Seuls les fichiers JPG ou PNG sont acceptés.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5 Mo
+      alert('La taille du fichier doit être inférieure à 5Mo.');
+      return;
+    }
+
+    this.selectedFile = file;
+
+    // Lire le fichier pour afficher l'aperçu
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Mettre à jour le formControl
+    this.profileForm.patchValue({ photo: file });
+  }
+}
+
+uploadPhoto(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const token = localStorage.getItem('token'); // récupère ton JWT
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+
+  return this.http.post('http://localhost:8080/api/profile/upload-photo', formData, { headers });
+}
+
+
+
+
+// Ajoute cette méthode dans ton ProfileComponent
+onUploadImage(): void {
+  if (!this.selectedFile) return;
+
+  this.uploadPhoto(this.selectedFile).subscribe({
+    next: (res) => {
+      console.log('Upload réussi', res);
+      alert('Image uploadée avec succès !');
+      // Mettre à jour l'aperçu si le backend retourne l'URL de l'image
+      // this.previewImage = res.url; // selon réponse de ton backend
+    },
+    error: (err) => {
+      console.error('Erreur upload', err);
+      alert('Erreur lors de l\'upload');
+    }
+  });
+}
+
+
+ 
+    
 }

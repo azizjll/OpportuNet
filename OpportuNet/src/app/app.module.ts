@@ -31,10 +31,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
 import { PaymentComponent } from './frontoffice/payment/payment.component';
+import { RouterModule } from '@angular/router';
+import { UserListComponent } from './backoffice/user-list/user-list.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 @NgModule({
   declarations: [
+    
     AppComponent,
     LoginComponent,
     HomeComponent,
@@ -48,6 +52,9 @@ import { PaymentComponent } from './frontoffice/payment/payment.component';
     AdminFormationsComponent,
     CalendarComponent,
     PaymentComponent,
+    UserListComponent,
+    ChatComponent,
+   
 
 
 
@@ -67,7 +74,8 @@ import { PaymentComponent } from './frontoffice/payment/payment.component';
     MatButtonModule,
     MatIconModule,
     AppointmentDialogComponent,
-    MatNativeDateModule
+    MatNativeDateModule,
+    RouterModule,
      
   
   ],
