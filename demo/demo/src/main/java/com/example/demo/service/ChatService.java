@@ -188,4 +188,11 @@ public class ChatService {
         map.put(key, value);
         return map;
     }
+
+    public void sendTypingNotification(String chatRoomId, String userId, Boolean isTyping) {
+        // Envoyer une notification via WebSocket
+        messagingTemplate.convertAndSend("/topic/chat/" + chatRoomId + "/typing",
+                Map.of("userId", userId, "isTyping", isTyping));
+    }
+
 }

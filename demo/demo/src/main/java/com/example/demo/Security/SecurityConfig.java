@@ -27,12 +27,14 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**").permitAll()
+                        .requestMatchers("/ws-raw/").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**","/ws/**", "/topic/**", "/app/**", "/test-chat.html").permitAll()
                         .requestMatchers("/api/profile/upload-photo").authenticated()
                         /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
                         .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**","/api/packets/**","/api/rendezvous/**").authenticated()
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout") // URL de déconnexion

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Chat WebSocket</title>
+</head>
+<body>
+<h1>Test Chat WebSocket</h1>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+<script>
+    var socket = new SockJS('http://localhost:8080/ws');
+    var stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function(frame) {
+        console.log('Connecté : ' + frame);
+
+        // S'abonner au topic public
+        stompClient.subscribe('/topic/public', function(msg) {
+            console.log('Message reçu : ', JSON.parse(msg.body));
+        });
+
+        // Envoyer un message de test
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify({
+            content: "Bonjour depuis JS",
+            senderId: "user1",
+            senderType: "CANDIDATE",
+            receiverId: "user2",
+            receiverType: "ORGANIZATION",
+            chatRoomId: "room_1234",
+            offerId: 1,
+            messageType: "TEXT"
+        }));
+    });
+</script>
+</body>
+</html>
