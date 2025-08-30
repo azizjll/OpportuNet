@@ -39,6 +39,7 @@ public class AuthService {
         user.setEmail(request.email);
         user.setMotDePasse(passwordEncoder.encode(request.motDePasse));
         user.setRole(request.role != null ? request.role : Role.CANDIDAT);
+        user.setIsPayment(false);
         user.setVerified(false);
         user.setAccepted(false);
 

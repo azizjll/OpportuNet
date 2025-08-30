@@ -38,14 +38,14 @@
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
-                        <li class="sidebar-item active ">
+                        <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
                             <a href="admin/Adminformation" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Ajouter Formation</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item  has-sub">
+                        <li class="sidebar-item  has-sub" *ngIf="userRole === 'ORGANISATION'">
                             <a href="admin/calendar" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>
                                 <span>Fixer un entretien</span>
@@ -53,7 +53,7 @@
                            
                         </li>
 
-                        <li class="sidebar-item  has-sub">
+                        <li class="sidebar-item  has-sub" *ngIf="userRole === 'ADMIN' ">
                             <a href="/admin/userList" class='sidebar-link'>
                                 <i class="bi bi-collection-fill"></i>
                                 <span>liste user </span>

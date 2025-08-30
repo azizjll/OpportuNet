@@ -27,6 +27,18 @@ public class User {
 
     private String imageUrl;
 
+    @Column(nullable = false)
+    private Boolean isPayment = false;
+
+    public Boolean getIsPayment() {
+        return isPayment;
+    }
+
+    public void setIsPayment(Boolean isPayment) {
+        this.isPayment = isPayment;
+    }
+
+
     public String getImageUrl() {
         return imageUrl;
     }

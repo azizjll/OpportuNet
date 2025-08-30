@@ -68,5 +68,23 @@ public class PacketController {
         String email = jwtService.extractEmail(token);
         return userService.getUserByEmail(email);
     }
+
+    // Modifier un packet
+    @PutMapping("/{id}")
+    public Packet updatePacket(@RequestHeader("Authorization") String authHeader,
+                               @PathVariable Long id,
+                               @RequestBody Packet packet) {
+        User user = getAuthenticatedUser(authHeader);
+        return packetService.updatePacket(id, packet);
+    }
+
+    // Supprimer un packet
+    @DeleteMapping("/{id}")
+    public void deletePacket(@RequestHeader("Authorization") String authHeader,
+                             @PathVariable Long id) {
+        User user = getAuthenticatedUser(authHeader);
+        packetService.deletePacket(id);
+    }
+
 }
 

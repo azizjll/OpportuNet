@@ -42,8 +42,10 @@
                     <a href="index.html" class="nav-item nav-link">Aceuille</a>
                     <a href="/" class="nav-item nav-link">Offres</a>
                     <a routerLink="formation" class="nav-item nav-link">Formations</a>
-                   
                     <a routerLink="profile" class="nav-item nav-link">Profile</a>
+                    <a *ngIf="isLoggedIn" routerLink="chat" class="nav-item nav-link">
+                        <i class="fas fa-comments me-1"></i>Chat
+                    </a>
                 </div>
                   <button *ngIf="!isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="navigateToLogin()">Connexion</button>
                  <button *ngIf="isLoggedIn" class="btn btn-primary py-2 px-4 ms-3" (click)="logout()">Déconnexion</button>                

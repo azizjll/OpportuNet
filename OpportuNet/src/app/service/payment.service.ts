@@ -1,6 +1,6 @@
 // src/app/services/payment.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Payment {
@@ -21,8 +21,18 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  createPayment(userId: number, amount: number, currency: string = 'usd'): Observable<Payment> {
-    const url = `${this.apiUrl}/create?userId=${userId}&amount=${amount}&currency=${currency}`;
-    return this.http.post<Payment>(url, {});
+  createPaymentWithPacket(packetId: number): Observable<Payment> {
+    const token = localStorage.getItem('token'); // ou sessionStorage selon ton app
+
+    if (!token) {
+      throw new Error('Token JWT manquant !');
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    const url = `${this.apiUrl}/create-with-packet?packetId=${packetId}`;
+    return this.http.post<Payment>(url, {}, { headers });
   }
 }

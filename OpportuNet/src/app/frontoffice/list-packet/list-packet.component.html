@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <h3 class="mb-4">Liste des packs</h3>
+
+  <div class="row g-4">
+    <div *ngFor="let packet of packets" class="col-md-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ packet.name }}</h5>
+          <p class="card-text flex-grow-1">{{ packet.description }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="badge bg-primary fs-6">{{ packet.price }} {{ packet.currency }}</span>
+          <button class="btn btn-outline-success btn-sm" (click)="buyPacket(packet)">Acheter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="packets.length === 0" class="alert alert-info mt-4">
+    Aucun pack disponible.
+  </div>
+</div>
+
+<div *ngIf="showPaymentForm" class="mt-5">
+  <app-payment
+
+    [packetId]="selectedPacket?.id"
+    [amount]="selectedPacket?.price"
+    [currency]="selectedPacket?.currency"
+    (paymentDone)="onPaymentDone($event)"
+  ></app-payment>
+</div>

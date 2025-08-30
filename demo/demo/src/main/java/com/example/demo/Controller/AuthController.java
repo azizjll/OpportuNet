@@ -6,8 +6,10 @@ import com.example.demo.Entities.RegisterRequest;
 import com.example.demo.Entities.User;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Serivce.AuthService;
+import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,9 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private JwtService jwtService;
 
 
     @PostMapping("/signup")
@@ -56,6 +61,29 @@ public class AuthController {
         // Optionnel : Si vous gérez une liste de tokens révoqués, ajoutez la logique ici
         return ResponseEntity.ok("Déconnexion réussie");
     }
+
+
+    @PutMapping("/user/{id}/payment")
+    public ResponseEntity<String> setPayment(@PathVariable Long id, @RequestParam boolean payment) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        user.setIsPayment(payment);
+        userRepo.save(user);
+        return ResponseEntity.ok("Statut paiement mis à jour !");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        String email = jwtService.extractEmail(token); // <-- UTILISER EMAIL
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        return ResponseEntity.ok(user);
+    }
+
+
+
+
 
 
 

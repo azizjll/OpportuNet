@@ -26,4 +26,22 @@ public class PacketService {
     public Packet savePacket(Packet packet) {
         return packetRepository.save(packet);
     }
+
+    // Nouvelle méthode : modifier un packet
+    public Packet updatePacket(Long id, Packet updatedPacket) {
+        Packet existing = getPacketById(id);
+        existing.setName(updatedPacket.getName());
+        existing.setDescription(updatedPacket.getDescription());
+        existing.setPrice(updatedPacket.getPrice());
+        existing.setCurrency(updatedPacket.getCurrency());
+        return packetRepository.save(existing);
+    }
+
+    // Nouvelle méthode : supprimer un packet
+    public void deletePacket(Long id) {
+        Packet existing = getPacketById(id);
+        packetRepository.delete(existing);
+    }
+
+
 }

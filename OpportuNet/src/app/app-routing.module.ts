@@ -16,6 +16,9 @@ import { CalendarComponent } from './backoffice/calendar/calendar.component';
 import { PaymentComponent } from './frontoffice/payment/payment.component';
 import { AppointmentDialogComponent } from './backoffice/appointment-dialog/appointment-dialog.component';
 import { UserListComponent } from './backoffice/user-list/user-list.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { PacketComponent } from './backoffice/packet/packet.component';
+import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,7 +31,10 @@ const routes: Routes = [
       {path:'profile',component:ProfileComponent, canActivate: [AuthGuard]},
       {path: 'mes', component: MecandidatureComponent, canActivate: [AuthGuard]},
       {path: 'formation', component: FormationComponent },
-       {path: 'payment', component: PaymentComponent}
+      {path: 'payment', component: PaymentComponent},
+      {path: 'chat', component: ChatComponent, canActivate: [AuthGuard]},
+       { path: 'Listpackets', component: ListPacketComponent },
+         
 
 
         
@@ -46,7 +52,12 @@ const routes: Routes = [
       {path: 'Adminformation', component: AdminFormationsComponent},
       {path: 'calendar', component: CalendarComponent },
        {path: 'opportunet', component: AppointmentDialogComponent },
-       {path:  'userList', component: UserListComponent}
+         {path: 'userList', component:UserListComponent },
+      {path: 'chat', component: ChatComponent },
+      { path: 'packets', component: PacketComponent }
+
+
+         
 
 
     ]

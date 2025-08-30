@@ -21,23 +21,31 @@
   <h2 class="text-center mb-5">Nos Formations</h2>
   
   <div class="row g-4">
-    <div *ngFor="let formation of formations" class="col-lg-4 col-md-6">
-      <div class="card h-100 shadow-sm">
-        <img [src]="'http://localhost:8080/' + formation.image" 
-     alt="{{ formation.titre }}" 
-     class="card-img-top enlarged-image" />
+  <div *ngFor="let formation of formations" class="col-lg-4 col-md-6">
+    <div class="card h-100 shadow-sm">
+      <img [src]="'http://localhost:8080/' + formation.image" 
+           alt="{{ formation.titre }}" 
+           class="card-img-top enlarged-image" />
 
+      <div class="card-body">
+        <h5 class="card-title">{{ formation.titre }}</h5>
+        <p class="card-text">{{ formation.description }}</p>
+        <p><strong>Catégorie :</strong> {{ formation.categorie }}</p>
 
-        <div class="card-body">
-          <h5 class="card-title">{{ formation.titre }}</h5>
-          <p class="card-text">{{ formation.description }}</p>
-          <p><strong>Catégorie :</strong> {{ formation.categorie }}</p>
+        <ng-container *ngIf="currentUser?.isPayment; else noPayment">
           <a [href]="'http://localhost:8080/' + formation.pdf" target="_blank" class="btn btn-primary btn-sm">Voir PDF</a>
           <a [href]="'http://localhost:8080/' + formation.video" target="_blank" class="btn btn-secondary btn-sm">Voir Vidéo</a>
-        </div>
+        </ng-container>
+
+        <ng-template #noPayment>
+          <button class="btn btn-warning btn-sm" (click)="goToPackets()">Voir les packs</button>
+        </ng-template>
+
       </div>
     </div>
   </div>
+</div>
+
 </div>
 
     <!-- Service End -->
