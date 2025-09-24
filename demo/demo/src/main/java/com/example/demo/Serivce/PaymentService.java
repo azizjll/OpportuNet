@@ -23,35 +23,22 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public Payment createPayment(User user, Packet packet) throws StripeException {
+    public PaymentIntent createPaymentIntent(User user, Packet packet) throws StripeException {
         Stripe.apiKey = stripeSecretKey;
 
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount((long)(packet.getPrice() * 100))
+                .setAmount((long) (packet.getPrice() * 100)) // montant en centimes
                 .setCurrency(packet.getCurrency())
                 .setDescription("Payment for packet: " + packet.getName())
                 .setReceiptEmail(user.getEmail())
-                .setPaymentMethod("pm_card_visa") // carte test Stripe
-                .setConfirm(true)
                 .setAutomaticPaymentMethods(
                         PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
                                 .setEnabled(true)
-                                .setAllowRedirects(PaymentIntentCreateParams.AutomaticPaymentMethods.AllowRedirects.NEVER)
                                 .build()
                 )
                 .build();
 
-        PaymentIntent intent = PaymentIntent.create(params);
-
-        Payment payment = new Payment();
-        payment.setUser(user);
-        payment.setPacket(packet);
-        payment.setAmount(packet.getPrice());
-        payment.setCurrency(packet.getCurrency());
-        payment.setStripePaymentId(intent.getId());
-        payment.setStatus(intent.getStatus());
-
-        return paymentRepository.save(payment);
+        return PaymentIntent.create(params);
     }
-
 }
+

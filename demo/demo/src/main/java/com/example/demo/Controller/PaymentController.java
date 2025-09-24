@@ -44,66 +44,38 @@ public class PaymentController {
             @RequestParam Long packetId) {
 
         Map<String, Object> response = new HashMap<>();
-
         try {
-            // 1. Vérifier le token JWT
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 throw new RuntimeException("Token manquant ou invalide");
             }
             String token = authHeader.substring(7);
 
-            // 2. Extraire l'email depuis le token
             String email = jwtService.extractEmail(token);
-
-            // 3. Récupérer l'utilisateur depuis la BDD
             User user = userService.getUserByEmail(email);
-            if (user == null) {
-                throw new RuntimeException("Utilisateur non trouvé avec cet email");
-            }
+            if (user == null) throw new RuntimeException("Utilisateur non trouvé");
 
-            // 4. Récupérer le packet
             Packet packet = packetRepository.findById(packetId)
                     .orElseThrow(() -> new RuntimeException("Packet non trouvé"));
 
-            // 5. Associer le packet à l'utilisateur
+            // Crée PaymentIntent
+            var paymentIntent = paymentService.createPaymentIntent(user, packet);
+
+            // Sauvegarde relation user-packet
             user.setPacket(packet);
-
-            // 6. Créer le paiement via le service
-            Payment payment = paymentService.createPayment(user, packet);
-
-            // 7. Mettre à jour l'utilisateur comme payé uniquement si le paiement est OK
-            if ("SUCCEEDED".equalsIgnoreCase(payment.getStatus())) {
-                user.setIsPayment(true);
-            }
             userRepository.save(user);
 
-            // 8. Construire la réponse JSON
             response.put("status", "success");
-            response.put("message", "Paiement créé avec succès");
-            response.put("user", user.getEmail());
-            response.put("packet", packet.getName());
-            response.put("amount", payment.getAmount());
-            response.put("currency", payment.getCurrency());
-            response.put("stripePaymentId", payment.getStripePaymentId());
-            response.put("paymentStatus", payment.getStatus());
+            response.put("clientSecret", paymentIntent.getClientSecret());
+            response.put("amount", packet.getPrice());
+            response.put("currency", packet.getCurrency());
 
             return ResponseEntity.ok(response);
 
-        } catch (StripeException e) {
-            e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "Erreur Stripe: " + e.getMessage());
-            return ResponseEntity.status(500).body(response);
-
-        } catch (RuntimeException e) {
-            response.put("status", "error");
-            response.put("message", e.getMessage());
-            return ResponseEntity.status(400).body(response);
-
         } catch (Exception e) {
             response.put("status", "error");
-            response.put("message", "Erreur interne: " + e.getMessage());
+            response.put("message", e.getMessage());
             return ResponseEntity.status(500).body(response);
         }
     }
+
 }

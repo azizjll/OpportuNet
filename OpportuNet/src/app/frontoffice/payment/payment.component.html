@@ -1,105 +1,25 @@
-<div class="container mt-5">
-  <div class="card shadow-lg rounded-4">
-    <div class="card-header bg-primary text-white text-center">
-      <h2 class="mb-0">💳 Créer un Paiement</h2>
-    </div>
-    <div class="card-body">
-      <form #paymentForm="ngForm" (ngSubmit)="createPayment()" novalidate>
-        <!-- Montant -->
-        <div class="mb-3">
-          <label class="form-label">Montant :</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="amount"
-            name="amount"
-            required
-            min="1"
-            #amountCtrl="ngModel"
-            placeholder="Entrez le montant"
-          />
-          <!-- Message d’erreur -->
-          <div
-            *ngIf="amountCtrl.invalid && (amountCtrl.dirty || amountCtrl.touched)"
-            class="text-danger small mt-1"
-          >
-            <div *ngIf="amountCtrl.errors?.['required']">
-              ⚠️ Le montant est obligatoire.
-            </div>
-            <div *ngIf="amountCtrl.errors?.['min']">
-              ⚠️ Le montant doit être supérieur à 0.
-            </div>
-          </div>
-        </div>
+<div class="payment-container p-4 border rounded shadow-sm" style="max-width: 500px; margin: auto;">
+  <h3 class="text-center mb-3">Paiement en ligne</h3>
 
-        <!-- Devise -->
-        <div class="mb-3">
-          <label class="form-label">Devise :</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="currency"
-            name="currency"
-            required
-            minlength="3"
-            maxlength="3"
-            pattern="^[A-Z]{3}$"
-            #currencyCtrl="ngModel"
-            placeholder="Ex: EUR, USD..."
-          />
-          <!-- Message d’erreur -->
-          <div
-            *ngIf="
-              currencyCtrl.invalid &&
-              (currencyCtrl.dirty || currencyCtrl.touched)
-            "
-            class="text-danger small mt-1"
-          >
-            <div *ngIf="currencyCtrl.errors?.['required']">
-              ⚠️ La devise est obligatoire.
-            </div>
-            <div *ngIf="currencyCtrl.errors?.['minlength'] || currencyCtrl.errors?.['maxlength']">
-              ⚠️ La devise doit contenir exactement 3 lettres (ex: EUR).
-            </div>
-            <div *ngIf="currencyCtrl.errors?.['pattern']">
-              ⚠️ La devise doit être en majuscules (ex: USD).
-            </div>
-          </div>
-        </div>
+  <p class="text-center mb-3">
+    Montant à payer : <strong>{{ amount }} {{ currency }}</strong>
+  </p>
 
-        <!-- Bouton -->
-        <div class="d-grid">
-          <button
-            type="submit"
-            class="btn btn-success btn-lg"
-            [disabled]="paymentForm.invalid || loading"
-          >
-            {{ loading ? "⏳ Paiement en cours..." : "✅ Payer" }}
-          </button>
-        </div>
-      </form>
+  <!-- Carte Stripe -->
+  <div id="card-element" class="border p-3 rounded mb-3"></div>
 
-      <!-- Messages -->
-      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-        {{ errorMessage }}
-      </div>
-
-      <div *ngIf="paymentResult" class="alert alert-info mt-3">
-        <h5 class="fw-bold">✅ Paiement créé :</h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>ID :</b> {{ paymentResult.id }}</li>
-          <li class="list-group-item">
-            <b>Montant :</b> {{ paymentResult.amount }}
-            {{ paymentResult.currency }}
-          </li>
-          <li class="list-group-item">
-            <b>Statut :</b> {{ paymentResult.status }}
-          </li>
-          <li class="list-group-item">
-            <b>Stripe ID :</b> {{ paymentResult.stripePaymentId }}
-          </li>
-        </ul>
-      </div>
-    </div>
+  <!-- Erreur -->
+  <div *ngIf="errorMessage" class="text-danger mb-2">
+    {{ errorMessage }}
   </div>
+
+  <!-- Succès -->
+  <div *ngIf="successMessage" class="text-success mb-2">
+    {{ successMessage }}
+  </div>
+
+  <!-- Bouton -->
+  <button class="btn btn-primary w-100" (click)="pay()" [disabled]="processing">
+    {{ processing ? 'Traitement...' : 'Payer' }}
+  </button>
 </div>

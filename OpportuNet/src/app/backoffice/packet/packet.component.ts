@@ -7,6 +7,7 @@ import { PacketService } from 'src/app/service/packet.service';
   styleUrls: ['./packet.component.css']
 })
 export class PacketComponent implements OnInit {
+
   packets: any[] = [];
   newPacket: any = { 
     name: '', 
@@ -15,8 +16,8 @@ export class PacketComponent implements OnInit {
     currency: '' 
   };
   loading = false;
-  editingPacketId: number | null = null; // id du packet en cours de modification
-  editedPacket: any = {}; // copie du packet en cours de modification
+  editingPacketId: number | null = null;
+  editedPacket: any = {};
 
   constructor(private packetService: PacketService) {}
 
@@ -38,8 +39,20 @@ export class PacketComponent implements OnInit {
     });
   }
 
+  // Ajout avec contrôle
   addPacket() {
-    if (!this.newPacket.name || !this.newPacket.price || !this.newPacket.currency) return;
+    if (!this.newPacket.name || this.newPacket.name.length < 3) {
+      alert('Nom du packet requis (minimum 3 caractères)');
+      return;
+    }
+    if (!this.newPacket.price || this.newPacket.price <= 0) {
+      alert('Prix du packet requis et supérieur à 0');
+      return;
+    }
+    if (!this.newPacket.currency) {
+      alert('Devise du packet requise');
+      return;
+    }
 
     this.packetService.createPacket(this.newPacket).subscribe({
       next: packet => {
@@ -50,13 +63,26 @@ export class PacketComponent implements OnInit {
     });
   }
 
+  // Démarrer l'édition
   startEdit(packet: any) {
     this.editingPacketId = packet.id;
-    this.editedPacket = { ...packet }; // copie pour modification
+    this.editedPacket = { ...packet };
   }
 
+  // Sauvegarder l'édition avec contrôle
   saveEdit() {
-    if (!this.editedPacket.name || !this.editedPacket.price || !this.editedPacket.currency) return;
+    if (!this.editedPacket.name || this.editedPacket.name.length < 3) {
+      alert('Nom du packet requis (minimum 3 caractères)');
+      return;
+    }
+    if (!this.editedPacket.price || this.editedPacket.price <= 0) {
+      alert('Prix du packet requis et supérieur à 0');
+      return;
+    }
+    if (!this.editedPacket.currency) {
+      alert('Devise du packet requise');
+      return;
+    }
 
     this.packetService.updatePacket(this.editingPacketId!, this.editedPacket).subscribe({
       next: updated => {
@@ -68,10 +94,12 @@ export class PacketComponent implements OnInit {
     });
   }
 
+  // Annuler l'édition
   cancelEdit() {
     this.editingPacketId = null;
   }
 
+  // Supprimer un packet
   removePacket(id: number) {
     this.packetService.deletePacket(id).subscribe({
       next: () => this.packets = this.packets.filter(p => p.id !== id),

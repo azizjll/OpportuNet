@@ -1,0 +1,13 @@
+
+.payment-container {
+  max-width: 400px;
+  margin: auto;
+  background-color: #f9fafb;
+}
+
+#card-element {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+}

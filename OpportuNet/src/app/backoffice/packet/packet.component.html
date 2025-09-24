@@ -5,9 +5,22 @@
     <!-- Formulaire d'ajout -->
     <div class="mb-3">
       <input type="text" [(ngModel)]="newPacket.name" placeholder="Nom du packet" class="form-control mb-2">
+      <div *ngIf="newPacket.name && newPacket.name.length < 3" class="text-danger mb-2">
+        Nom du packet minimum 3 caractères
+      </div>
+
       <input type="text" [(ngModel)]="newPacket.description" placeholder="Description" class="form-control mb-2">
+
       <input type="number" [(ngModel)]="newPacket.price" placeholder="Prix" class="form-control mb-2">
+      <div *ngIf="newPacket.price !== null && newPacket.price <= 0" class="text-danger mb-2">
+        Prix doit être supérieur à 0
+      </div>
+
       <input type="text" [(ngModel)]="newPacket.currency" placeholder="Devise (ex: USD, EUR)" class="form-control mb-2">
+      <div *ngIf="newPacket.currency === ''" class="text-danger mb-2">
+        Devise requise
+      </div>
+
       <button (click)="addPacket()" class="btn btn-primary w-100">Ajouter Packet</button>
     </div>
 
