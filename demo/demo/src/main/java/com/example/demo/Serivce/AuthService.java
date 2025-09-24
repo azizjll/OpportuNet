@@ -75,4 +75,52 @@ public class AuthService {
         return new AuthResponse(token);
     }
 
+
+    private String generateRandomPassword(int length) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%";
+        StringBuilder sb = new StringBuilder();
+        java.security.SecureRandom random = new java.security.SecureRandom();
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
+    public AuthResponse signupEncadrant(String nom, String prenom, String email) {
+        // Vérifier si l'email existe déjà
+        if (userRepo.findByEmail(email).isPresent()) {
+            throw new RuntimeException("Un compte avec cet email existe déjà.");
+        }
+
+        // Générer mot de passe aléatoire
+        String rawPassword = generateRandomPassword(10);
+
+        User encadrant = new User();
+        encadrant.setNom(nom);
+        encadrant.setPrenom(prenom);
+        encadrant.setEmail(email);
+        encadrant.setMotDePasse(passwordEncoder.encode(rawPassword));
+        encadrant.setRole(Role.ENCADRANT);
+        encadrant.setIsPayment(false);
+        encadrant.setVerified(true);   // On considère l'encadrant directement validé
+        encadrant.setAccepted(true);   // Et accepté par l'admin par défaut
+
+        userRepo.save(encadrant);
+
+        // Envoyer email avec mot de passe
+        String subject = "Votre compte encadrant a été créé";
+        String body = "Bonjour " + prenom + " " + nom + ",\n\n" +
+                "Un compte encadrant vient d'être créé pour vous sur la plateforme.\n" +
+                "Identifiant : " + email + "\n" +
+                "Mot de passe : " + rawPassword + "\n\n" +
+                "Vous pouvez vous connecter et le modifier après connexion.\n\n" +
+                "Cordialement,\nL'équipe plateforme.";
+
+        emailService.sendSimpleMessage(email, subject, body);
+
+        return new AuthResponse("Compte encadrant créé et email envoyé à " + email);
+    }
+
+
+
 }

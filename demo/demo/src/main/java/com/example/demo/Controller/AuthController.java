@@ -82,6 +82,15 @@ public class AuthController {
     }
 
 
+    @PostMapping("/signup-encadrant")
+    public AuthResponse signupEncadrant(@RequestParam String nom,
+                                        @RequestParam String prenom,
+                                        @RequestParam String email) {
+        return authService.signupEncadrant(nom, prenom, email);
+    }
+
+
+
 
 
 

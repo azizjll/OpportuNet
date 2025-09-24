@@ -1,0 +1,80 @@
+.container {
+  max-width: 600px;       /* largeur max */
+  margin: 0 auto;         /* centre horizontalement */
+  padding: 20px;
+  background: #f9f9f9;    /* fond clair */
+  border-radius: 12px;    /* coins arrondis */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* petite ombre */
+  text-align: center;     /* centre le texte */
+}
+
+h2, h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Liste des tâches et remises */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background: white;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li button {
+  background-color: #2ecc71;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+li button:hover {
+  background-color: #27ae60;
+}

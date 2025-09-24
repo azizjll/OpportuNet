@@ -1,0 +1,33 @@
+/* Corps du site */
+body.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Navbar */
+body.dark-mode .navbar {
+  background-color: #1f1f1f !important;
+  color: #fff;
+}
+
+/* Sidebar */
+body.dark-mode #sidebar {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+/* Cartes / boutons */
+body.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+body.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Liens dans la sidebar */
+body.dark-mode .sidebar-link {
+  color: #fff;
+}

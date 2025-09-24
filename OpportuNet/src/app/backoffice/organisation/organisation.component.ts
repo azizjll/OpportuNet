@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthserviceService } from 'src/app/service/authservice.service';
 import { CandidatureService } from 'src/app/service/candidature.service';
 import { OffreStage, OrganisationService } from 'src/app/service/organisation.service';
 import { QuestionService } from 'src/app/service/question.service';
@@ -20,18 +21,67 @@ export class OrganisationComponent {
     etat: 'EN_ATTENTE'
   };
 
+  popupEncadrantVisible = false;
+encadrant = { nom: '', prenom: '', email: '' };
+offreSelectionneeId: number | null = null;
+
 
   mesOffres: OffreStage[] = [];
   candidatures: any[] = [];
   reponsesMap: { [key: number]: any[] } = {};
 
 
-  constructor(private organisationService: OrganisationService,private candidatureService: CandidatureService,private questionService: QuestionService ) {}
+  constructor(private organisationService: OrganisationService,private candidatureService: CandidatureService,private questionService: QuestionService,private authService: AuthserviceService  ) {}
 
   modalVisible = false;
   questionsVisible: { [key: number]: boolean } = {};
 
 selectedOffreId: number | null = null;
+
+ouvrirPopupEncadrant(offreId: number) {
+  this.offreSelectionneeId = offreId;
+  this.popupEncadrantVisible = true;
+}
+
+fermerPopupEncadrant() {
+  this.popupEncadrantVisible = false;
+  this.encadrant = { nom: '', prenom: '', email: '' };
+  this.offreSelectionneeId = null;
+}
+
+
+ajouterEncadrant() {
+  const { nom, prenom, email } = this.encadrant;
+  if (!nom || !prenom || !email) {
+    alert('Tous les champs sont obligatoires');
+    return;
+  }
+
+  const token = this.authService.getToken();
+  if (!token) {
+    alert('Vous devez être connecté pour effectuer cette action');
+    return;
+  }
+
+  if (this.offreSelectionneeId == null) {
+    alert('Offre non sélectionnée');
+    return;
+  }
+
+  this.organisationService.assignEncadrant(this.offreSelectionneeId, nom, prenom, email, token)
+    .subscribe({
+      next: (res) => {
+        alert('Encadrant ajouté et assigné à l’offre');
+        this.fermerPopupEncadrant();
+      },
+      error: (err) => {
+        console.error('Erreur ajout encadrant', err);
+        alert('Erreur lors de l’ajout de l’encadrant');
+      }
+    });
+}
+
+
 
   ngOnInit(): void {
     this.loadMyOffres();

@@ -2,9 +2,9 @@
 
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
-    <nav class="nav nav-borders">
+     <nav class="nav nav-borders">
         <a class="nav-link ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
-        <a class="nav-link active" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page" target="__blank">Billing</a>
+        <a class="nav-link active" href="mes" target="__blank">Mes Activités</a>
         <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>
         <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Notifications</a>
     </nav>
@@ -14,12 +14,16 @@
             <!-- Billing card 1-->
             <div class="card h-100 border-start-lg border-start-primary">
                 <div class="card-body">
-                    <div class="small text-muted">Current monthly bill</div>
-                    <div class="h3">$20.00</div>
-                    <a class="text-arrow-icon small" href="#!">
-                        Switch to yearly billing
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
+                   <div class="small text-muted">Avancement des tâches</div>
+      <div class="h3">{{ avancePercent }}%</div>
+      <div class="text-primary"><strong>{{ avanceLabel }}</strong></div>
+      <a class="text-arrow-icon small" href="#!">
+        Voir mes remises
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
                 </div>
             </div>
         </div>
@@ -51,58 +55,61 @@
         </div>
     </div>
     <!-- Payment methods card-->
-    <div class="card card-header-actions mb-4">
-        <div class="card-header">
-            Payment Methods
-            <button class="btn btn-sm btn-primary" type="button">Add Payment Method</button>
+  <!-- my-tasks.component.html -->
+<div class="card card-header-actions mb-4">
+<div class="card-header">
+  Mes Tâches
+</div>
+<div class="card-body px-0">
+  <div *ngFor="let task of tasks; let last = last" class="d-flex flex-column px-4 py-2">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-tasks fa-2x text-primary"></i>
+        <div class="ms-4">
+          <div class="small">{{ task.titre }}</div>
+          <div class="text-xs text-muted">
+            {{ task.description }} <br>
+            📅 {{ task.dateDebut }} → {{ task.dateFin }}
+          </div>
         </div>
-        <div class="card-body px-0">
-            <!-- Payment method 1-->
-            <div class="d-flex align-items-center justify-content-between px-4">
-                <div class="d-flex align-items-center">
-                     <i class="fab fa-cc-visa fa-2x cc-color-visa"></i>
-                    <div class="ms-4">
-                        <div class="small">Visa ending in 1234</div>
-                        <div class="text-xs text-muted">Expires 04/2024</div>
-                    </div>
-                </div>
-                <div class="ms-4 small">
-                    <div class="badge bg-light text-dark me-3">Default</div>
-                    <a href="#!">Edit</a>
-                </div>
-            </div>
-            <hr>
-            <!-- Payment method 2-->
-            <div class="d-flex align-items-center justify-content-between px-4">
-                <div class="d-flex align-items-center">
-                    <i class="fab fa-cc-mastercard fa-2x cc-color-mastercard"></i>
-                    <div class="ms-4">
-                        <div class="small">Mastercard ending in 5678</div>
-                        <div class="text-xs text-muted">Expires 05/2022</div>
-                    </div>
-                </div>
-                <div class="ms-4 small">
-                    <a class="text-muted me-3" href="#!">Make Default</a>
-                    <a href="#!">Edit</a>
-                </div>
-            </div>
-            <hr>
-            <!-- Payment method 3-->
-            <div class="d-flex align-items-center justify-content-between px-4">
-                <div class="d-flex align-items-center">
-                    <i class="fab fa-cc-amex fa-2x cc-color-amex"></i>
-                    <div class="ms-4">
-                        <div class="small">American Express ending in 9012</div>
-                        <div class="text-xs text-muted">Expires 01/2026</div>
-                    </div>
-                </div>
-                <div class="ms-4 small">
-                    <a class="text-muted me-3" href="#!">Make Default</a>
-                    <a href="#!">Edit</a>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div class="ms-4 small">
+        <div class="badge bg-light text-dark me-3">{{ task.status }}</div>
+      </div>
     </div>
+
+    <!-- ✅ Formulaire de remise -->
+    <div class="mt-2">
+      <textarea [(ngModel)]="remiseContenu[task.id]" placeholder="Votre remise..." class="form-control mb-2"></textarea>
+      <button class="btn btn-success btn-sm" (click)="soumettreRemise(task.id)">Soumettre</button>
+    </div>
+
+    <hr *ngIf="!last">
+  </div>
+</div>
+<div class="card card-header-actions mb-4 mt-4">
+  <div class="card-header">
+    Mes Remises
+  </div>
+  <div class="card-body px-4">
+    <div *ngFor="let remise of myRemises" class="mb-3">
+      <div class="small">
+        <strong>Tâche:</strong> {{ remise.task.titre }}
+      </div>
+      <div class="text-xs text-muted">
+        {{ remise.contenu }} <br>
+        <em>Soumise le {{ remise.createdAt | date:'short' }}</em>
+      </div>
+      <hr>
+    </div>
+    <div *ngIf="myRemises.length === 0">
+      <em>Aucune remise soumise pour le moment.</em>
+    </div>
+  </div>
+</div>
+
+</div>
+
     <!-- Billing history card-->
     <div class="card mb-4">
         <div class="card-header">Billing History</div>

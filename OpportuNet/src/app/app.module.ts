@@ -36,6 +36,7 @@ import { UserListComponent } from './backoffice/user-list/user-list.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { PacketComponent } from './backoffice/packet/packet.component';
 import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
+import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ListPacketComponent } from './frontoffice/list-packet/list-packet.compo
     ChatComponent,
     PacketComponent,
     ListPacketComponent,
+    EncadrantComponent,
    
 
 

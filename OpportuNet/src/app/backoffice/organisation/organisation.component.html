@@ -569,6 +569,7 @@
                                                     <th>Titre Offre</th>
                                                     <th>Lettre Motivation</th>
                                                     <th>Statut</th>
+                                                    <th>Encadrant</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -580,13 +581,31 @@
                                                                     <td>{{ c.offre.titre }}</td>
                                                                     <td>{{ c.lettreMotivation }}</td>
                                                                     <td>
-                                                                        <select class="form-select form-select-sm" [ngModel]="c.statut" (ngModelChange)="changerStatut(c.id, $event)">
+                                                                        <select class="form-select form-select-sm"
+                                                                                [ngModel]="c.statut"
+                                                                                (ngModelChange)="changerStatut(c.id, $event)">
                                                                             <option value="EN_ATTENTE">EN_ATTENTE</option>
                                                                             <option value="PRESELECTION">PRESELECTION</option>
                                                                             <option value="ACCEPTEE">ACCEPTEE</option>
                                                                             <option value="REFUSEE">REFUSEE</option>
                                                                         </select>
+
+                                                                        <button *ngIf="c.statut === 'ACCEPTEE'"
+                                                                                class="btn btn-sm btn-success mt-1"
+                                                                                (click)="ouvrirPopupEncadrant(c.offre.id)">
+                                                                            Ajouter Encadrant
+                                                                        </button>
                                                                     </td>
+
+                                                                    <td>
+                                                                        <span *ngIf="c.offre.encadrant">
+                                                                            {{ c.offre.encadrant.prenom }} {{ c.offre.encadrant.nom }} ({{ c.offre.encadrant.email }})
+                                                                        </span>
+                                                                        <span *ngIf="!c.offre.encadrant">Non assigné</span>
+                                                                    </td>
+
+
+
 
                                                                     <td>
                                                                     <button class="btn btn-sm btn-primary" (click)="loadQuestionsEtReponses(c)">
@@ -621,3 +640,24 @@
                     </div>
                 </section>
             </div>
+
+
+            <div class="modal" tabindex="-1" [ngClass]="{ 'show d-block': popupEncadrantVisible }" style="background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter Encadrant</h5>
+        <button type="button" class="btn-close" (click)="fermerPopupEncadrant()"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control mb-2" placeholder="Nom" [(ngModel)]="encadrant.nom">
+        <input type="text" class="form-control mb-2" placeholder="Prénom" [(ngModel)]="encadrant.prenom">
+        <input type="email" class="form-control mb-2" placeholder="Email" [(ngModel)]="encadrant.email">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="fermerPopupEncadrant()">Annuler</button>
+        <button class="btn btn-primary" (click)="ajouterEncadrant()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>

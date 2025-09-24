@@ -42,6 +42,17 @@ public class OffreStageController {
         return ResponseEntity.status(201).body(savedOffre); // ✅ retourne bien l’objet avec l'id
     }
 
+    @PreAuthorize("hasRole('ORGANISATION')")
+    @PostMapping("/{id}/assign-encadrant")
+    public ResponseEntity<OffreStage> assignEncadrant(@PathVariable Long id,
+                                                      @RequestParam String nom,
+                                                      @RequestParam String prenom,
+                                                      @RequestParam String email) {
+        OffreStage updatedOffre = offreStageService.affecterEncadrant(id, nom, prenom, email);
+        return ResponseEntity.ok(updatedOffre);
+    }
+
+
 
     // ✅ Liste des offres créées par l'utilisateur connecté
     @PreAuthorize("hasRole('ORGANISATION')")

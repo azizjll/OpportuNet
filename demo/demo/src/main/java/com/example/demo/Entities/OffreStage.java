@@ -2,6 +2,7 @@ package com.example.demo.Entities;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,10 +30,34 @@ public class OffreStage {
     @JoinColumn(name = "createur_id")
     private User createur;
 
+    @ManyToOne
+    @JoinColumn(name = "encadrant_id")
+    private User encadrant;
+
+    @OneToMany(mappedBy = "offreStage", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Task> taches;
+
+    public List<Task> getTaches() {
+        return taches;
+    }
+
+    public void setTaches(List<Task> taches) {
+        this.taches = taches;
+    }
+
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL)
     private List<Question> questions;
 
     // Getters and Setters
+
+    public User getEncadrant() {
+        return encadrant;
+    }
+
+    public void setEncadrant(User encadrant) {
+        this.encadrant = encadrant;
+    }
 
 
     public Long getId() {

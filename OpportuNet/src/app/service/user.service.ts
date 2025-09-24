@@ -18,6 +18,14 @@ export class UserService {
     });
   }
 
+  getCandidatsByEncadrant(email: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/encadrant/${email}/candidats`, {
+    headers: this.getHeaders()
+  });
+}
+
+
+
   getAllUsers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/all`, { headers: this.getHeaders() });
   }

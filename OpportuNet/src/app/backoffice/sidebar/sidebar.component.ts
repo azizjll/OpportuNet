@@ -19,10 +19,26 @@ export class SidebarComponent {
 
   } // ← nom correct
 
+toggleDarkMode(event: Event) {
+  const checked = (event.target as HTMLInputElement).checked;
+  console.log('Dark mode activé ?', checked);
+
+  if (checked) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+
+
+
   logout() {
     this.authService.logout().subscribe({
       next: () => this.router.navigate(['/login']),
       error: () => this.router.navigate(['/login']),
     });
   }
+
+
 }

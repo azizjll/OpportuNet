@@ -11,11 +11,18 @@ export class AuthserviceService {
   private baseUrl = 'http://localhost:8080/api/auth';
   private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
 
+
+
   constructor(private http: HttpClient) {}
 
   getAuthStatus(): Observable<boolean> {
     return this.authStatus.asObservable();
   }
+
+  getToken(): string | null {
+  return localStorage.getItem('token');
+}
+
 
   signup(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/signup`, userData);
@@ -32,6 +39,13 @@ export class AuthserviceService {
     })
   );
 }
+
+signupEncadrant(nom: string, prenom: string, email: string): Observable<any> {
+  return this.http.post(`${this.baseUrl}/signup-encadrant`, null, {
+    params: { nom, prenom, email }
+  });
+}
+
 
 getCurrentUser(): Observable<any> {
   const token = localStorage.getItem('token');

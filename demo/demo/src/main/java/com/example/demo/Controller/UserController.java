@@ -2,6 +2,8 @@ package com.example.demo.Controller;
 
 
 import com.example.demo.Entities.User;
+import com.example.demo.Repository.UserRepository;
+import com.example.demo.Serivce.TaskService;
 import com.example.demo.Serivce.UserService;
 import com.example.demo.ServiceAvancé.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,36 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserRepository userRepo;
+
+
+
+    @GetMapping("/encadrant/{email}/candidats")
+    public List<User> getCandidatsEncadres(@PathVariable String email,
+                                           @RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Token JWT manquant ou invalide");
+        }
+
+        String token = authHeader.substring(7);
+        String role = jwtService.extractRole(token);
+
+        if (!"ENCADRANT".equals(role)) {
+            throw new RuntimeException("Accès refusé : rôle non autorisé");
+        }
+
+        // Récupérer l'encadrant à partir de l'email
+        User encadrant = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Encadrant non trouvé"));
+
+        return userService.getCandidatsEncadres(encadrant.getId());
+    }
+
+
+
+
 
     // Récupérer tous les utilisateurs (ADMIN uniquement)
     @GetMapping("/all")

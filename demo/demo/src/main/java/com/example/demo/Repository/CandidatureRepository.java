@@ -4,6 +4,7 @@ package com.example.demo.Repository;
 
 import com.example.demo.Entities.Candidature;
 import com.example.demo.Entities.OffreStage;
+import com.example.demo.Entities.StatutCandidature;
 import com.example.demo.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +17,10 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long> 
     List<Candidature> findByOffre_Createur(User createur);
 
     boolean existsByOffreIdAndUserId(Long offreId, Long userId);
+
+    List<Candidature> findByOffre_Encadrant_IdAndStatut(Long encadrantId, StatutCandidature statut);
+
+    List<Candidature> findByOffreAndStatut(OffreStage offre, StatutCandidature statut);
+
+
 }

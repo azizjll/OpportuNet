@@ -19,6 +19,7 @@ import { UserListComponent } from './backoffice/user-list/user-list.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { PacketComponent } from './backoffice/packet/packet.component';
 import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
+import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -54,7 +55,9 @@ const routes: Routes = [
        {path: 'opportunet', component: AppointmentDialogComponent },
          {path: 'userList', component:UserListComponent },
       {path: 'chat', component: ChatComponent },
-      { path: 'packets', component: PacketComponent }
+      { path: 'packets', component: PacketComponent },
+            { path: 'encadrant', component: EncadrantComponent },
+
 
 
          

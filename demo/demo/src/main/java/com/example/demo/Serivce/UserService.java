@@ -1,7 +1,10 @@
 package com.example.demo.Serivce;
 
 
+import com.example.demo.Entities.Candidature;
+import com.example.demo.Entities.StatutCandidature;
 import com.example.demo.Entities.User;
+import com.example.demo.Repository.CandidatureRepository;
 import com.example.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -23,10 +27,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepo;
 
-    /*public User getUserById(Long id) {
-        Optional<User> optionalUser = userRepo.findById(id);
-        return optionalUser.orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-    }*/
+    @Autowired
+    private CandidatureRepository candidatureRepository;
+
+    public List<User> getCandidatsEncadres(Long encadrantId) {
+        return candidatureRepository.findByOffre_Encadrant_IdAndStatut(encadrantId, StatutCandidature.ACCEPTEE)
+                .stream()
+                .map(Candidature::getUser)
+                .collect(Collectors.toList());
+    }
+
 
     public User getUserByEmail(String email) {
         return userRepo.findByEmail(email)
@@ -108,5 +118,12 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
-   
+
+
+
+    /*public User getUserById(Long id) {
+        Optional<User> optionalUser = userRepo.findById(id);
+        return optionalUser.orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+    }*/
+
 }

@@ -2,6 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+
+export interface User {
+  id?: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  role: string;
+}
+
 export interface OffreStage {
    id?: number; 
   titre: string;
@@ -10,6 +19,7 @@ export interface OffreStage {
   dateDebut: string;
   dateFin: string;
   etat: string;
+    encadrant?: User;
 }
 
 @Injectable({
@@ -38,6 +48,17 @@ export class OrganisationService {
 getAllOffres(): Observable<OffreStage[]> {
   return this.http.get<OffreStage[]>(this.baseUrl);
 }
+
+
+assignEncadrant(offreId: number, nom: string, prenom: string, email: string, token: string): Observable<any> {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  const params = { nom, prenom, email }; // car ton backend utilise @RequestParam
+
+  return this.http.post(`${this.baseUrl}/${offreId}/assign-encadrant`, null, { headers, params });
+}
+
 
 
 

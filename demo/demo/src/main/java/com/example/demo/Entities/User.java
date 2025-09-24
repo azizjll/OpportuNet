@@ -68,6 +68,38 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RendezVous> rendezVous;
 
+    @OneToMany(mappedBy = "encadrant", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Task> tachesAssignees;
+
+    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Task> tachesReçues;
+
+    public List<Task> getTachesReçues() {
+        return tachesReçues;
+    }
+
+    public void setTachesReçues(List<Task> tachesReçues) {
+        this.tachesReçues = tachesReçues;
+    }
+
+    public Boolean getPayment() {
+        return isPayment;
+    }
+
+    public void setPayment(Boolean payment) {
+        isPayment = payment;
+    }
+
+    public List<Task> getTachesAssignees() {
+        return tachesAssignees;
+    }
+
+    public void setTachesAssignees(List<Task> tachesAssignees) {
+        this.tachesAssignees = tachesAssignees;
+    }
+
     @ManyToOne
     @JoinColumn(name = "packet_id")
     @JsonBackReference

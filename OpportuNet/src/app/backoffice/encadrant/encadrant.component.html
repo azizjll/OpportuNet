@@ -1,0 +1,54 @@
+<!-- src/app/backoffice/encadrant/encadrant.component.html -->
+<div class="container mt-4">
+  <h2>Gestion des Tâches (Encadrant)</h2>
+
+  <!-- Formulaire création task -->
+  <form (ngSubmit)="createTask()">
+    <div>
+      <label>Titre</label>
+      <input [(ngModel)]="titre" name="titre" required />
+    </div>
+    <div>
+      <label>Description</label>
+      <input [(ngModel)]="description" name="description" required />
+    </div>
+    <div>
+      <label>Date Début</label>
+      <input type="date" [(ngModel)]="dateDebut" name="dateDebut" required />
+    </div>
+    <div>
+      <label>Date Fin</label>
+      <input type="date" [(ngModel)]="dateFin" name="dateFin" required />
+    </div>
+    <button type="submit">Créer Task</button>
+  </form>
+
+  <hr />
+
+  <!-- Liste des tasks -->
+  <h3>Mes Tâches</h3>
+  <ul>
+    <li *ngFor="let t of tasks">
+      {{t.titre}} - {{t.status}}
+      <button (click)="viewRemises(t.id)">Voir Remises</button>
+    </li>
+  </ul>
+
+  <!-- Liste des remises -->
+  <div *ngIf="selectedTaskId">
+    <h3>Remises du Task {{selectedTaskId}}</h3>
+    <ul>
+      <li *ngFor="let r of remises">
+        {{r.contenu}} (par Candidat {{r.candidat?.nom}})
+      </li>
+    </ul>
+  </div>
+
+  <h3>📌 Liste des candidats encadrés</h3>
+<ul>
+  <li *ngFor="let c of candidats">
+    {{ c.nom }} {{ c.prenom }} - {{ c.email }}
+  </li>
+</ul>
+
+</div>

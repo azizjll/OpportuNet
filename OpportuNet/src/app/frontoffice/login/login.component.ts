@@ -99,11 +99,14 @@ export class LoginComponent {
           const decoded = this.decodeToken(res.token);
           const role = decoded?.role; // adapte selon ta structure JWT
 
-          if (role === 'ADMIN') {
-            this.router.navigate(['/admin/dashboard']);
-          } else {
-            this.router.navigate(['/']);
-          }
+          // Redirection selon le rôle
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin/dashboard']);
+        } else if (role === 'ORGANISATION') {
+          this.router.navigate(['/admin/organisation']);
+        } else {
+          this.router.navigate(['/']);
+        }
           
           this.signinForm.reset();
         },
