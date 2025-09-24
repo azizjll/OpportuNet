@@ -104,6 +104,10 @@ export class LoginComponent {
           this.router.navigate(['/admin/dashboard']);
         } else if (role === 'ORGANISATION') {
           this.router.navigate(['/admin/organisation']);
+        }
+          else if (role === 'ENCADRANT') {
+          this.router.navigate(['/admin/encadrant']);
+        
         } else {
           this.router.navigate(['/']);
         }

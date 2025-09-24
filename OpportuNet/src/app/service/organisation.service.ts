@@ -59,6 +59,19 @@ assignEncadrant(offreId: number, nom: string, prenom: string, email: string, tok
   return this.http.post(`${this.baseUrl}/${offreId}/assign-encadrant`, null, { headers, params });
 }
 
+deleteOffre(offreId: number, token: string): Observable<any> {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.delete(`${this.baseUrl}/${offreId}`, { headers });
+}
+
+updateOffre(offreId: number, offre: OffreStage, token: string): Observable<any> {
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.put(`${this.baseUrl}/${offreId}`, offre, { headers });
+}
 
 
 

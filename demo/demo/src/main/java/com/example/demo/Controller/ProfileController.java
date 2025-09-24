@@ -129,7 +129,6 @@ public class ProfileController {
 
 
     @PostMapping("/upload-photo")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<String> uploadPhoto(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam("photo") MultipartFile file) {
@@ -143,27 +142,27 @@ public class ProfileController {
                 return ResponseEntity.badRequest().body("Fichier vide");
             }
 
-            // Exemple : enregistrer dans un dossier local
-            String uploadDir = "uploads/";
+            // Chemin du dossier correspondant au ResourceHandler
+            String uploadDir = "C:/Users/imen-/OneDrive/Bureau/projetstage/OpportuNet/demo/uploads/images/";
             File uploadPath = new File(uploadDir);
             if (!uploadPath.exists()) {
-                uploadPath.mkdirs();
+                uploadPath.mkdirs();  // Crée le dossier si inexistant
             }
 
             String fileName = user.getId() + "_" + file.getOriginalFilename();
-            File dest = new File(uploadDir + fileName);
+            File dest = new File(uploadPath, fileName);
             file.transferTo(dest);
 
-            // Sauvegarder le chemin dans la base
-            user.setImageUrl("/uploads/" + fileName);
+            // Sauvegarder le chemin relatif pour Angular
+            user.setImageUrl("/uploads/images/" + fileName);
             userService.save(user);
 
             return ResponseEntity.ok("Image uploadée avec succès !");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Erreur lors de l'upload : " + e.getMessage());
         }
     }
-
 
 
 

@@ -300,7 +300,7 @@ selectedFile: File | null = null;
 
 uploadPhoto(file: File): Observable<any> {
   const formData = new FormData();
-  formData.append('file', file);
+formData.append('photo', file);
 
   const token = localStorage.getItem('token'); // récupère ton JWT
   const headers = new HttpHeaders({
