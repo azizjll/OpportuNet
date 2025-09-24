@@ -9,73 +9,77 @@
                     <div class="col-12 col-lg-9">
                         <div class="row">
                             <div class="col-6 col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon purple">
-                                                    <i class="iconly-boldShow"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Profile Views</h6>
-                                                <h6 class="font-extrabold mb-0">112.000</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon blue">
-                                                    <i class="iconly-boldProfile"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Followers</h6>
-                                                <h6 class="font-extrabold mb-0">183.000</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon green">
-                                                    <i class="iconly-boldAdd-User"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Following</h6>
-                                                <h6 class="font-extrabold mb-0">80.000</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="card-body px-3 py-4-5">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="stats-icon red">
-                                                    <i class="iconly-boldBookmark"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h6 class="text-muted font-semibold">Saved Post</h6>
-                                                <h6 class="font-extrabold mb-0">112</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+  <div class="card">
+    <div class="card-body px-3 py-4-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="stats-icon purple">
+            <i class="iconly-boldShow"></i>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h6 class="text-muted font-semibold">Emplois STAGE</h6>
+          <h6 class="font-extrabold mb-0">{{ nbStages }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-6 col-lg-3 col-md-6">
+  <div class="card">
+    <div class="card-body px-3 py-4-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="stats-icon blue">
+            <i class="iconly-boldProfile"></i>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h6 class="text-muted font-semibold">Emplois EMPLOI</h6>
+          <h6 class="font-extrabold mb-0">{{ nbEmplois }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-6 col-lg-3 col-md-6">
+  <div class="card">
+    <div class="card-body px-3 py-4-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="stats-icon green">
+            <i class="iconly-boldAdd-User"></i>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h6 class="text-muted font-semibold">Candidats</h6>
+          <h6 class="font-extrabold mb-0">{{ nbCandidats }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-6 col-lg-3 col-md-6">
+  <div class="card">
+    <div class="card-body px-3 py-4-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="stats-icon red">
+            <i class="iconly-boldBookmark"></i>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h6 class="text-muted font-semibold">Encadrants</h6>
+          <h6 class="font-extrabold mb-0">{{ nbEncadrants }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
                         </div>
                         
                     </div>
@@ -83,329 +87,14 @@
                 </section>
 
             <div class="page-heading">
-                <div class="page-title">
-                    <div class="row">
-                        <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Form Layout</h3>
-                            <p class="text-subtitle text-muted">Multiple form layout you can use</p>
-                        </div>
-                        <div class="col-12 col-md-6 order-md-2 order-first">
-                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Form Layout</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <!-- Basic Horizontal form layout section start -->
-                <section id="basic-horizontal-layouts">
-                    <div class="row match-height">
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Horizontal Form</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <form class="form form-horizontal">
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label>First Name</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="text" id="first-name" class="form-control"
-                                                            name="fname" placeholder="First Name">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Email</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="email" id="email-id" class="form-control"
-                                                            name="email-id" placeholder="Email">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Mobile</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="number" id="contact-info" class="form-control"
-                                                            name="contact" placeholder="Mobile">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Password</label>
-                                                    </div>
-                                                    <div class="col-md-8 form-group">
-                                                        <input type="password" id="password" class="form-control"
-                                                            name="password" placeholder="Password">
-                                                    </div>
-                                                    <div class="col-12 col-md-8 offset-md-4 form-group">
-                                                        <div class='form-check'>
-                                                            <div class="checkbox">
-                                                                <input type="checkbox" id="checkbox1"
-                                                                    class='form-check-input' checked>
-                                                                <label for="checkbox1">Remember Me</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 d-flex justify-content-end">
-                                                        <button type="submit"
-                                                            class="btn btn-primary me-1 mb-1">Submit</button>
-                                                        <button type="reset"
-                                                            class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Horizontal Form with Icons</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <form class="form form-horizontal">
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label>Name</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group has-icon-left">
-                                                            <div class="position-relative">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="Name" id="first-name-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-person"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Email</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group has-icon-left">
-                                                            <div class="position-relative">
-                                                                <input type="email" class="form-control"
-                                                                    placeholder="Email" id="first-name-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-envelope"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Mobile</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group has-icon-left">
-                                                            <div class="position-relative">
-                                                                <input type="number" class="form-control"
-                                                                    placeholder="Mobile">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-phone"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label>Password</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="form-group has-icon-left">
-                                                            <div class="position-relative">
-                                                                <input type="password" class="form-control"
-                                                                    placeholder="Password">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-lock"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-md-8 offset-md-4">
-                                                        <div class='form-check'>
-                                                            <div class="checkbox">
-                                                                <input type="checkbox" id="checkbox2"
-                                                                    class='form-check-input' checked>
-                                                                <label for="checkbox2">Remember Me</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-end">
-                                                        <button type="submit"
-                                                            class="btn btn-primary me-1 mb-1">Submit</button>
-                                                        <button type="reset"
-                                                            class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                
                 <!-- // Basic Horizontal form layout section end -->
 
                 <!-- Basic Vertical form layout section start -->
-                <section id="basic-vertical-layouts">
-                    <div class="row match-height">
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Vertical Form</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <form class="form form-vertical">
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="first-name-vertical">First Name</label>
-                                                            <input type="text" id="first-name-vertical"
-                                                                class="form-control" name="fname"
-                                                                placeholder="First Name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="email-id-vertical">Email</label>
-                                                            <input type="email" id="email-id-vertical"
-                                                                class="form-control" name="email-id"
-                                                                placeholder="Email">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="contact-info-vertical">Mobile</label>
-                                                            <input type="number" id="contact-info-vertical"
-                                                                class="form-control" name="contact"
-                                                                placeholder="Mobile">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="password-vertical">Password</label>
-                                                            <input type="password" id="password-vertical"
-                                                                class="form-control" name="contact"
-                                                                placeholder="Password">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class='form-check'>
-                                                            <div class="checkbox">
-                                                                <input type="checkbox" id="checkbox3"
-                                                                    class='form-check-input' checked>
-                                                                <label for="checkbox3">Remember Me</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-end">
-                                                        <button type="submit"
-                                                            class="btn btn-primary me-1 mb-1">Submit</button>
-                                                        <button type="reset"
-                                                            class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Vertical Form with Icons</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <form class="form form-vertical">
-                                            <div class="form-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group has-icon-left">
-                                                            <label for="first-name-icon">First Name</label>
-                                                            <div class="position-relative">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="Input with icon left"
-                                                                    id="first-name-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-person"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-
-                                                        <div class="form-group has-icon-left">
-                                                            <label for="email-id-icon">Email</label>
-                                                            <div class="position-relative">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="Email" id="email-id-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-envelope"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group has-icon-left">
-                                                            <label for="mobile-id-icon">Mobile</label>
-                                                            <div class="position-relative">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="Mobile" id="mobile-id-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-phone"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group has-icon-left">
-                                                            <label for="password-id-icon">Password</label>
-                                                            <div class="position-relative">
-                                                                <input type="password" class="form-control"
-                                                                    placeholder="Password" id="password-id-icon">
-                                                                <div class="form-control-icon">
-                                                                    <i class="bi bi-lock"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class='form-check'>
-                                                            <div class="checkbox mt-2">
-                                                                <input type="checkbox" id="remember-me-v"
-                                                                    class='form-check-input' checked>
-                                                                <label for="remember-me-v">Remember Me</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-end">
-                                                        <button type="submit"
-                                                            class="btn btn-primary me-1 mb-1">Submit</button>
-                                                        <button type="reset"
-                                                            class="btn btn-light-secondary me-1 mb-1">Reset</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+             
                 <!-- // Basic Vertical form layout section end -->
 
 
@@ -415,68 +104,101 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Multiple Column</h4>
+                                    <h4 class="card-title">Ajouter Offre</h4>
                                 </div>
                                 <div class="card-content">
                                 <div class="card-body">
-                                    <form (ngSubmit)="onSubmit()" #offreForm="ngForm" class="form">
-                                    <div class="row">
+<form (ngSubmit)="onSubmit(offreForm)" #offreForm="ngForm" class="form">
+  <div class="row">
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="titre">Titre</label>
-                                            <input type="text" id="titre" class="form-control" [(ngModel)]="offre.titre" name="titre" required>
-                                        </div>
-                                        </div>
+    <!-- Champ Titre -->
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+  <label for="titre">Titre</label>
+  <input 
+    type="text" 
+    id="titre" 
+    class="form-control" 
+    [(ngModel)]="offre.titre" 
+    name="titre" 
+    required
+    minlength="3">
+  <div *ngIf="offreForm.submitted && !offre.titre" class="text-danger">
+    Le titre est obligatoire.
+  </div>
+  <div *ngIf="offre.titre && offre.titre.length < 3" class="text-danger">
+    Le titre doit contenir au moins 3 caractères.
+  </div>
+</div>
+    </div>
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <input type="text" id="description" class="form-control" [(ngModel)]="offre.description" name="description" required>
-                                        </div>
-                                        </div>
+    <!-- Champ Description -->
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+  <label for="description">Description</label>
+  <input 
+    type="text" 
+    id="description" 
+    class="form-control" 
+    [(ngModel)]="offre.description" 
+    name="description" 
+    required
+    minlength="5">
+  <div *ngIf="offreForm.submitted && !offre.description" class="text-danger">
+    La description est obligatoire.
+  </div>
+  <div *ngIf="offre.description && offre.description.length < 5" class="text-danger">
+    La description doit contenir au moins 5 caractères.
+  </div>
+</div>
+    </div>
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="type">Type</label>
-                                            <select id="type" class="form-control" [(ngModel)]="offre.type" name="type">
-                                            <option value="STAGE">STAGE</option>
-                                            <option value="EMPLOI">EMPLOI</option>
-                                            </select>
-                                        </div>
-                                        </div>
+    <!-- Date Début -->
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+  <label for="dateDebut">Date Début</label>
+  <input 
+    type="date" 
+    id="dateDebut" 
+    class="form-control" 
+    [(ngModel)]="offre.dateDebut" 
+    name="dateDebut" 
+    required>
+  <div *ngIf="offreForm.submitted && !offre.dateDebut" class="text-danger">
+    La date de début est obligatoire.
+  </div>
+</div>
+    </div>
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="etat">État</label>
-                                            <select id="etat" class="form-control" [(ngModel)]="offre.etat" name="etat">
-                                            <option value="EN_ATTENTE">EN_ATTENTE</option>
-                                            <option value="APPROUVEE">APPROUVEE</option>
-                                            <option value="REFUSEE">REFUSEE</option>
-                                            </select>
-                                        </div>
-                                        </div>
+    <!-- Date Fin -->
+    <div class="col-md-6 col-12">
+      <div class="form-group">
+  <label for="dateFin">Date Fin</label>
+  <input 
+    type="date" 
+    id="dateFin" 
+    class="form-control" 
+    [(ngModel)]="offre.dateFin" 
+    name="dateFin" 
+    required>
+  <div *ngIf="offreForm.submitted && !offre.dateFin" class="text-danger">
+    La date de fin est obligatoire.
+  </div>
+  <div *ngIf="dateInvalide" class="text-danger">
+    La date de début doit être avant la date de fin.
+  </div>
+</div>
+    </div>
+  
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="dateDebut">Date Début</label>
-                                            <input type="date" id="dateDebut" class="form-control" [(ngModel)]="offre.dateDebut" name="dateDebut">
-                                        </div>
-                                        </div>
+    <!-- Boutons -->
+    <div class="col-12 d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary me-1 mb-1">Soumettre</button>
+      <button type="reset" class="btn btn-light-secondary me-1 mb-1">Réinitialiser</button>
+    </div>
+  </div>
+</form>
 
-                                        <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="dateFin">Date Fin</label>
-                                            <input type="date" id="dateFin" class="form-control" [(ngModel)]="offre.dateFin" name="dateFin">
-                                        </div>
-                                        </div>
-
-                                        <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Soumettre</button>
-                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Réinitialiser</button>
-                                        </div>
-                                    </div>
-                                    </form>
                                 </div>
                             </div>
 
@@ -518,6 +240,7 @@
                                                     <td>{{ offre.type }}</td>
                                                     <td>{{ offre.dateDebut }}</td>
                                                     <td>{{ offre.dateFin }}</td>
+                                                    
                                                     <td>
                                                     <span class="badge bg-info">{{ offre.etat }}</span>
                                                         <button 
@@ -527,6 +250,20 @@
                                                         Ajouter Questions
                                                         </button>
                                                     </td>
+
+                                                    <td>
+      <button 
+        class="btn btn-sm btn-warning me-1"
+        (click)="modifierOffre(offre)">
+        Modifier
+      </button>
+      <button 
+        class="btn btn-sm btn-danger"
+        (click)="supprimerOffre(offre.id!)">
+        Supprimer
+      </button>
+    </td>
+                                                    
                                                 </tr>
                                                 
                                             </tbody>
@@ -567,6 +304,7 @@
                                                     <th>Nom Candidat</th>
                                                     <th>Email</th>
                                                     <th>Titre Offre</th>
+                                                     <th>Type d'offre</th>
                                                     <th>Lettre Motivation</th>
                                                     <th>Statut</th>
                                                     <th>Encadrant</th>
@@ -579,6 +317,9 @@
                                                                     <td>{{ c.user.prenom }} {{ c.user.nom }}</td>
                                                                     <td>{{ c.user.email }}</td>
                                                                     <td>{{ c.offre.titre }}</td>
+                                                                    <td>{{ c.offre.type }}</td>
+                                                                    
+
                                                                     <td>{{ c.lettreMotivation }}</td>
                                                                     <td>
                                                                         <select class="form-select form-select-sm"
@@ -590,11 +331,12 @@
                                                                             <option value="REFUSEE">REFUSEE</option>
                                                                         </select>
 
-                                                                        <button *ngIf="c.statut === 'ACCEPTEE'"
-                                                                                class="btn btn-sm btn-success mt-1"
-                                                                                (click)="ouvrirPopupEncadrant(c.offre.id)">
-                                                                            Ajouter Encadrant
-                                                                        </button>
+                                                                        <button *ngIf="c.statut === 'ACCEPTEE' && c.offre.type === 'STAGE'"
+        class="btn btn-sm btn-success mt-1"
+        (click)="ouvrirPopupEncadrant(c.offre.id)">
+    Ajouter Encadrant
+</button>
+
                                                                     </td>
 
                                                                     <td>
@@ -604,14 +346,31 @@
                                                                         <span *ngIf="!c.offre.encadrant">Non assigné</span>
                                                                     </td>
 
+                                                                    
+
 
 
 
                                                                     <td>
+                                                                         <button *ngIf="c.offre.type === 'EMPLOI'" class="btn btn-sm btn-warning me-1"
+                                                                                (click)="ouvrirPopupEntretien(c)">
+                                                                            Fixer un entretien
+                                                                        </button>
+                                                                        <app-entretien
+                                                                            [candidateId]="selectedCandidature?.user.id"
+                                                                            [visible]="popupEntretienVisible"
+                                                                            (close)="fermerPopupEntretien()">
+                                                                            </app-entretien>
+
+
                                                                     <button class="btn btn-sm btn-primary" (click)="loadQuestionsEtReponses(c)">
                                                                         {{ questionsVisible[c.id] ? 'Masquer Réponses' : 'Voir Réponses' }}
                                                                     </button>
                                                                     </td>
+
+                                                                    
+
+
                                                                 </tr>
 
                                                                 <!-- Ligne des réponses (affichée uniquement si questionsVisible est true) -->

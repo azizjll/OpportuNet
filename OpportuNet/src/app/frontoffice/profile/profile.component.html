@@ -105,7 +105,8 @@
           <ul *ngIf="hasExperiences">
             <li *ngFor="let exp of userProfile?.experiences">
               <div *ngIf="editingExpId !== exp.id">
-                <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}
+                <strong>{{ exp.societe }}</strong> – {{ exp.titrePoste }}<br>
+    Du {{ exp.dateDebut | date: 'dd/MM/yyyy' }} au {{ exp.dateFin | date: 'dd/MM/yyyy' }}
                 <button class="btn btn-outline-primary btn-sm" (click)="onEditExperience(exp)">Modifier</button>
               </div>
 

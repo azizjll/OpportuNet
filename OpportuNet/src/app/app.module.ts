@@ -37,6 +37,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { PacketComponent } from './backoffice/packet/packet.component';
 import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
 import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
+import { EntretienComponent } from './frontoffice/entretien/entretien.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
     PacketComponent,
     ListPacketComponent,
     EncadrantComponent,
+    EntretienComponent,
    
 
 
