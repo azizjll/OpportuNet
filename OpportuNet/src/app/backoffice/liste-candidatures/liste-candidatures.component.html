@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Liste des Candidatures</h4>
+  </div>
+  <div class="card-content">
+    <div class="table-responsive">
+      <table class="table table-bordered mb-0">
+        <thead>
+          <tr>
+            <th>Nom Candidat</th>
+            <th>Email</th>
+            <th>Titre Offre</th>
+            <th>Type d'Offre</th>
+            <th>Lettre Motivation</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of candidatures">
+            <td>{{ c.user.prenom }} {{ c.user.nom }}</td>
+            <td>{{ c.user.email }}</td>
+            <td>{{ c.offre.titre }}</td>
+            <td>{{ c.offre.type }}</td>
+            <td>{{ c.lettreMotivation }}</td>
+            <td>{{ c.statut }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

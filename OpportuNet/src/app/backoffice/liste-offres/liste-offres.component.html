@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Les Offres</h4>
+  </div>
+  <div class="card-content">
+    <div class="table-responsive">
+      <table class="table table-bordered mb-0">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Date Début</th>
+            <th>Date Fin</th>
+            <th>État</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let offre of offres">
+            <td>{{ offre.titre }}</td>
+            <td>{{ offre.description }}</td>
+            <td>{{ offre.type }}</td>
+            <td>{{ offre.dateDebut }}</td>
+            <td>{{ offre.dateFin }}</td>
+            <td>
+              <span class="badge bg-info">{{ offre.etat }}</span>
+            
+            </td>
+            <td>
+               </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

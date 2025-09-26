@@ -51,6 +51,12 @@ changerStatutCandidature(id: number, statut: string, token: string) {
   );
 }
 
+getAllCandidatures(token: string): Observable<any[]> {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get<any[]>(`${this.baseUrl}`, { headers });
+}
+
+
 
 
 }

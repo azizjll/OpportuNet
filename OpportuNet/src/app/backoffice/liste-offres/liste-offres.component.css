@@ -1,0 +1,41 @@
+/* Centre la carte sur la page */
+.card {
+  margin: 20px auto; /* espace autour + centrage horizontal */
+  max-width: 1000px; /* largeur max pour grands écrans */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* léger ombrage */
+  border-radius: 10px;
+}
+
+/* Table responsive */
+.table-responsive {
+  overflow-x: auto; /* scroll horizontal si écran trop petit */
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center; /* centre le contenu des cellules */
+  padding: 10px;
+}
+
+th {
+  background-color: #f5f5f5;
+}
+
+td {
+  vertical-align: middle; /* aligne verticalement au milieu */
+}
+
+/* Boutons styling */
+button {
+  cursor: pointer;
+}
+
+/* Badge styling */
+.badge {
+  font-size: 0.9rem;
+}

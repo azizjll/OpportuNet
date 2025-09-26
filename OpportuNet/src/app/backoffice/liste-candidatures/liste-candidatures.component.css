@@ -1,0 +1,9 @@
+.card {
+  margin: 100px auto;
+  max-width: 1300px;
+}
+
+table th, table td {
+  text-align: center;
+  vertical-align: middle;
+}

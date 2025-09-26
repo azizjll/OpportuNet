@@ -48,6 +48,30 @@
                                 <span>Ajouter Formation</span>
                             </a>
                         </li>
+                        <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
+                            <a href="admin/liste-formations" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Consulter Liste de Formation</span>
+                            </a>
+                        </li>
+                         <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
+                            <a href="admin/liste-candidatures" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>liste Candidatures</span>
+                            </a>
+                        </li>
+                         <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
+                            <a href="admin/liste-offres" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>liste Des Offres d'Emplois</span>
+                            </a>
+                        </li>
+                          <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
+                            <a href="admin/userList" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>liste Des Utilisateurs (Candidat/Organisation/Encadrant)</span>
+                            </a>
+                        </li>
 
                         <li class="sidebar-item  has-sub" *ngIf="userRole === 'ORGANISATION'">
                             <a href="admin/calendar" class='sidebar-link'>
@@ -58,10 +82,8 @@
                         </li>
 
                         <li class="sidebar-item  has-sub" *ngIf="userRole === 'ADMIN' ">
-                            <a href="/admin/userList" class='sidebar-link'>
-                                <i class="bi bi-collection-fill"></i>
-                                <span>liste user </span>
-                            </a>
+                           
+                         
                             <ul class="submenu ">
                                 <li class="submenu-item ">
                                     <a href="extra-component-avatar.html">Avatar</a>

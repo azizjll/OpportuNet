@@ -20,6 +20,9 @@ import { ChatComponent } from './components/chat/chat.component';
 import { PacketComponent } from './backoffice/packet/packet.component';
 import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
 import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
+import { ListeFormationComponent } from './backoffice/liste-formation/liste-formation.component';
+import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.component';
+import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -57,6 +60,11 @@ const routes: Routes = [
       {path: 'chat', component: ChatComponent },
       { path: 'packets', component: PacketComponent },
             { path: 'encadrant', component: EncadrantComponent },
+            {path: 'liste-formations', component:ListeFormationComponent },
+            { path: 'liste-offres', component: ListeOffresComponent },
+                        { path: 'liste-candidatures', component: ListeCandidaturesComponent },
+
+
 
 
 

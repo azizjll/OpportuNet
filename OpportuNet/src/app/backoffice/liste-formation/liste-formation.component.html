@@ -1,0 +1,50 @@
+<div class="table-container">
+  <h3 class="text-center">Liste des formations</h3>
+
+  <!-- Recherche avancée -->
+  <div class="row mb-3">
+    <div class="col-md-6 mb-2">
+      <input type="text" class="form-control" placeholder="Rechercher par titre"
+             [(ngModel)]="searchTitle" name="searchTitle">
+    </div>
+    <div class="col-md-4 mb-2">
+      <select class="form-select" [(ngModel)]="searchCategory" name="searchCategory">
+        <option value="">-- Toutes les catégories --</option>
+        <option value="DEBUTANT">Débutant</option>
+        <option value="AVANCE">Avancé</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Catégorie</th>
+          <th>Image</th>
+          <th>PDF</th>
+          <th>Vidéo</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formation of filteredFormations">
+          <td>{{ formation.titre }}</td>
+          <td>{{ formation.description }}</td>
+          <td>{{ formation.categorie }}</td>
+          <td><img [src]="'http://localhost:8080/' + formation.image" alt="{{ formation.titre }}"></td>
+          <td><a [href]="'http://localhost:8080/' + formation.pdf" target="_blank" class="btn btn-sm btn-primary">Voir PDF</a></td>
+          <td><a [href]="'http://localhost:8080/' + formation.video" target="_blank" class="btn btn-sm btn-secondary">Voir Vidéo</a></td>
+          <td>
+            <div class="d-flex gap-2 justify-content-center">
+              <button class="btn btn-sm btn-warning" (click)="onEditFormation(formation)">Modifier</button>
+              <button class="btn btn-sm btn-danger" (click)="onDeleteFormation(formation.id)">Supprimer</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

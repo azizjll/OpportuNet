@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormationsService, Formation } from '../../service/formations.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-formations',
@@ -30,7 +31,7 @@ export class AdminFormationsComponent implements OnInit {
   searchTitle: string = '';
   searchCategory: string = '';
 
-  constructor(private fb: FormBuilder, private formationsService: FormationsService) { }
+  constructor(private fb: FormBuilder, private formationsService: FormationsService, private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -110,7 +111,7 @@ export class AdminFormationsComponent implements OnInit {
         next: () => {
           alert('Formation modifiée avec succès !');
           this.resetForm();
-          this.loadFormations();
+           this.router.navigate(['/admin/liste-formations']);
         },
         error: (err) => {
           alert('Erreur lors de la modification');
@@ -122,8 +123,7 @@ export class AdminFormationsComponent implements OnInit {
         next: () => {
           alert('Formation ajoutée avec succès !');
           this.resetForm();
-          this.loadFormations();
-        },
+          this.router.navigate(['/admin/liste-formations']);        },
         error: (err) => {
           alert('Erreur lors de l\'ajout');
           console.error(err);

@@ -38,6 +38,9 @@ import { PacketComponent } from './backoffice/packet/packet.component';
 import { ListPacketComponent } from './frontoffice/list-packet/list-packet.component';
 import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
 import { EntretienComponent } from './frontoffice/entretien/entretien.component';
+import { ListeFormationComponent } from './backoffice/liste-formation/liste-formation.component';
+import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.component';
+import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
 
 
 @NgModule({
@@ -62,6 +65,9 @@ import { EntretienComponent } from './frontoffice/entretien/entretien.component'
     ListPacketComponent,
     EncadrantComponent,
     EntretienComponent,
+    ListeFormationComponent,
+    ListeOffresComponent,
+    ListeCandidaturesComponent,
    
 
 
