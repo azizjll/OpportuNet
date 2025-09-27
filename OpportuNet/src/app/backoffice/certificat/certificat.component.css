@@ -1,0 +1,60 @@
+.container {
+  max-width: 1000px;
+  margin: auto; /* centre la div */
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Form select + bouton */
+.form-select,
+button {
+  border-radius: 8px;
+}
+
+/* Table style */
+.table {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #007bff;
+  color: white;
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background: #f8f9fa;
+  transition: 0.3s;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .row.mb-3 {
+    flex-direction: column;
+  }
+
+  .col {
+    margin-bottom: 15px;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+}

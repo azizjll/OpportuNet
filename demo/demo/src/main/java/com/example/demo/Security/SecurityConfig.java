@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/ws-raw/").permitAll()
-                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**","/ws/**", "/topic/**", "/app/**", "/test-chat.html").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**","/ws/**", "/topic/**", "/app/**", "/test-chat.html","api/admin/users/**").permitAll()
                         .requestMatchers("/api/profile/upload-photo").authenticated()
                         /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
                         .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**","/api/packets/**","/api/rendezvous/**","/api/tasks/**","/api/remises/**","/api/reclamations**").authenticated()

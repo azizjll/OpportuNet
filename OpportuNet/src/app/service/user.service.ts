@@ -58,4 +58,26 @@ uploadUserImage(file: File): Observable<any> {
   return this.http.post<any>(`http://localhost:8080/api/admin/users/upload-image`, formData, { headers });
 }
 
+generateCertificat(userId: number, formationId: number): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/certificat/generer`, 
+    { userId, formationId }, 
+    { headers: this.getHeaders() }
+  );
+}
+
+// Télécharger un certificat
+downloadCertificat(certificatId: number): Observable<Blob> {
+  return this.http.get(`${this.baseUrl}/certificat/${certificatId}`, {
+    headers: this.getHeaders(),
+    responseType: 'blob'  // 👈 important pour récupérer un PDF
+  });
+}
+
+// Récupérer tous les certificats
+getAllCertificats(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/certificats/all`, { headers: this.getHeaders() });
+}
+
+
+
 }

@@ -1,15 +1,30 @@
 package com.example.demo.Controller;
 
 
+import com.example.demo.Entities.Certificat;
+import com.example.demo.Entities.Formation;
 import com.example.demo.Entities.User;
+import com.example.demo.Repository.CertificatRepository;
+import com.example.demo.Repository.FormationRepository;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Serivce.TaskService;
 import com.example.demo.Serivce.UserService;
+import com.example.demo.ServiceAvancé.CertificatService;
 import com.example.demo.ServiceAvancé.JwtService;
+import com.example.demo.dto.CertificatRequest;
+import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,6 +39,16 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private CertificatRepository certificatRepository;
+
+    @Autowired
+    private CertificatService certificatService;
+
+    @Autowired
+    private FormationRepository formationRepository;
+
 
 
 
@@ -99,6 +124,62 @@ public class UserController {
         return userService.blockUser(id);
     }
 
+    @PostMapping("/certificat/generer")
+    public ResponseEntity<Certificat> genererCertificat(
+            @RequestBody CertificatRequest request,
+            @RequestHeader("Authorization") String authHeader) throws Exception {
+
+        String token = authHeader.substring(7);
+        String role = jwtService.extractRole(token);
+
+        if (!"ADMIN".equals(role)) {
+            throw new RuntimeException("Access denied");
+        }
+
+        User user = userRepo.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+        Formation formation = formationRepository.findById(request.getFormationId())
+                .orElseThrow(() -> new RuntimeException("Formation introuvable"));
+
+        Certificat certificat = certificatService.genererEtSauvegarderCertificat(user, formation);
+
+        return ResponseEntity.ok(certificat);
+    }
+
+    @GetMapping("/certificat/{id}")
+    public ResponseEntity<Resource> downloadCertificat(@PathVariable Long id) throws IOException {
+        Certificat certificat = certificatRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Certificat introuvable"));
+
+        File file = new File(certificat.getFichierPdf());
+        if (!file.exists()) {
+            throw new RuntimeException("Fichier PDF non trouvé");
+        }
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource); // ✅ plus besoin de cast
+    }
+
+    @GetMapping("/certificats/all")
+    public List<Certificat> getAllCertificats(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        String role = jwtService.extractRole(token);
+        if (!"ADMIN".equals(role)) {
+            throw new RuntimeException("Access denied");
+        }
+        return certificatRepository.findAll();
+    }
+
+
+
+
+
+
     // Endpoint pour mettre à jour l'image
     @PostMapping("/upload-image")
     public User uploadUserImage(
@@ -131,4 +212,6 @@ public class UserController {
         }
         userService.deleteUser(id);
     }
+
+
 }

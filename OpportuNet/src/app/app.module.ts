@@ -44,6 +44,7 @@ import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/list
 import { NgChartsModule } from 'ng2-charts';
 import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
 import { RepondreReclamationComponent } from './backoffice/repondre-reclamation/repondre-reclamation.component';
+import { CertificatComponent } from './backoffice/certificat/certificat.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { RepondreReclamationComponent } from './backoffice/repondre-reclamation/
     ListeCandidaturesComponent,
     ReclamationCandidatComponent,
     RepondreReclamationComponent,
+    CertificatComponent,
    
 
 

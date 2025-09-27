@@ -24,6 +24,7 @@ import { ListeFormationComponent } from './backoffice/liste-formation/liste-form
 import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.component';
 import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
 import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
+import { CertificatComponent } from './backoffice/certificat/certificat.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -65,6 +66,8 @@ const routes: Routes = [
             {path: 'liste-formations', component:ListeFormationComponent },
             { path: 'liste-offres', component: ListeOffresComponent },
                         { path: 'liste-candidatures', component: ListeCandidaturesComponent },
+            { path: 'cer', component: CertificatComponent },
+
           
 
 

@@ -1,0 +1,52 @@
+<!-- src/app/components/certificat/certificat.component.html -->
+
+<div class="container mt-4">
+  <h2>Gestion des Certificats</h2>
+
+  <!-- Sélection -->
+  <div class="row mb-3">
+    <div class="col">
+      <label>Utilisateur</label>
+      <select class="form-select" [(ngModel)]="selectedUser">
+        <option *ngFor="let u of users" [value]="u.id">
+          {{ u.prenom }} {{ u.nom }}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <label>Formation</label>
+      <select class="form-select" [(ngModel)]="selectedFormation">
+        <option *ngFor="let f of formations" [value]="f.id">
+          {{ f.titre }}
+        </option>
+      </select>
+    </div>
+    <div class="col d-flex align-items-end">
+      <button class="btn btn-primary" (click)="generateCertificat()">Générer Certificat</button>
+    </div>
+  </div>
+
+  <!-- Liste certificats -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Utilisateur</th>
+        <th>Formation</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of certificats">
+        <td>{{ c.id }}</td>
+        <td>{{ c.user?.prenom }} {{ c.user?.nom }}</td>
+        <td>{{ c.formation?.titre }}</td>
+        <td>{{ c.dateGeneration | date:'short' }}</td>
+        <td>
+          <button class="btn btn-success btn-sm" (click)="downloadCertificat(c.id)">Télécharger</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

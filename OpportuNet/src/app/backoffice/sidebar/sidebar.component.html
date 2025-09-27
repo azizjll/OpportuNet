@@ -72,6 +72,13 @@
                                 <span>liste Des Utilisateurs (Candidat/Organisation/Encadrant)</span>
                             </a>
                         </li>
+                          <li class="sidebar-item active" *ngIf="userRole === 'ADMIN' ">
+                            <a href="admin/cer" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Certificats</span>
+                            </a>
+                        </li>
+
 
                         <li class="sidebar-item  has-sub" *ngIf="userRole === 'ORGANISATION'">
                             <a href="admin/calendar" class='sidebar-link'>
