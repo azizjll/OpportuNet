@@ -85,17 +85,49 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Profile Visit</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="chart-profile-visit"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+  <!-- Graphique utilisateurs -->
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-header"><h4>Utilisateurs par rôle</h4></div>
+      <div class="card-body" style="height: 400px;">
+        <canvas baseChart
+          [data]="chartData"
+          [options]="chartOptions"
+          [type]="chartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphique offres -->
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-header"><h4>Offres par type</h4></div>
+      <div class="card-body" style="height: 400px;">
+        <canvas baseChart
+          [data]="offresChartData"
+          [options]="offresChartOptions"
+          [type]="offresChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphique candidatures -->
+  <div class="col-md-6 mb-3">
+    <div class="card">
+      <div class="card-header"><h4>Candidatures par statut</h4></div>
+      <div class="card-body" style="height: 400px;">
+        <canvas baseChart
+          [data]="candidaturesChartData"
+          [options]="candidaturesChartOptions"
+          [type]="candidaturesChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
                         <div class="row">
                             <div class="col-12 col-xl-4">
                                 <div class="card">
@@ -215,9 +247,7 @@
                         <div class="card">
                             <div class="card-body py-4 px-5">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-xl">
-                                        <img src="assets/images/faces/1.jpg" alt="Face 1">
-                                    </div>
+                                    
                                     <div class="ms-3 name">
                                         <h5 class="font-bold">{{ userNom }} {{ userPrenom }}</h5>
                                         <h6 class="text-muted mb-0">{{ userRole }}</h6>
@@ -226,44 +256,44 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Recent Messages</h4>
-                            </div>
-                            <div class="card-content pb-4">
-                                <div class="recent-message d-flex px-4 py-3">
-                                    <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/4.jpg">
-                                    </div>
-                                    <div class="name ms-4">
-                                        <h5 class="mb-1">Hank Schrader</h5>
-                                        <h6 class="text-muted mb-0">@johnducky</h6>
-                                    </div>
-                                </div>
-                                <div class="recent-message d-flex px-4 py-3">
-                                    <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/5.jpg">
-                                    </div>
-                                    <div class="name ms-4">
-                                        <h5 class="mb-1">Dean Winchester</h5>
-                                        <h6 class="text-muted mb-0">@imdean</h6>
-                                    </div>
-                                </div>
-                                <div class="recent-message d-flex px-4 py-3">
-                                    <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/1.jpg">
-                                    </div>
-                                    <div class="name ms-4">
-                                        <h5 class="mb-1">John Dodol</h5>
-                                        <h6 class="text-muted mb-0">@dodoljohn</h6>
-                                    </div>
-                                </div>
-                                <div class="px-4">
-                                    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>Start
-                                        Conversation</button>
-                                </div>
-                            </div>
-                        </div>
+<div class="card">
+  <div class="card-header">
+      <h4>Recent Messages</h4>
+  </div>
+  <div class="card-content pb-4">
+    <div class="reclamations-scrollable">
+      <div *ngFor="let rec of reclamations" class="recent-message d-flex px-4 py-3">
+        
+        <div class="name ms-4 flex-grow-1">
+          <h5 class="mb-1">{{rec.user.nom}} {{rec.user.prenom}}</h5>
+          <h6 class="text-muted mb-1">{{rec.sujet}}</h6>
+          <p class="text-muted">{{rec.description}}</p>
+
+          <div *ngIf="rec.reponses?.length">
+            <h6>Réponses :</h6>
+            <ul>
+              <li *ngFor="let rep of rec.reponses">
+                {{rep.contenu}} <small class="text-muted">({{rep.dateCreation | date:'short'}})</small>
+              </li>
+            </ul>
+          </div>
+
+          <button class="btn btn-success btn-sm mt-2" (click)="ouvrirRepondreModal(rec)">
+            Répondre
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <app-repondre-reclamation 
+      *ngIf="reclamationSelectionnee" 
+      [reclamation]="reclamationSelectionnee" 
+      (reponseEnvoyee)="fermerRepondreModal()">
+    </app-repondre-reclamation>
+
+  </div>
+</div>
+
                         <div class="card">
                             <div class="card-header">
                                 <h4>Visitors Profile</h4>

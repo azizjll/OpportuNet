@@ -1,0 +1,10 @@
+.card-body {
+  position: relative; /* important pour Chart.js */
+  height: 400px;      /* ajuste selon tes besoins */
+  width: 100%;
+}
+.reclamations-scrollable {
+  max-height: 400px;   /* Ajuste selon ton design */
+  overflow-y: auto;
+  padding-right: 10px; /* Pour éviter que le scroll chevauche le contenu */
+}

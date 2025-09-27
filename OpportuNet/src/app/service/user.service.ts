@@ -45,15 +45,17 @@ export class UserService {
   deleteUser(id: number): Observable<any> {
   return this.http.delete(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
 }
-uploadUserImage(userId: number, file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
+uploadUserImage(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
 
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
 
-    return this.http.post<any>(`${this.baseUrl}/${userId}/upload-image`, formData, { headers });
-  }
+  // 👉 tu appelles ton endpoint qui lit le user depuis le token
+  return this.http.post<any>(`http://localhost:8080/api/admin/users/upload-image`, formData, { headers });
+}
+
 }

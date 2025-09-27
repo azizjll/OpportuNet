@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/api/profile/**","/api/offres","/api/formations/**", "/uploads/**","/api/payments/**","/ws/**", "/topic/**", "/app/**", "/test-chat.html").permitAll()
                         .requestMatchers("/api/profile/upload-photo").authenticated()
                         /*.requestMatchers("/api/offres/**").hasRole("ORGANISATION")*/
-                        .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**","/api/packets/**","/api/rendezvous/**","/api/tasks/**","/api/remises/**").authenticated()
+                        .requestMatchers("/api/candidatures/**","/api/offres/**","/api/question/**","/api/packets/**","/api/rendezvous/**","/api/tasks/**","/api/remises/**","/api/reclamations**").authenticated()
                         .anyRequest().authenticated()
                 )
 

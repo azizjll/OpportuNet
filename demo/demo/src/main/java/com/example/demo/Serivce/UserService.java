@@ -1,6 +1,8 @@
 package com.example.demo.Serivce;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.Entities.Candidature;
 import com.example.demo.Entities.StatutCandidature;
 import com.example.demo.Entities.User;
@@ -16,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,8 @@ public class UserService {
 
     @Autowired
     private CandidatureRepository candidatureRepository;
+    @Autowired
+    private Cloudinary cloudinary;
 
     public List<User> getCandidatsEncadres(Long encadrantId) {
         return candidatureRepository.findByOffre_Encadrant_IdAndStatut(encadrantId, StatutCandidature.ACCEPTEE)
@@ -87,31 +92,21 @@ public class UserService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Créer le répertoire s'il n'existe pas
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
         try {
-            // Nom de fichier unique
-            String filename = userId + "_" + file.getOriginalFilename();
-            Path filepath = Paths.get(uploadDir, filename);
+            // Upload sur Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("folder", "profile-images"));
 
-            // Sauvegarde du fichier
-            Files.write(filepath, file.getBytes());
+            // Récupérer l'URL de l'image
+            String imageUrl = (String) uploadResult.get("secure_url");
+            user.setImageUrl(imageUrl);
 
-            // Mettre à jour l'URL de l'image dans la base
-            user.setImageUrl("/" + uploadDir + filename);  // chemin relatif
             return userRepo.save(user);
 
         } catch (IOException e) {
-            throw new RuntimeException("Erreur lors de l'upload de l'image", e);
+            throw new RuntimeException("Erreur lors de l'upload de l'image sur Cloudinary", e);
         }
-
-
     }
-
     @Autowired
     private UserRepository userRepository;
 

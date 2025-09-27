@@ -41,6 +41,9 @@ import { EntretienComponent } from './frontoffice/entretien/entretien.component'
 import { ListeFormationComponent } from './backoffice/liste-formation/liste-formation.component';
 import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.component';
 import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
+import { NgChartsModule } from 'ng2-charts';
+import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
+import { RepondreReclamationComponent } from './backoffice/repondre-reclamation/repondre-reclamation.component';
 
 
 @NgModule({
@@ -68,6 +71,8 @@ import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/list
     ListeFormationComponent,
     ListeOffresComponent,
     ListeCandidaturesComponent,
+    ReclamationCandidatComponent,
+    RepondreReclamationComponent,
    
 
 
@@ -90,6 +95,7 @@ import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/list
     AppointmentDialogComponent,
     MatNativeDateModule,
     RouterModule,
+    NgChartsModule
      
   
   ],

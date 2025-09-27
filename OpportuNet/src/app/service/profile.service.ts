@@ -30,7 +30,7 @@ export interface UserProfile {
   accepted: boolean;
   experiences: Experience[];
   parcoursAcademiques: ParcoursAcademique[];
-  photoUrl?: string; // Ajout de la propriété photoUrl
+  imageUrl?: string; // 👈 ajouter ça
 }
 
 @Injectable({

@@ -4,6 +4,7 @@ import { Experience, ParcoursAcademique, ProfileService, UserProfile } from 'src
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserService } from 'src/app/service/user.service';
 
 
 
@@ -27,7 +28,7 @@ selectedFile: File | null = null;
   editingExpId: number | null = null;
   editingParcoursId: number | null = null;
 
-  constructor(private profileService: ProfileService, private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private profileService: ProfileService, private fb: FormBuilder, private http: HttpClient,    private userService: UserService,) {}
 
   ngOnInit(): void {
     this.buildForms();
@@ -39,6 +40,10 @@ selectedFile: File | null = null;
         prenom: profile.prenom,
         email: profile.email
       });
+      // Charger l'image existante
+    if (profile.imageUrl) {
+      this.previewImage = profile.imageUrl;
+    }
     });
 
     // Forcer la mise à jour des validateurs pour chaque changement
@@ -268,35 +273,21 @@ selectedFile: File | null = null;
     return ctrl;
   };
 
-  onFileChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    const file = input.files[0];
+onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
 
-    // Vérifier le type et la taille (optionnel)
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validTypes.includes(file.type)) {
-      alert('Seuls les fichiers JPG ou PNG sont acceptés.');
-      return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result; // prévisualisation
+      };
+      reader.readAsDataURL(this.selectedFile);
+
+      this.profileForm.patchValue({ photo: this.selectedFile });
     }
-    if (file.size > 5 * 1024 * 1024) { // 5 Mo
-      alert('La taille du fichier doit être inférieure à 5Mo.');
-      return;
-    }
-
-    this.selectedFile = file;
-
-    // Lire le fichier pour afficher l'aperçu
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImage = reader.result;
-    };
-    reader.readAsDataURL(file);
-
-    // Mettre à jour le formControl
-    this.profileForm.patchValue({ photo: file });
   }
-}
+
 
 uploadPhoto(file: File): Observable<any> {
   const formData = new FormData();
@@ -310,26 +301,43 @@ formData.append('photo', file);
   return this.http.post('http://localhost:8080/api/profile/upload-photo', formData, { headers });
 }
 
+uploadUserImage(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+
+  return this.http.post<any>(`http://localhost:8080/api/admin/users/upload-image`, formData, { headers });
+}
+
+
+
 
 
 
 // Ajoute cette méthode dans ton ProfileComponent
-onUploadImage(): void {
-  if (!this.selectedFile) return;
+ onUploadImage(): void {
+    if (!this.selectedFile) return;
 
-  this.uploadPhoto(this.selectedFile).subscribe({
-    next: (res) => {
-      console.log('Upload réussi', res);
-      alert('Image uploadée avec succès !');
-      // Mettre à jour l'aperçu si le backend retourne l'URL de l'image
-      // this.previewImage = res.url; // selon réponse de ton backend
-    },
-    error: (err) => {
-      console.error('Erreur upload', err);
-      alert('Erreur lors de l\'upload');
-    }
-  });
-}
+    this.userService.uploadUserImage(this.selectedFile).subscribe({
+      next: (res) => {
+        console.log('Upload réussi', res);
+        alert('Image uploadée avec succès !');
+        if (res.imageUrl) {
+          this.previewImage = res.imageUrl; // met à jour l’aperçu avec l’URL Cloudinary
+          this.userProfile!.imageUrl = res.imageUrl;
+        }
+      },
+      error: (err) => {
+        console.error('Erreur upload', err);
+        alert('Erreur lors de l\'upload');
+      }
+    });
+  }
+
 
 
  

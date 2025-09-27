@@ -1,0 +1,17 @@
+<div class="modal fade show" style="display:block;" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Répondre à la réclamation: {{reclamation.sujet}}</h5>
+        <button type="button" class="btn-close" (click)="reponseEnvoyee.emit()"></button>
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control" [(ngModel)]="reponseTexte" rows="4" placeholder="Tapez votre réponse ici..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="reponseEnvoyee.emit()">Annuler</button>
+        <button class="btn btn-primary" (click)="envoyerReponse()">Envoyer</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,7 @@ import { EncadrantComponent } from './backoffice/encadrant/encadrant.component';
 import { ListeFormationComponent } from './backoffice/liste-formation/liste-formation.component';
 import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.component';
 import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
+import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
       {path: 'payment', component: PaymentComponent},
       {path: 'chat', component: ChatComponent, canActivate: [AuthGuard]},
        { path: 'Listpackets', component: ListPacketComponent },
+       { path: 'rec', component: ReclamationCandidatComponent },
          
 
 
@@ -63,7 +65,7 @@ const routes: Routes = [
             {path: 'liste-formations', component:ListeFormationComponent },
             { path: 'liste-offres', component: ListeOffresComponent },
                         { path: 'liste-candidatures', component: ListeCandidaturesComponent },
-
+          
 
 
 

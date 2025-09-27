@@ -1,0 +1,73 @@
+<div class="container-xl px-4 mt-4">
+    <nav class="nav nav-borders">
+        <a class="nav-link ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
+        <a class="nav-link active" href="mes" target="__blank">Mes Activités</a>
+        <a class="nav-link" href="rec" target="__blank">Reclamations</a>
+        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Notifications</a>
+    </nav>
+
+     <hr class="mt-0 mb-4">
+
+  <div class="row">
+    <!-- Formulaire création réclamation -->
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header">Créer une réclamation</div>
+        <div class="card-body">
+          <form (ngSubmit)="creerReclamation()">
+            <div class="mb-3">
+              <label class="form-label">Sujet</label>
+              <input class="form-control" [(ngModel)]="nouvelleReclamation.sujet" name="sujet" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" [(ngModel)]="nouvelleReclamation.description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Type</label>
+              <select class="form-select" [(ngModel)]="nouvelleReclamation.type" name="type">
+                <option value="ADMINISTRATIVE">ADMINISTRATIVE</option>
+                <option value="TECHNIQUE">TECHNIQUE</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Envoyer</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Liste des réclamations et réponses -->
+      <div *ngFor="let rec of reclamations" class="card mb-3">
+        <div class="card-header">
+          {{rec.sujet}} - <span class="badge bg-info">{{rec.statut}}</span>
+        </div>
+        <div class="card-body">
+          <p>{{rec.description}}</p>
+          <p><strong>Type :</strong> {{rec.type}}</p>
+
+          <div *ngIf="rec.reponses?.length">
+            <h6>Réponses :</h6>
+            <ul>
+              <li *ngFor="let rep of rec.reponses">
+                {{rep.contenu}} <small class="text-muted">({{rep.dateCreation | date:'short'}})</small>
+              </li>
+            </ul>
+          </div>
+
+         
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Colonne droite optionnelle -->
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">Informations</div>
+        <div class="card-body">
+          <p>Vous pouvez consulter vos réclamations et voir les réponses reçues ici.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

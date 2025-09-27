@@ -100,13 +100,27 @@ public class UserController {
     }
 
     // Endpoint pour mettre à jour l'image
-    @PostMapping("/{id}/upload-image")
-    public User uploadUserImage(@PathVariable Long id,
-                                @RequestParam("file") MultipartFile file,
-                                @RequestHeader("Authorization") String authHeader) {
-        // Tu peux ajouter ici une vérification avec JwtService si besoin
-        return userService.updateUserImage(id, file);
+    @PostMapping("/upload-image")
+    public User uploadUserImage(
+            @RequestParam("file") MultipartFile file,
+            @RequestHeader("Authorization") String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Token JWT manquant ou invalide");
+        }
+
+        // Extraire l'email depuis le token
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtService.extractEmail(token);
+
+        // Récupérer l'utilisateur
+        User user = userService.getUserByEmail(email);
+
+        // Upload sur Cloudinary et mise à jour de l'utilisateur
+        return userService.updateUserImage(user.getId(), file);
     }
+
+
     @DeleteMapping("/{id}")
     public void deleteUser(@RequestHeader("Authorization") String authHeader,
                            @PathVariable Long id) {
