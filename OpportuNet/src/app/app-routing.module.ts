@@ -25,6 +25,7 @@ import { ListeOffresComponent } from './backoffice/liste-offres/liste-offres.com
 import { ListeCandidaturesComponent } from './backoffice/liste-candidatures/liste-candidatures.component';
 import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
 import { CertificatComponent } from './backoffice/certificat/certificat.component';
+import { ResetPasswordComponent } from './frontoffice/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -41,6 +42,8 @@ const routes: Routes = [
       {path: 'chat', component: ChatComponent, canActivate: [AuthGuard]},
        { path: 'Listpackets', component: ListPacketComponent },
        { path: 'rec', component: ReclamationCandidatComponent },
+       { path: 'reset-password', component: ResetPasswordComponent }
+
          
 
 

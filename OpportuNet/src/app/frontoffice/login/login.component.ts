@@ -13,6 +13,11 @@ export class LoginComponent {
   signinForm: FormGroup;
   toggleMode: boolean = false;
 
+  showForgotModal = false;
+  forgotEmail: string = '';
+  
+
+
   constructor(
     private authService: AuthserviceService,
     private router: Router,
@@ -131,5 +136,45 @@ export class LoginComponent {
   toggle() {
     this.toggleMode = !this.toggleMode;
     console.log("Mode changé :", this.toggleMode ? 'Sign up' : 'Sign in');
+  }
+
+openForgotPassword() {
+  console.log('openForgotPassword() appelée'); // Vérifie que la fonction est exécutée
+  this.showForgotModal = true;
+  console.log('showForgotModal =', this.showForgotModal); // Vérifie que le flag est à true
+
+  setTimeout(() => {
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      console.log('backdrop trouvé dans le DOM'); // Vérifie que le DOM contient le modal
+      backdrop.classList.add('show');
+      console.log('Classe "show" ajoutée au backdrop'); // Vérifie que la classe est bien ajoutée
+    } else {
+      console.log('backdrop NON trouvé dans le DOM'); // Si problème
+    }
+  }, 10);
+}
+
+
+  closeForgotPassword() {
+    this.showForgotModal = false;
+    this.forgotEmail = '';
+  }
+
+  submitForgotPassword() {
+    if (!this.forgotEmail) {
+      alert("Veuillez entrer votre email");
+      return;
+    }
+
+    this.authService.forgotPassword(this.forgotEmail).subscribe({
+      next: (res) => {
+        alert("Un email de réinitialisation vous a été envoyé !");
+        this.closeForgotPassword();
+      },
+      error: (err) => {
+        alert("Erreur lors de la demande : " + err.error.message);
+      }
+    });
   }
 }

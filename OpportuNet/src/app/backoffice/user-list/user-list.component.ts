@@ -24,6 +24,7 @@ export class UserListComponent implements OnInit {
       next: (data) => {
         this.users = data;
         this.loading = false;
+         console.log(this.users);
       },
       error: (err) => {
         this.error = 'Impossible de charger les utilisateurs.';

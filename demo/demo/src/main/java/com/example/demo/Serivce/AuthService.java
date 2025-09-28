@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthService {
 
@@ -120,6 +122,47 @@ public class AuthService {
 
         return new AuthResponse("Compte encadrant créé et email envoyé à " + email);
     }
+
+
+    public AuthResponse requestPasswordReset(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        // Générer token et expiration (15 min par ex)
+        String token = java.util.UUID.randomUUID().toString();
+        user.setResetPasswordToken(token);
+        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(15));
+        userRepo.save(user);
+
+        // Envoyer email avec lien
+        String resetLink = "http://localhost:4200/reset-password?token=" + token;
+        String subject = "Réinitialisation de mot de passe";
+        String body = "Bonjour " + user.getPrenom() + ",\n\n" +
+                "Cliquez sur le lien suivant pour réinitialiser votre mot de passe :\n" +
+                resetLink + "\n\n" +
+                "Ce lien expire dans 15 minutes.";
+        emailService.sendSimpleMessage(user.getEmail(), subject, body);
+
+        return new AuthResponse("Email de réinitialisation envoyé à " + user.getEmail());
+    }
+
+
+    public AuthResponse resetPassword(String token, String newPassword) {
+        User user = userRepo.findByResetPasswordToken(token)
+                .orElseThrow(() -> new RuntimeException("Token invalide ou expiré"));
+
+        if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Token expiré");
+        }
+
+        user.setMotDePasse(passwordEncoder.encode(newPassword));
+        user.setResetPasswordToken(null);
+        user.setResetTokenExpiry(null);
+        userRepo.save(user);
+
+        return new AuthResponse("Mot de passe réinitialisé avec succès !");
+    }
+
 
 
 

@@ -1,4 +1,4 @@
-<div id="container" class="container" [ngClass]="toggleMode ? 'sign-up' : 'sign-in'">
+<div id="container" class="container" [ngClass]="toggleMode ? 'sign-up' : 'sign-in'" >
     <!-- FORM SECTION -->
     <div class="row">
         <!-- SIGN UP -->
@@ -84,8 +84,8 @@
                         </div>
                     </div>
                     <button type="submit" [disabled]="signinForm.invalid">Sign in</button>
-                    <p>
-                        <b>Forgot password?</b>
+                  <p>
+                    <b (click)="openForgotPassword()" class="pointer">Forgot password?</b>
                     </p>
                     <p>
                         <span>Don't have an account?</span>
@@ -93,6 +93,10 @@
                     </p>
                 </form>
             </div>
+            <!-- Modal Forgot Password -->
+<!-- Modal Forgot Password -->
+
+
             <div class="form-wrapper"></div>
         </div>
         <!-- END SIGN IN -->
@@ -118,4 +122,21 @@
         <!-- END SIGN UP CONTENT -->
     </div>
     <!-- END CONTENT SECTION -->
+</div>
+
+<!-- Modal Forgot Password placé à la fin, en dehors du container -->
+<div *ngIf="showForgotModal" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h5>Réinitialiser le mot de passe</h5>
+      <button (click)="closeForgotPassword()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="email" placeholder="Votre email" [(ngModel)]="forgotEmail">
+    </div>
+    <div class="modal-footer">
+      <button (click)="closeForgotPassword()">Annuler</button>
+      <button (click)="submitForgotPassword()">Envoyer</button>
+    </div>
+  </div>
 </div>

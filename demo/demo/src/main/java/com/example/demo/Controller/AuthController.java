@@ -89,6 +89,18 @@ public class AuthController {
         return authService.signupEncadrant(nom, prenom, email);
     }
 
+    @PostMapping("/forgot-password")
+    public AuthResponse forgotPassword(@RequestParam String email) {
+        return authService.requestPasswordReset(email);
+    }
+
+    @PostMapping("/reset-password")
+    public AuthResponse resetPassword(@RequestParam String token,
+                                      @RequestParam String newPassword) {
+        return authService.resetPassword(token, newPassword);
+    }
+
+
 
 
 

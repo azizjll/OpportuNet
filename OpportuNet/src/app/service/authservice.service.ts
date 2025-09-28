@@ -101,5 +101,17 @@ getUserRole(): string | null {
   }
 }
 
+forgotPassword(email: string) {
+  return this.http.post(`${this.baseUrl}/forgot-password`, null, {
+    params: { email }
+  });
+}
+
+resetPassword(token: string, newPassword: string) {
+  return this.http.post(`${this.baseUrl}/reset-password`, null, {
+    params: { token, newPassword }
+  });
+}
+
   
 }

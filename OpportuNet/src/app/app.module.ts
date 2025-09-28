@@ -45,6 +45,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { ReclamationCandidatComponent } from './frontoffice/reclamation-candidat/reclamation-candidat.component';
 import { RepondreReclamationComponent } from './backoffice/repondre-reclamation/repondre-reclamation.component';
 import { CertificatComponent } from './backoffice/certificat/certificat.component';
+import { ResetPasswordComponent } from './frontoffice/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { CertificatComponent } from './backoffice/certificat/certificat.componen
     ReclamationCandidatComponent,
     RepondreReclamationComponent,
     CertificatComponent,
+    ResetPasswordComponent,
    
 
 
@@ -97,7 +99,8 @@ import { CertificatComponent } from './backoffice/certificat/certificat.componen
     AppointmentDialogComponent,
     MatNativeDateModule,
     RouterModule,
-    NgChartsModule
+    NgChartsModule,
+ 
      
   
   ],

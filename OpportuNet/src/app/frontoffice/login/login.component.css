@@ -31,6 +31,7 @@ body {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
+   
 }
 
 .row {
@@ -358,3 +359,127 @@ body {
         font-size: 2rem;
     }
 }
+
+/* Backdrop sombre */
+/* Backdrop sombre */
+.modal-backdrop {
+  position: fixed; /* couvre tout l'écran */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999 !important;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+/* Modal carré et centré */
+.modal {
+  position: relative;
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  width: 350px;       /* largeur fixe */
+  height: 350px;      /* hauteur fixe pour un carré */
+  z-index: 100000 !important;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* espace entre header, body, footer */
+  align-items: stretch;
+  transform: scale(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Animation d’apparition */
+.modal-backdrop.show .modal {
+  transform: scale(1);
+}
+
+/* Header du modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h5 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-header button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Corps du modal */
+.modal-body {
+  flex: 1; /* prend tout l’espace disponible */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-body input {
+  width: 80%; /* centré dans le carré */
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.3s;
+}
+
+.modal-body input:focus {
+  border-color: #4EA685;
+}
+
+/* Footer du modal */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.modal-footer button {
+  flex: 1; /* boutons prennent la moitié chacun */
+  padding: 10px 0;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.modal-footer button:first-child {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modal-footer button:first-child:hover {
+  background-color: #b3b3b3;
+}
+
+.modal-footer button:last-child {
+  background-color: #4EA685;
+  color: #fff;
+}
+
+.modal-footer button:last-child:hover {
+  background-color: #57b894;
+}
+
+

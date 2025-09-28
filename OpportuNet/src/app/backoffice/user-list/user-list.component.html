@@ -19,6 +19,8 @@
         <th>Email</th>
         <th>Rôle</th>
         <th>État</th>
+        <th>Paiement</th>
+
         <th>Actions</th>
       </tr>
     </thead>
@@ -29,9 +31,22 @@
         <td>{{user.prenom}}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.role }}</td>
-       <td>  <span class="badge" [ngClass]="user.verified ? 'bg-success' : 'bg-danger'">
+       <td> 
+         <span class="badge" [ngClass]="user.verified ? 'bg-success' : 'bg-danger'">
     {{ user.verified ? 'Vérifié' : 'Non vérifié' }}
-  </span></td>
+      </span>
+      </td>
+
+      
+<td>
+  <span class="badge" [ngClass]="user.isPayment ? 'bg-success' : 'bg-danger'">
+    {{ user.isPayment ? 'Payé' : 'Non payé' }}
+  </span>
+</td>
+
+
+
+
         <td>{{ user.status }} <button class="btn btn-success btn-sm" (click)="acceptUser(user.id)">Accepter</button>
           
           <button class="btn btn-danger btn-sm" (click)="blockUser(user.id)">Refuser</button>
