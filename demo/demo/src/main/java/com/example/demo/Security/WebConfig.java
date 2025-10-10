@@ -10,12 +10,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/videos/**")
-                .addResourceLocations("file:C:/Users/imen-/OneDrive/Bureau/projetstage/OpportuNet/demo/uploads/videos/");
+                .addResourceLocations("file:C:/Users/azizc/Desktop/Nouveau dossier/demo/uploads/videos/");
 
         registry.addResourceHandler("/uploads/pdfs/**")
-                .addResourceLocations("file:C:/Users/imen-/OneDrive/Bureau/projetstage/OpportuNet/demo/uploads/pdfs/");
+                .addResourceLocations("file:C:/Users/azizc/Desktop/Nouveau dossier/demo/uploads/pdfs/");
         registry.addResourceHandler("/uploads/images/**")   // <-- nouveau handler
-                .addResourceLocations("file:C:/Users/imen-/OneDrive/Bureau/projetstage/OpportuNet/demo/uploads/images/");
+                .addResourceLocations("file:C:/Users/azizc/Desktop/Nouveau dossier/demo/uploads/images/");
 
     }
+
 }
