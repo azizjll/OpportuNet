@@ -16,7 +16,9 @@ pipeline {
 
         stage('Build Maven') {
             steps {
-                sh 'mvn clean package'
+                dir('demo/demo') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
