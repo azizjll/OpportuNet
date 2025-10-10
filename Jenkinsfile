@@ -7,19 +7,5 @@ pipeline {
                 echo 'Hello World!'
             }
         }
-
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/azizjll/OpportuNet.git'
-            }
-        }
-
-        stage('Build Maven') {
-            steps {
-                dir('demo/demo') {
-                    sh 'mvn clean package'
-                }
-            }
-        }
     }
 }
